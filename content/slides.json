@@ -205,6 +205,22 @@
       "add, has, remove, union, intersection, difference, to_array."
     ],
     [
+      "Queue",
+      "push, pop, peek, len; a for loop reads it front to back."
+    ],
+    [
+      "Heap",
+      "push, pop, peek under a comparator; to_array sorts."
+    ],
+    [
+      "Scope",
+      "add, remove, clean, extend; a cleanup bag that delete drains."
+    ],
+    [
+      "Iter",
+      "from, range, map, filter, take, skip, chain, collect, reduce."
+    ],
+    [
       "Result",
       "Ok and Err with unwrap, expect, unwrap_or, map, map_err; try and ? for early returns."
     ],

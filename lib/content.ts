@@ -31,6 +31,7 @@ const GROUP_SUMMARIES: [string, string][] = [
   ["perf", "Code that runs slower than the plain form."],
   ["roblox", "A Roblox API that is deprecated or misused."],
   ["pedantic", "Strict rules, off until `[lint] strict = true`."],
+  ["naming", "The case of names, off until `[lint] warn = [\"naming\"]`."],
 ];
 
 export const lintGroups: { name: string; summary: string; lints: LintDoc[] }[] = GROUP_SUMMARIES.map(
@@ -111,9 +112,9 @@ export const commands: [string, string][] = [
   ["alloy flux", "the compile, the type check, and every lint; --fix rewrites"],
   ["alloy lint", "the lints alone; -W, -A, -D set a level for the run"],
   ["alloy fmt", "format the sources in place; --check writes nothing"],
-  ["alloy test --run", "a lest spec per source with a @test, then lest"],
+  ["alloy test --run", "a lest spec per source with a @test, then lest; --watch, --coverage"],
   ["alloy doc strict", "an article; `alloy doc` lists every topic"],
   ["alloy init", "alloy.toml, .luaurc, and .config.luau"],
   ["rojo serve .alloy/build.project.json", "the compiled tree, from the [mount] table"],
-  ["alloy self install", "alloy and alloy-lsp into ~/.alloy/bin"],
+  ["alloy self install", "alloy and alloy-lsp into ~/.alloy/bin; self update fetches a release"],
 ];
