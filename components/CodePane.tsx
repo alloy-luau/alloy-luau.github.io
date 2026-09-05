@@ -24,7 +24,7 @@ function iconFor(mode: Mode, note?: string): { src: string; alt: string } | null
   if (name.endsWith(".d.luau")) return { src: "/icons/luau-def.svg", alt: "" };
   if (name === ".luaurc" || name.endsWith(".config.luau")) return { src: "/icons/luau-config.svg", alt: "" };
   if (mode === "luau") return { src: "/icons/luau.svg", alt: "" };
-  if (mode === "toml") return { src: "/icons/toml.svg", alt: "" };
+  if (mode === "toml") return { src: "/alloy-toml-symbol.png", alt: "" };
   if (mode === "json") return { src: "/icons/json.svg", alt: "" };
   if (mode === "sh") return { src: "/icons/shell.svg", alt: "" };
 
