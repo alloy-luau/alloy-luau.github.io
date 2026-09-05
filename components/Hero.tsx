@@ -16,7 +16,22 @@ const LINES: { text: string; accent?: boolean; br?: boolean }[] = [
   { text: ", line for line." },
 ];
 
-const CHIPS = ["emit never adds a line", "strict by default", "luau-lsp does the typing", "Roblox and plain Luau"];
+// The pill icons: four 16px line glyphs, 1.6 stroke, round caps and
+// joins, in the lilac the tags use. Each matches a standard name
+// (Lucide: equal, shield-check, braces, box), drawn here by hand.
+const GLYPHS: Record<string, string> = {
+  equal: "M4 6h8M4 10h8",
+  "shield-check": "M8 1.5l5 2v3.5c0 3-2.2 5.3-5 6.5-2.8-1.2-5-3.5-5-6.5V3.5zM5.5 8l1.8 1.8L10.8 6",
+  braces: "M6 2H5.5A1.5 1.5 0 004 3.5v3L2.5 8 4 9.5v3A1.5 1.5 0 005.5 14H6M10 2h.5A1.5 1.5 0 0112 3.5v3L13.5 8 12 9.5v3a1.5 1.5 0 01-1.5 1.5H10",
+  box: "M8 1.8l5.5 3v6.4L8 14.2l-5.5-3V4.8zM2.6 4.9L8 7.9l5.4-3M8 7.9v6.3",
+};
+
+const CHIPS: { text: string; glyph: keyof typeof GLYPHS }[] = [
+  { text: "emit never adds a line", glyph: "equal" },
+  { text: "strict by default", glyph: "shield-check" },
+  { text: "luau-lsp does the typing", glyph: "braces" },
+  { text: "Roblox and plain Luau", glyph: "box" },
+];
 
 const TOTAL = LINES.reduce((n, l) => n + l.text.length, 0);
 
@@ -103,13 +118,26 @@ export default function Hero() {
         <div className="mb-7 flex flex-wrap gap-2">
           {CHIPS.map((f, i) => (
             <motion.span
-              key={f}
-              className="chip glass glass-live"
+              key={f.text}
+              className="chip glass glass-live inline-flex items-center gap-1.5"
               initial={reduced ? false : { opacity: 0, x: 28 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.55 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
             >
-              {f}
+              <svg
+                viewBox="0 0 16 16"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="#a78bfa"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d={GLYPHS[f.glyph]} />
+              </svg>
+              {f.text}
             </motion.span>
           ))}
         </div>

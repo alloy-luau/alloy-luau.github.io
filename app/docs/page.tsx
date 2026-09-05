@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 
 import BookShell, { type TocChapter } from "@/components/BookShell";
+import type { Metadata } from "next";
+
 import CodePane from "@/components/CodePane";
 import Markdown, { inline } from "@/components/Markdown";
 import Nav from "@/components/Nav";
@@ -35,7 +37,20 @@ function Sub({ id, number, title, children }: { id: string; number: string; titl
   );
 }
 
-const shell = (s: string) => <CodePane code={s} mode="sh" className="mb-4" />;
+const shell = (s: string) => <CodePane code={s} mode="sh" label="Shell" className="mb-4" />;
+
+export const metadata: Metadata = {
+  title: "The book",
+  description:
+    "Every Alloy construct with its emitted Luau beside it: operators, structs, enums, match, traits, async, remotes, macros, attributes, the strictness rules, the lints, and the toolchain.",
+  alternates: { canonical: "/docs/" },
+  openGraph: {
+    title: "The Alloy book",
+    description:
+      "Every Alloy construct with its emitted Luau beside it, from safe access to typed remotes, plus the lints and the toolchain.",
+    url: "/docs/",
+  },
+};
 
 const chapters: TocChapter[] = [
   { title: "Start", items: [{ id: "intro", label: "Introduction", number: "1" }] },

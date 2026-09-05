@@ -1,0 +1,23 @@
+# Alloy
+
+> Alloy is a strict superset of Luau that compiles to plain Luau, line for line. Every Luau file is already an Alloy file. Alloy adds structs, enums, traits, pattern matching, safe access operators, async and await, typed remotes for Roblox, macros, attributes, and a strict checker, and emits fixed Luau on the same lines, so stack traces and diffs still point at the source.
+
+The compiler is `alloy` (Rust); the language server is `alloy-lsp`, a proxy over luau-lsp; the editor extension is for VS Code. Files are `.aly`, `.alx` for markup, and `.d.aly` for declarations. The project file is `alloy.toml`.
+
+## Pages
+
+- [Overview](https://alloy-luau.github.io/): what Alloy is, the strictness contracts, the chapter list, install.
+- [The book](https://alloy-luau.github.io/docs/): every construct with its emitted Luau beside it, the lints, the toolchain.
+
+## Repositories
+
+- [alloy](https://github.com/alloy-luau/alloy): the compiler, the language server, the standard library.
+- [extensions](https://github.com/alloy-luau/extensions): the VS Code extension.
+- [examples](https://github.com/alloy-luau/examples): one file per feature.
+- [alloy-luau.github.io](https://github.com/alloy-luau/alloy-luau.github.io): this site.
+
+## Commands
+
+- `alloy build` compiles the project; `alloy build -W` watches.
+- `alloy check` compiles without writing and reports errors and lints.
+- `alloy lint`, `alloy fmt`, `alloy doc <topic>`, `alloy init`.
