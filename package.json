@@ -1,6 +1,6 @@
 {
   "name": "alloy-docs",
-  "version": "0.1.0",
+  "version": "0.1.0-rc.1",
   "private": true,
   "description": "The Alloy website: a landing page and the language reference.",
   "scripts": {
