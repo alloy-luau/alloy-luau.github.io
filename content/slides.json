@@ -1,0 +1,232 @@
+{
+  "slides": [
+    {
+      "id": "safe",
+      "eyebrow": "Operators",
+      "title": "Safe access that emits fixed Luau",
+      "thesis": "Eight operators cover the nil checks Roblox code writes by hand. Each one has a fixed emit; the compiler never looks at a type.",
+      "src": "local hp = player?.Character?.Humanoid?.Health ?? 100\nlocal spawn = workspace->Map->Spawns->Spawn1\nlocal gui = player.PlayerGui=>Hud=>Health\ncache[key] ??= compute(key)\nlocal root = model.PrimaryPart!",
+      "emit": "local _1 = (if player == nil then nil else player.Character) local _2 = (if _1 == nil then nil else _1.Humanoid) local _3 = (if _2 == nil then nil else _2.Health) local hp = (if _3 == nil then 100 else _3)\n_1 = (if workspace == nil then nil else workspace:FindFirstChild(\"Map\")) _2 = (if _1 == nil then nil else _1:FindFirstChild(\"Spawns\")) local spawn = (if _2 == nil then nil else _2:FindFirstChild(\"Spawn1\"))\nlocal gui = player.PlayerGui:WaitForChild(\"Hud\"):WaitForChild(\"Health\")\nif cache[key] == nil then cache[key] = compute(key) end\nlocal root = (if model.PrimaryPart == nil then error(\"model.PrimaryPart is nil\") else model.PrimaryPart)",
+      "points": [
+        "<b><code>?.</code> <code>?:</code> <code>?[</code> <code>?(</code></b> guard one link; one <code>?</code> guards every later link in the chain.",
+        "<b><code>??</code></b> tests nil only, so <code>false</code> survives. <b><code>??=</code></b> assigns once, and an index on the left runs once.",
+        "<b><code>-></code></b> is <code>FindFirstChild</code> and <b><code>=></code></b> is <code>WaitForChild</code>. A name with spaces is a string, a dynamic one goes in brackets.",
+        "<b><code>!</code></b> asserts not nil and quotes the source text in its message. It is only ever that, so <code>a!(b)</code> needs no parentheses."
+      ]
+    },
+    {
+      "id": "modules",
+      "eyebrow": "Modules",
+      "title": "Imports are sugar over <code>require</code>",
+      "thesis": "Paths pass through unchanged, so a Luau alias, a relative path, or a package works the way it already does. Type-only imports cost nothing at runtime.",
+      "src": "import { add, type Item } from \"./inventory\"\nimport * as React from \"@packages/react\"\nexport const MAX = 64",
+      "emit": "local _1 = require(\"./inventory\") local add = _1.add type Item = _1.Item\nlocal React = require(\"@packages/react\")\nconst MAX = 64 return { MAX = MAX }",
+      "points": [
+        "<b>Every form:</b> <code>{ a, b as c, type T }</code>, <code>* as M</code>, a default name, and <code>import type</code>.",
+        "<b>Exports</b> gather into the table the module returns at the end of its scope; <code>export default</code> returns one value.",
+        "<b>Completion</b> inside the braces lists the target module's exports, and a missing name offers an auto-import.",
+        "<b><code>.aly</code>, <code>.alx</code>, and <code>.luau</code></b> require each other freely, since all of them compile to <code>.luau</code>."
+      ]
+    },
+    {
+      "id": "async",
+      "eyebrow": "Concurrency",
+      "title": "<code>async</code> functions return a Future",
+      "thesis": "The body runs on task.spawn under xpcall and the Future memoizes the result. await yields until it settles; try await turns a failure into a Result.",
+      "src": "async function load(id: number): Profile\n    local raw = store:GetAsync(`p/{id}`)\n    return decode(raw)\nend\nlocal profile = await load(1)\nlocal safe = try await load(2)",
+      "emit": "local __alloy = require(\"@alloy\") function load(id: number): __alloy.Future<Profile> return __alloy.future(function()\n    local raw = store:GetAsync(`p/{id}`)\n    return decode(raw)\nend) end\nlocal profile = __alloy.await(load(1))\nlocal _1 = __alloy.try_await(load(2)) if _1.tag == \"Err\" then return _1 end local safe = _1._1",
+      "points": [
+        "<b>The declared type is the inner one.</b> <code>async function f(): number</code> is a <code>Future&lt;number&gt;</code> to callers; a missing type is inferred, and the hint offers the inner type.",
+        "<b><code>async do ... end</code></b> gives a Future from a block, <b><code>Future.all</code></b>, <b><code>race</code></b>, <b><code>any</code></b>, and <b><code>all_settled</code></b> combine them.",
+        "<b>Hover shows <code>Future&lt;T&gt;</code></b>, never the runtime's table shape."
+      ]
+    },
+    {
+      "id": "enums",
+      "eyebrow": "Data",
+      "title": "Enums carry payloads; <code>match</code> compiles to an if-chain",
+      "thesis": "A payload enum is a tagged table with a constructor per variant and a union type the analyzer can narrow. A unit enum is a string literal union, so it serializes for free.",
+      "src": "enum Msg as\n    Join(Player)\n    Chat(Player, string)\nend\nlocal who = match msg with\n    case Join(p) then p.Name\n    case Chat(p, text) then `{p.Name}: {text}`\nend",
+      "emit": "local Msg = {} Msg.__index = Msg\n    function Msg.Join(_1) return setmetatable({ tag = \"Join\", _1 = _1 }, Msg) end\n    function Msg.Chat(_1, _2) return setmetatable({ tag = \"Chat\", _1 = _1, _2 = _2 }, Msg) end\nfunction Msg.is(v) return (type(v) == \"table\" and getmetatable(v) == Msg) end type Msg = { tag: \"Join\", _1: Player } | { tag: \"Chat\", _1: Player, _2: string }\nlocal who = (\n    if type(msg) == \"table\" and msg.tag == \"Join\" then msg._1.Name\n    else `{msg._1.Name}: {msg._2}`\n)",
+      "points": [
+        "<b>Patterns nest:</b> or-patterns, struct patterns, table and array patterns, literals, guards with <code>where</code>, and <code>default</code>.",
+        "<b><code>match</code></b> is a statement or an expression; the expression form parenthesizes so it drops into any position.",
+        "<b><code>impl Msg</code></b> adds methods to an enum the way it does to a struct.",
+        "<b>Hover on a variant</b> shows <code>Msg.Chat(Player, string)</code> even inside a pattern, where the emit has only a string."
+      ]
+    },
+    {
+      "id": "bindings",
+      "eyebrow": "Control flow",
+      "title": "Bindings in conditions, narrowed where they live",
+      "thesis": "if local, elseif local, while local, and the expression form bind a value and test it in one step. The branch declares the name from the tested temp, so it is T rather than T? inside, closures included.",
+      "src": "if local player = first_player() then\n    print(player.Name)\nend\nwhile local job = table.remove(queue) do\n    run(job)\nend",
+      "emit": "do local _c1 = first_player() if _c1 then local player = _c1\n    print(player.Name)\nend end\nwhile true do local _c1 = table.remove(queue) if not (_c1) then break end local job = _c1\n    run(job)\nend",
+      "points": [
+        "<b><code>where</code></b> adds a filter: <code>if local p = f() where p.AccountAge &gt; 30 then</code>.",
+        "<b>Several bindings</b> chain: <code>if local p = a; local c = p.Character then</code> runs the second only when the first is truthy.",
+        "<b>Pattern forms</b> bind too: <code>if local Ok(v) = result then</code>, <code>while local Move(target) = next() do</code>.",
+        "<b><code>if not local x = f() then return end</code></b> is the guard clause; <code>x</code> stays in scope after it."
+      ]
+    },
+    {
+      "id": "structs",
+      "eyebrow": "Types",
+      "title": "Structs, traits, and impls emit the metatable pattern",
+      "thesis": "An Alloy struct is a plain table vanilla Luau can use. Fields carry defaults and read or write marks; impl adds methods; a trait is a type of signatures plus default bodies.",
+      "src": "struct Vec2 as\n    x: number\n    y: number = 0\nend\nimpl Vec2\n    function len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = new Vec2 { x = 3, y = 4 }",
+      "emit": "local Vec2 = {} Vec2.__index = Vec2 setmetatable(Vec2, { __call = function(_, f) if f.y == nil then f.y = 0 end return setmetatable(f, Vec2) end }) function Vec2.new(f) return Vec2(f) end\n\n\n type Vec2 = typeof(setmetatable({} :: { x: number, y: number? }, Vec2))\ndo\n    function Vec2.len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = Vec2({ x = 3, y = 4 })",
+      "points": [
+        "<b><code>new</code> is the only way in.</b> <code>new Vec2 { ... }</code> is the fields form; a struct whose impl writes <code>new</code> or <code>New</code> takes <code>new Vec2(...)</code> instead. Bare <code>Vec2 { }</code> and <code>Vec2(1, 2)</code> are diagnostics.",
+        "<b><code>@derive(Eq, Debug, Clone, Serialize)</code></b> is pure codegen from the field list.",
+        "<b>Operator traits</b> map to metamethods: <code>impl Add for Vec2</code> puts <code>__add</code> on the instance metatable.",
+        "<b>Generic bounds</b> <code>&lt;T: Shape&gt;</code> become <code>(T &amp; Shape)</code> on each parameter."
+      ]
+    },
+    {
+      "id": "interfaces",
+      "eyebrow": "Types",
+      "title": "Interfaces, mapped types, and type functions",
+      "thesis": "interface is sugar over type with extends. Partial, Readonly, and Sink are language-level types built by type functions the real solver runs, and a file may override any of them with its own.",
+      "src": "interface Entity extends Named, Positioned as\n    read id: number\n    write sink: (string) -> ()\nend\nlocal function patch(e: Entity, changes: Partial<Entity>): Entity\n    return { ...e, ...changes }\nend",
+      "emit": "type Entity = Named & Positioned & {\n    read id: number,\n    write sink: (string) -> (),\n}\nlocal function patch(e: Entity, changes: __alloy.Partial<Entity>): Entity\n    return __alloy.spread(e, changes)\nend",
+      "points": [
+        "<b><code>T[]</code>, <code>read T[]</code>, <code>write T[]</code></b> name <code>Array&lt;T&gt;</code>, <code>ReadArray&lt;T&gt;</code>, and <code>WriteArray&lt;T&gt;</code>.",
+        "<b><code>{ [K in keyof T]: T[K]? }</code></b> and its read and write forms compile to generated type functions.",
+        "<b><code>type function Keys(t)</code></b> works as in Luau, and hovers as <code>type function Keys</code>.",
+        "<b>Hover keeps your annotation</b>, <code>changes: Partial&lt;Entity&gt;</code>, instead of the analyzer's expansion."
+      ]
+    },
+    {
+      "id": "sugar",
+      "eyebrow": "Sugar",
+      "title": "Shapes Luau rejects today, each with a one-line emit",
+      "thesis": "A ternary, an object initializer, array destructuring, a method reference, and delete with runtime dispatch. Every form keeps its line.",
+      "src": "local tier = level > 5 ? \"high\" : \"low\"\nlocal part = new Instance(\"Part\") {\n    Name = \"Marker\",\n    Anchored = true,\n}\nlocal [ head, ...rest ] = [ 1, 2, 3 ]\nbutton.Activated:Connect(self:on_click)\ndelete part",
+      "emit": "local __alloy = require(\"@alloy\") local tier = (if level > 5 then \"high\" else \"low\")\nlocal part = Instance.new(\"Part\")\n    part.Name = \"Marker\"\n    part.Anchored = true\n\nlocal _1 = __alloy.Array.from({ 1, 2, 3 }) local head, rest = _1[1], __alloy.Array.slice(_1, 2)\nbutton.Activated:Connect(__alloy.bind(self, self.on_click))\n__alloy.delete(part)",
+      "points": [
+        "<b><code>c ? a : b</code></b> nests, and a fused <code>x:upper()</code> inside a branch stays a method call.",
+        "<b>The initializer</b> assigns one field per line, so a field that throws traces to its own line, and the binding hovers with its class.",
+        "<b><code>delete</code></b> picks <code>Disconnect</code>, <code>disconnect</code>, <code>Destroy</code>, or <code>destroy</code> at runtime, so a user class and a signal both work.",
+        "<b><code>const</code></b> passes through to Luau's own, so a reassignment is a compile error; <code>x in t</code>, <code>...spread</code>, <code>bnot</code> and the other word operators, and interpolated strings with Alloy in the holes."
+      ]
+    },
+    {
+      "id": "extensions",
+      "eyebrow": "Types",
+      "title": "Extension methods on foreign types",
+      "thesis": "impl Vector3 or impl string adds methods to a type you do not own. The server injects each method into the analyzer's definitions, so the call types, completes, and hovers like a built-in.",
+      "src": "export impl Vector3\n    function flat(self): Vector3\n        return Vector3.new(self.X, 0, self.Z)\n    end\nend\nlocal f = pos:flat()",
+      "emit": "local __alloy = require(\"@alloy\") do local __impl = __alloy.impl_for(\"Vector3\")\n    function __impl.flat(self): Vector3\n        return Vector3.new(self.X, 0, self.Z)\n    end\nend\nlocal f = __alloy.call(pos, \"flat\")",
+      "points": [
+        "<b>Project wide.</b> The build and the server collect every extension first, so a call from another file dispatches too.",
+        "<b>Primitives</b> such as <code>string</code> go through a typed helper table, since a definitions file cannot add a method to string values.",
+        "<b>The check artifact</b> keeps <code>pos:flat()</code> as written and types <code>self</code>; the ship artifact routes through the dispatcher, which prefers the receiver's own method."
+      ]
+    },
+    {
+      "id": "macros",
+      "eyebrow": "Compile time",
+      "title": "Intrinsics and macros with a <code>$</code> sigil",
+      "thesis": "Intrinsics see source text and position. A macro is a compile-time template with expression parameters; its declaration leaves blank lines and each call expands in place.",
+      "src": "macro clamp01(x)\n    math.clamp(x, 0, 1)\nend\nlocal ratio = $clamp01(speed / 16)\n$assert_eq(ratio, 1)\nlocal field = $nameof(RunService.Heartbeat)",
+      "emit": "local __alloy = require(\"@alloy\")\n\n\nlocal ratio = math . clamp ( (speed / 16) , 0 , 1 )\n__alloy.assert_eq(\"macros.aly:5\", \"ratio\", ratio, \"1\", 1)\nlocal field = \"Heartbeat\"",
+      "points": [
+        "<b>The set is closed:</b> <code>$dbg</code>, <code>$todo</code>, <code>$unreachable</code>, <code>$assert</code>, <code>$assert_eq</code>, <code>$nameof</code>, <code>$stringify</code>, <code>$matches</code>, <code>$bnot</code>.",
+        "<b>A macro body</b> sees globals and its parameters, never a module local, since it expands in the calling file.",
+        "<b><code>$</code> opens completion</b> with every intrinsic and every macro in the workspace; a macro hovers with its header."
+      ]
+    },
+    {
+      "id": "attributes",
+      "eyebrow": "Metadata",
+      "title": "Attributes with checked placement",
+      "thesis": "Built-in attributes drive codegen; declared ones are metadata with typed arguments that Attributes reads at runtime. Completion after @ lists only what fits the position.",
+      "src": "attribute icon(asset: string) on struct, enum, variant\nattribute range(min: number, max: number) on field\n\n@icon(\"rbxassetid://100\")\n@derive(Serialize)\nstruct Item as\n    @range(0, 99)\n    count: number\nend",
+      "emit": "\n\nlocal Item = {} Item.__index = Item setmetatable(Item, { __call = function(_, f)  return setmetatable(f, Item) end }) function Item.new(f) return Item(f) end\n\n\n\n type Item = typeof(setmetatable({} :: { count: number }, Item)) __alloy.attrs(Item, { own = { icon = { \"rbxassetid://100\" } }, fields = { count = { range = { 0, 99 } } } })\n",
+      "points": [
+        "<b>Placement is checked:</b> a wire width on a plain function parameter, or any attribute on a local, is a diagnostic and leaves the emit.",
+        "<b><code>@test</code></b> marks an inline test; <code>@native</code>, <code>@checked</code>, <code>@deprecated</code>, <code>@inline</code>, <code>@noinline</code> pass through to Luau.",
+        "<b>Hover</b> shows <code>@icon(asset: string)</code> and what it goes on, the same shape as the built-in ones."
+      ]
+    },
+    {
+      "id": "remotes",
+      "eyebrow": "Networking",
+      "title": "Typed remotes with generated serializers",
+      "thesis": "One declaration names the parameters, their wire widths, and the side that fires. The compiler generates the serializer; fire, fire_all, on, and call are the whole surface.",
+      "src": "export remote Damage(target: Player, @u16 amount: number) from client\nexport remote Toast(message: string, seconds: number = 3) from server\nexport remote function GetProfile(id: number) -> Profile from client\n\nDamage.on(function(player, target, amount) end)\nlocal profile = await GetProfile.call(1)",
+      "emit": "local __alloy = require(\"@alloy\") local Damage = __alloy.remote({ name = \"Damage\", from = \"client\", params = { { \"target\", \"Player\" }, { \"amount\", \"number\", u16 = {} } } })\nlocal Toast = __alloy.remote({ name = \"Toast\", from = \"server\", params = { { \"message\", \"string\" }, { \"seconds\", \"number\", default = 3 } } })\nlocal GetProfile = __alloy.remote({ name = \"GetProfile\", from = \"client\", params = { { \"id\", \"number\" } }, returns = \"Profile\" })\n\nDamage.on(function(player, target, amount) end)\nlocal profile = __alloy.await(GetProfile.call(1))",
+      "points": [
+        "<b><code>from client</code>, <code>from server</code>, <code>from client or server</code></b>; completion offers the sides in that order, and only there.",
+        "<b><code>@unreliable</code>, <code>@ratelimit</code>, <code>@timeout</code>, <code>@immediate</code>, <code>@validate</code></b> shape one remote each.",
+        "<b><code>@u8</code> to <code>@f32</code></b> set a number's wire width, on a remote parameter or a struct field."
+      ]
+    },
+    {
+      "id": "markup",
+      "eyebrow": "UI",
+      "title": "ALX: markup that lowers to your UI library",
+      "cls": "markup",
+      "mode": "alx",
+      "thesis": "An .alx file is luaux markup with Alloy inside the holes. Tags, attributes, fragments, and comments lower to the configured factory; the language server answers hover and completion for tags and attributes itself.",
+      "src": "local function Row(props: { item: Item })\n    return (\n        <TextButton Size={UDim2.new(1, 0, 0, 24)}>\n            {props.item.name} x{props.item.count}\n        </TextButton>\n    )\nend",
+      "emit": "local function Row(props: { item: Item })\n    return (\n        React.createElement(\"TextButton\", { Size = UDim2.new(1, 0, 0, 24) },\n            props.item.name, \" x\", props.item.count\n        )\n    )\nend",
+      "points": [
+        "<b><code>{if ... then &lt;Tag/&gt; else nil}</code></b> and <code>{match ...}</code> work inside a hole, since Alloy syntax does.",
+        "<b><code>&lt;&gt; ... &lt;/&gt;</code></b> is a fragment; <code>&lt;!-- --&gt;</code> is a comment between tags.",
+        "<b>The grammar</b> colors an element from its head to its matching closing tag, and the semantic tokens of the lowered code stay out of the way."
+      ]
+    },
+    {
+      "id": "tests",
+      "eyebrow": "Testing",
+      "title": "Inline tests that vanish from the ship artifact",
+      "thesis": "A @test function runs under alloy test. The ship artifact blanks it line for line; the check artifact keeps it typed, so the editor still sees it.",
+      "src": "@test\nfunction clamp_keeps_range()\n    $assert(math.clamp(5, 0, 1) == 1)\nend",
+      "emit": "\n\n\n",
+      "points": [
+        "<b>Line for line:</b> the four source lines become four blank lines, so every later line keeps its number.",
+        "<b>The std has its own suite:</b> ten lest specs, sixty tests, over Result, Future, Array, HashMap, Set, Symbol, Signal, dispatch, Attributes, and the helpers."
+      ]
+    }
+  ],
+  "stdItems": [
+    [
+      "Array",
+      "Literals with the shared metatable: map, filter, find, reduce, slice, concat, sort_by, join."
+    ],
+    [
+      "HashMap",
+      "get, set, has, remove, keys, values, entries, get_or_insert, clear."
+    ],
+    [
+      "Set",
+      "add, has, remove, union, intersection, difference, to_array."
+    ],
+    [
+      "Result",
+      "Ok and Err with unwrap, expect, unwrap_or, map, map_err; try and ? for early returns."
+    ],
+    [
+      "Future",
+      "future, resolve, reject, delay, all, race, any, all_settled, cancel, andThen."
+    ],
+    [
+      "Signal",
+      "The RBXScriptSignal shape: Connect, Once, Wait, Fire, FireDeferred; wrap and collect for any signal-like source."
+    ],
+    [
+      "Symbol",
+      "A unique key no string can collide with."
+    ],
+    [
+      "Attributes",
+      "get, field, variant, of, fields: the metadata attributes declared."
+    ],
+    [
+      "Partial, Readonly, Sink",
+      "Mapped types built by type functions, overridable per file."
+    ]
+  ]
+}

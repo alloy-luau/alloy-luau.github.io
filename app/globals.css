@@ -1,0 +1,984 @@
+@import "tailwindcss";
+
+/* One theme: the dark palette of the Alloy deck. */
+:root {
+  --ground: #120f1e;
+  --ground-2: #171229;
+  --panel: #1e1833;
+  --ink: #ece7fa;
+  --ink-2: #bdb4d8;
+  --muted: #8c84a8;
+  --line: #2f2848;
+  --accent: #9b7ef0;
+  --accent-ink: #b9a3f7;
+  --accent-soft: #2b2148;
+  --alx: #5cc6ee;
+  --alx-soft: #12323f;
+  --warm: #ffd08a;
+  --code-bg: #0e0b19;
+  --code-ink: #e9e4f7;
+  --code-kw: #c9b5ff;
+  --code-str: #9fe2c0;
+  --code-cm: #8b83a8;
+  --code-num: #ffd08a;
+  --code-emit: #1a1529;
+  --code-emit-ink: #d7d0ea;
+  --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-ground-2: var(--ground-2);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-alx: var(--alx);
+  --color-alx-soft: var(--alx-soft);
+  --color-warm: var(--warm);
+  --color-code-bg: var(--code-bg);
+  --color-code-ink: var(--code-ink);
+  --color-code-emit: var(--code-emit);
+  --font-display: var(--font-syne), sans-serif;
+  --font-body: var(--font-plex), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Element defaults sit in the base layer, so a utility on an element
+   wins over them: `text-white` on a link, for one. */
+@layer base {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--accent-ink);
+  }
+
+  /* A grid or flex child must shrink below its content, or a wide code
+     block pushes the page sideways on a phone. */
+  .grid > *,
+  .flex > * {
+    min-width: 0;
+  }
+
+  pre {
+    max-width: 100%;
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Painted code. The classes match the deck's highlighter. */
+pre.code {
+  margin: 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  tab-size: 4;
+  background: var(--code-bg);
+  color: var(--code-ink);
+}
+
+pre.code.emit {
+  background: var(--code-emit);
+  color: var(--code-emit-ink);
+}
+
+pre.code .k {
+  color: var(--code-kw);
+  font-weight: 500;
+}
+
+pre.code .s {
+  color: var(--code-str);
+}
+
+pre.code .c {
+  color: var(--code-cm);
+  font-style: italic;
+}
+
+pre.code .n {
+  color: var(--code-num);
+}
+
+pre.code .g {
+  color: var(--alx);
+}
+
+pre.code .ln {
+  display: inline-block;
+  width: 2.2em;
+  margin-right: 0.6em;
+  text-align: right;
+  color: var(--muted);
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Prose in the book. */
+.prose {
+  max-width: 72ch;
+}
+
+.prose p {
+  margin: 0 0 14px;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.prose p b,
+.prose li b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.prose code,
+.pointlist code,
+h1 code,
+h2 code,
+h3 code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--ground-2);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--ink);
+}
+
+.prose .fence {
+  margin: 14px 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.prose .fence pre.code {
+  font-size: 13px;
+}
+
+.prose .table {
+  margin: 0 0 14px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+  color: var(--ink-2);
+  background: var(--ground-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.pointlist {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  color: var(--ink-2);
+}
+
+.pointlist li {
+  padding-left: 18px;
+  position: relative;
+}
+
+.pointlist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+.pointlist li b {
+  color: var(--ink);
+}
+
+/* The book's sidebar. */
+.toc a {
+  display: block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: var(--ink-2);
+  text-decoration: none;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.toc a:hover {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.toc a.on {
+  background: var(--accent);
+  color: #fff;
+}
+
+.toc a small {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.7;
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.toc .chapter {
+  margin-top: 14px;
+  padding: 0 10px 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.toc .sub a {
+  padding-left: 22px;
+  font-size: 13px;
+}
+
+/* Entry cards in the reference. */
+.entry {
+  border-top: 1px solid var(--line);
+  padding: 22px 0 8px;
+  scroll-margin-top: 80px;
+}
+
+.entry h3 {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 15px;
+  margin: 0 0 10px;
+  color: var(--accent-ink);
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink-2);
+}
+
+kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 5px;
+  background: var(--panel);
+}
+
+/* Depth below the hero: tilted cards, a light that follows the pointer,
+   gradient borders, and soft orbs behind the sections. */
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  /* The same corners as the card inside, so the light that follows the
+     pointer keeps to the rounded shape. */
+  border-radius: 14px;
+}
+
+.tilt-glare {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(
+    360px circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.11),
+    rgba(155, 126, 240, 0.06) 40%,
+    transparent 70%
+  );
+}
+
+.tilt:hover .tilt-glare {
+  opacity: 1;
+}
+
+.card {
+  position: relative;
+  isolation: isolate;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(30, 24, 51, 0.92), rgba(23, 18, 41, 0.92));
+  border: 1px solid var(--line);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    var(--shadow);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* The ring sits inside the box, on the card's own border, above the
+   background: a ring outside the box would be clipped by the card's
+   overflow, and one below the background would never show. */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--accent), var(--alx) 60%, var(--warm));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+
+.card:hover::before,
+.tilt:hover .card::before {
+  opacity: 0.9;
+}
+
+.card:hover {
+  box-shadow:
+    0 0 0 1px rgba(155, 126, 240, 0.25),
+    0 30px 60px -30px rgba(155, 126, 240, 0.45);
+}
+
+.orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.dots {
+  background-image: radial-gradient(rgba(189, 180, 216, 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
+}
+
+.nav-link {
+  transition: color 0.2s;
+}
+
+.nav-pill {
+  background: linear-gradient(135deg, rgba(155, 126, 240, 0.35), rgba(92, 198, 238, 0.25));
+  box-shadow:
+    0 0 0 1px rgba(155, 126, 240, 0.35),
+    0 6px 18px -8px rgba(155, 126, 240, 0.8);
+}
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent), #7f5fe6);
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s;
+}
+
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+/* The book's search box. */
+.search {
+  position: relative;
+}
+
+.search svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 7px 10px 7px 30px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink);
+}
+
+.search input::placeholder {
+  color: var(--muted);
+}
+
+.search input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(155, 126, 240, 0.25);
+}
+
+/* Tokens beyond the four: operators warm, punctuation dim, calls blue,
+   types lilac. The palette is a wheel around the accent. */
+pre.code .o {
+  color: #f0a58f;
+}
+
+pre.code .p {
+  color: #8a83a6;
+}
+
+pre.code .f {
+  color: #9fcaff;
+}
+
+pre.code .t {
+  color: #d9c8ff;
+}
+
+pre.code.emit .o {
+  color: #e8a08c;
+}
+
+pre.code.emit .f {
+  color: #8fbcf4;
+}
+
+/* A coin flip drawn in 2D, since 3D transforms on an SVG shape are
+   not held by every browser: the diamond narrows, flips, and widens. */
+@keyframes diamond-spin {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(-1);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 0.07em;
+  height: 0.9em;
+  margin-left: 0.06em;
+  vertical-align: -0.08em;
+  background: var(--accent);
+  animation: caret-blink 0.9s steps(2) infinite;
+}
+
+@keyframes caret-blink {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Lava behind a section. */
+.lava {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lava-blob-seat {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.lava-blob {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  /* A soft disc as a gradient, not a blurred solid: a blur on a moving
+     element costs a repaint or a GPU pass every frame; a gradient is
+     painted once and only moves. The color comes in through a mask so
+     the falloff stays the same for every blob. */
+  background: var(--blob, var(--accent));
+  -webkit-mask: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.55) 35%, transparent 68%);
+  mask: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.55) 35%, transparent 68%);
+  will-change: transform;
+  animation-name: none;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.lava-drift-1 {
+  animation-name: lava-1;
+}
+
+.lava-drift-2 {
+  animation-name: lava-2;
+}
+
+.lava-drift-3 {
+  animation-name: lava-3;
+}
+
+/* Transform only: a shape or blur change would repaint the blurred
+   blob every frame; a transform moves it on the compositor. */
+@keyframes lava-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(40px, -60px) scale(1.12, 0.92);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.94, 1.08);
+  }
+}
+
+@keyframes lava-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-60px, 50px) scale(1.15, 0.9);
+  }
+}
+
+@keyframes lava-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(0.95);
+  }
+  40% {
+    transform: translate(30px, 70px) scale(1.1);
+  }
+  70% {
+    transform: translate(-50px, -20px) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lava-blob,
+  .caret {
+    animation: none;
+  }
+}
+
+.icon-seat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 10px;
+  color: var(--accent-ink);
+  background: linear-gradient(135deg, rgba(155, 126, 240, 0.22), rgba(92, 198, 238, 0.12));
+  border: 1px solid rgba(155, 126, 240, 0.35);
+  box-shadow: 0 6px 16px -10px rgba(155, 126, 240, 0.9);
+}
+
+/* Liquid Glass, the regular variant on a dark interface, after Apple's
+   own description and renders: a slab that blurs and lowers the
+   luminosity of what is behind it, lenses light at its rim and stays
+   flat in the middle, carries one thin light edge with a brighter top
+   where the environment light lands, casts a soft shadow, and flexes
+   and brightens under the pointer. No color fringe: the material bends
+   light, it does not split it. In the components layer, so a utility
+   such as `absolute` still wins. */
+@layer components {
+  .glass {
+    position: relative;
+    isolation: isolate;
+    color: var(--ink);
+    /* Luminosity: a touch lighter than the dark ground, as Apple's dark
+       glass sits lighter than the night sky behind it. */
+    background: rgba(236, 231, 250, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: url(#liquid-lens) saturate(130%);
+    backdrop-filter: url(#liquid-lens) saturate(130%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 0 12px -6px rgba(255, 255, 255, 0.18),
+      0 10px 26px -12px rgba(0, 0, 0, 0.7),
+      0 1px 2px rgba(0, 0, 0, 0.3);
+    transition:
+      transform 0.45s cubic-bezier(0.34, 1.4, 0.64, 1),
+      box-shadow 0.35s,
+      background 0.35s,
+      border-color 0.35s;
+  }
+
+  /* The environment light: a soft highlight that sits along the top
+     edge and thins toward the sides, following the silhouette. */
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.05) 35%, rgba(255, 255, 255, 0.02) 65%, rgba(255, 255, 255, 0.12));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Under the pointer the glass "flexes and energizes with light": it
+     brightens from within and grows a little. */
+  .glass-live::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(120% 100% at 50% 0%, rgba(255, 255, 255, 0.14), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s;
+    z-index: -1;
+  }
+
+  .glass:hover,
+  a:hover > .glass {
+    background: rgba(236, 231, 250, 0.12);
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 0 18px -6px rgba(255, 255, 255, 0.28),
+      0 14px 30px -12px rgba(0, 0, 0, 0.75),
+      0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-live:hover::after,
+  a:hover > .glass-live::after {
+    opacity: 1;
+  }
+
+  .chip.glass:hover,
+  a.glass:hover {
+    transform: scale(1.05, 1.03);
+  }
+
+  .chip.glass {
+    color: var(--ink);
+  }
+
+  /* A tinted element: Apple maps a tint to a range of tones by the
+     brightness underneath; on this dark ground the accent sits at
+     mid strength inside the glass. */
+  /* The pill moves under a layout spring, so it carries no CSS
+     transition on transform: the two would fight. */
+  .nav-pill.glass {
+    background: rgba(155, 126, 240, 0.62);
+    border-color: rgba(214, 200, 255, 0.24);
+    -webkit-backdrop-filter: url(#liquid-lens-soft);
+    backdrop-filter: url(#liquid-lens-soft);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      inset 0 0 10px -6px rgba(255, 255, 255, 0.16),
+      0 8px 20px -12px rgba(0, 0, 0, 0.7);
+    transition:
+      background 0.3s,
+      box-shadow 0.3s;
+  }
+
+  a:hover > .nav-pill.glass {
+    background: rgba(155, 126, 240, 0.72);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 0 14px -6px rgba(255, 255, 255, 0.22),
+      0 10px 22px -12px rgba(0, 0, 0, 0.75);
+  }
+
+  .search.glass {
+    border-radius: 999px;
+    -webkit-backdrop-filter: url(#liquid-lens-soft) saturate(140%) brightness(0.92);
+    backdrop-filter: url(#liquid-lens-soft) saturate(140%) brightness(0.92);
+  }
+
+  .search.glass input {
+    background: transparent;
+    border: 0;
+    padding-left: 32px;
+  }
+
+  .search.glass svg {
+    left: 12px;
+  }
+
+  .search.glass:focus-within {
+    border-color: rgba(155, 126, 240, 0.7);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 0 0 3px rgba(155, 126, 240, 0.22);
+  }
+
+  .toc a.on {
+    background: rgba(155, 126, 240, 0.55);
+    color: #fff;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 6px 14px -10px rgba(0, 0, 0, 0.8);
+  }
+
+  .icon-seat {
+    -webkit-backdrop-filter: url(#liquid-lens-soft) saturate(140%) brightness(0.92);
+    backdrop-filter: url(#liquid-lens-soft) saturate(140%) brightness(0.92);
+    background: rgba(236, 231, 250, 0.075);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 0 12px -6px rgba(255, 255, 255, 0.18),
+      0 8px 18px -10px rgba(0, 0, 0, 0.7);
+  }
+
+  /* A browser that cannot bend the backdrop still blurs and dims it.
+     Firefox parses the reference but renders nothing for it, so it
+     takes the blur too. */
+  @supports not (backdrop-filter: url(#liquid-lens)) {
+    .glass,
+    .search.glass,
+    .icon-seat,
+    .nav-pill.glass {
+      -webkit-backdrop-filter: blur(10px) saturate(130%);
+      backdrop-filter: blur(10px) saturate(130%);
+    }
+  }
+
+  @supports (-moz-appearance: none) {
+    .glass,
+    .search.glass,
+    .icon-seat,
+    .nav-pill.glass {
+      backdrop-filter: blur(10px) saturate(130%);
+    }
+  }
+}
+
+/* The brand: the icon's A as the A of the word, in ink through a mask,
+   and the icon's own diamond under it. Only the diamond flips. */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.brandmark {
+  position: relative;
+  display: inline-block;
+  width: 26px;
+  aspect-ratio: 313 / 335;
+  margin-right: 1px;
+  margin-top: -3px;
+}
+
+.brand-a {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #fbf9ff 0%, #e4dcf7 55%, #beb1e0 100%);
+  -webkit-mask: url("/mark-a.png") center / contain no-repeat;
+  mask: url("/mark-a.png") center / contain no-repeat;
+}
+
+.brand-diamond {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: 49.8% 79%;
+  filter: drop-shadow(0 2px 6px rgba(155, 126, 240, 0.5));
+}
+
+.brand:hover .brand-diamond {
+  animation: diamond-spin 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.brand-rest {
+  margin-left: -1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand:hover .brand-diamond,
+  .glass-live::after {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* The still glow under the hero's canvas: violet on the left, a deeper
+   purple on the right, over the ground. */
+.hero-ground {
+  background:
+    radial-gradient(55% 60% at 20% 30%, rgba(155, 126, 240, 0.28), transparent 70%),
+    radial-gradient(50% 55% at 85% 75%, rgba(122, 88, 224, 0.26), transparent 70%),
+    #130f22;
+}
+
+/* "plain Luau": a gradient from lilac to a deep violet around the accent. */
+.gradient-text {
+  background: linear-gradient(120deg, #d3c4ff 0%, var(--accent) 45%, #6a46d8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scrollbars: thin, rounded, in the accent. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 126, 240, 0.55) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 3px solid var(--ground);
+  background: linear-gradient(180deg, #c9b5ff, var(--accent) 60%, #6a46d8);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.35);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ded3ff, #b39cf6 60%, #7a58e0);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+pre.code::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre.code::-webkit-scrollbar-thumb {
+  border-color: var(--code-bg);
+}
+
+
+.brandmark-a {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brandmark-once .brand-diamond {
+  animation: diamond-spin 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s 1 both;
+}
+
+.brandmark-hover:hover .brand-diamond {
+  animation: diamond-spin 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brandmark-once .brand-diamond,
+  .brandmark-hover:hover .brand-diamond {
+    animation: none;
+  }
+}
+
+/* Outside the layers, so these win over the plain `.chip` and
+   `.icon-seat` rules above: a glass surface is not a solid panel. */
+.chip.glass,
+.icon-seat {
+  background: rgba(236, 231, 250, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.chip.glass:hover {
+  background: rgba(236, 231, 250, 0.11);
+}
+
+/* Outside the layers: the book's search input is a bare field inside
+   the pill-shaped glass, not a panel of its own. */
+.search.glass input {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+.search.glass input:focus-visible {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none;
+}
