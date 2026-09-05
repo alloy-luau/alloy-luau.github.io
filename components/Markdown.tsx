@@ -101,9 +101,14 @@ export default function Markdown({ text, emitSecond = false }: { text: string; e
           fences += 1;
           const isEmit = emitSecond && fences === 2;
 
+          const mode = modeOf(b.lang || "text");
+          // The one TOML file Alloy has is the project file; its fences
+          // say so, with the file's icon.
+          const label = mode === "toml" ? "alloy.toml" : undefined;
+
           return (
             <div className="fence" key={i}>
-              <CodePane code={b.code} mode={modeOf(b.lang || "text")} emit={isEmit} />
+              <CodePane code={b.code} mode={mode} emit={isEmit} label={label} note={label ? "alloy.toml" : undefined} />
             </div>
           );
         }

@@ -4,7 +4,7 @@
       "id": "safe",
       "eyebrow": "Operators",
       "title": "Safe access that emits fixed Luau",
-      "thesis": "Eight operators cover the nil checks Roblox code writes by hand. Each one has a fixed emit; the compiler never looks at a type.",
+      "thesis": "Eight operators cover the nil checks that Roblox code writes by hand. Each one has a fixed emit. The compiler never looks at a type.",
       "src": "local hp = player?.Character?.Humanoid?.Health ?? 100\nlocal spawn = workspace->Map->Spawns->Spawn1\nlocal gui = player.PlayerGui=>Hud=>Health\ncache[key] ??= compute(key)\nlocal root = model.PrimaryPart!",
       "emit": "local _1 = (if player == nil then nil else player.Character) local _2 = (if _1 == nil then nil else _1.Humanoid) local _3 = (if _2 == nil then nil else _2.Health) local hp = (if _3 == nil then 100 else _3)\n_1 = (if workspace == nil then nil else workspace:FindFirstChild(\"Map\")) _2 = (if _1 == nil then nil else _1:FindFirstChild(\"Spawns\")) local spawn = (if _2 == nil then nil else _2:FindFirstChild(\"Spawn1\"))\nlocal gui = player.PlayerGui:WaitForChild(\"Hud\"):WaitForChild(\"Health\")\nif cache[key] == nil then cache[key] = compute(key) end\nlocal root = (if model.PrimaryPart == nil then error(\"model.PrimaryPart is nil\") else model.PrimaryPart)",
       "points": [
@@ -18,7 +18,7 @@
       "id": "modules",
       "eyebrow": "Modules",
       "title": "Imports are sugar over <code>require</code>",
-      "thesis": "Paths pass through unchanged, so a Luau alias, a relative path, or a package works the way it already does. Type-only imports cost nothing at runtime.",
+      "thesis": "Paths pass through unchanged. A Luau alias, a relative path, or a package works the way it already does. Type-only imports cost nothing at runtime.",
       "src": "import { add, type Item } from \"./inventory\"\nimport * as React from \"@packages/react\"\nexport const MAX = 64",
       "emit": "local _1 = require(\"./inventory\") local add = _1.add type Item = _1.Item\nlocal React = require(\"@packages/react\")\nconst MAX = 64 return { MAX = MAX }",
       "points": [
@@ -32,7 +32,7 @@
       "id": "async",
       "eyebrow": "Concurrency",
       "title": "<code>async</code> functions return a Future",
-      "thesis": "The body runs on task.spawn under xpcall and the Future memoizes the result. await yields until it settles; try await turns a failure into a Result.",
+      "thesis": "The body runs on task.spawn under xpcall, and the Future memoizes the result. await yields until it settles. try await turns a failure into a Result.",
       "src": "async function load(id: number): Profile\n    local raw = store:GetAsync(`p/{id}`)\n    return decode(raw)\nend\nlocal profile = await load(1)\nlocal safe = try await load(2)",
       "emit": "local __alloy = require(\"@alloy\") function load(id: number): __alloy.Future<Profile> return __alloy.future(function()\n    local raw = store:GetAsync(`p/{id}`)\n    return decode(raw)\nend) end\nlocal profile = __alloy.await(load(1))\nlocal _1 = __alloy.try_await(load(2)) if _1.tag == \"Err\" then return _1 end local safe = _1._1",
       "points": [
@@ -59,7 +59,7 @@
       "id": "bindings",
       "eyebrow": "Control flow",
       "title": "Bindings in conditions, narrowed where they live",
-      "thesis": "if local, elseif local, while local, and the expression form bind a value and test it in one step. The branch declares the name from the tested temp, so it is T rather than T? inside, closures included.",
+      "thesis": "if local, elseif local, while local, and the expression form bind a value and test it in one step. The branch declares the name from the tested temp. Inside the branch it is T, not T?, and closures see the same.",
       "src": "if local player = first_player() then\n    print(player.Name)\nend\nwhile local job = table.remove(queue) do\n    run(job)\nend",
       "emit": "do local _c1 = first_player() if _c1 then local player = _c1\n    print(player.Name)\nend end\nwhile true do local _c1 = table.remove(queue) if not (_c1) then break end local job = _c1\n    run(job)\nend",
       "points": [
@@ -73,7 +73,7 @@
       "id": "structs",
       "eyebrow": "Types",
       "title": "Structs, traits, and impls emit the metatable pattern",
-      "thesis": "An Alloy struct is a plain table vanilla Luau can use. Fields carry defaults and read or write marks; impl adds methods; a trait is a type of signatures plus default bodies.",
+      "thesis": "An Alloy struct is a plain table that vanilla Luau can use. Fields carry defaults and read or write marks. impl adds methods. A trait is a type of signatures plus default bodies.",
       "src": "struct Vec2 as\n    x: number\n    y: number = 0\nend\nimpl Vec2\n    function len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = new Vec2 { x = 3, y = 4 }",
       "emit": "local Vec2 = {} Vec2.__index = Vec2 setmetatable(Vec2, { __call = function(_, f) if f.y == nil then f.y = 0 end return setmetatable(f, Vec2) end }) function Vec2.new(f) return Vec2(f) end\n\n\n type Vec2 = typeof(setmetatable({} :: { x: number, y: number? }, Vec2))\ndo\n    function Vec2.len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = Vec2({ x = 3, y = 4 })",
       "points": [
@@ -87,7 +87,7 @@
       "id": "interfaces",
       "eyebrow": "Types",
       "title": "Interfaces, mapped types, and type functions",
-      "thesis": "interface is sugar over type with extends. Partial, Readonly, and Sink are language-level types built by type functions the real solver runs, and a file may override any of them with its own.",
+      "thesis": "interface is sugar over type with extends. Partial, Readonly, and Sink are language-level types. Type functions that the real solver runs build them, and a file may replace any of them with its own.",
       "src": "interface Entity extends Named, Positioned as\n    read id: number\n    write sink: (string) -> ()\nend\nlocal function patch(e: Entity, changes: Partial<Entity>): Entity\n    return { ...e, ...changes }\nend",
       "emit": "type Entity = Named & Positioned & {\n    read id: number,\n    write sink: (string) -> (),\n}\nlocal function patch(e: Entity, changes: __alloy.Partial<Entity>): Entity\n    return __alloy.spread(e, changes)\nend",
       "points": [
@@ -115,7 +115,7 @@
       "id": "extensions",
       "eyebrow": "Types",
       "title": "Extension methods on foreign types",
-      "thesis": "impl Vector3 or impl string adds methods to a type you do not own. The server injects each method into the analyzer's definitions, so the call types, completes, and hovers like a built-in.",
+      "thesis": "impl Vector3 or impl string adds methods to a type you do not own. The server injects each method into the analyzer's definitions. The call types, completes, and hovers like a built-in.",
       "src": "export impl Vector3\n    function flat(self): Vector3\n        return Vector3.new(self.X, 0, self.Z)\n    end\nend\nlocal f = pos:flat()",
       "emit": "local __alloy = require(\"@alloy\") do local __impl = __alloy.impl_for(\"Vector3\")\n    function __impl.flat(self): Vector3\n        return Vector3.new(self.X, 0, self.Z)\n    end\nend\nlocal f = __alloy.call(pos, \"flat\")",
       "points": [
@@ -128,7 +128,7 @@
       "id": "macros",
       "eyebrow": "Compile time",
       "title": "Intrinsics and macros with a <code>$</code> sigil",
-      "thesis": "Intrinsics see source text and position. A macro is a compile-time template with expression parameters; its declaration leaves blank lines and each call expands in place.",
+      "thesis": "Intrinsics see source text and position. A macro is a compile-time template with expression parameters. Its declaration leaves blank lines, and each call expands in place.",
       "src": "macro clamp01(x)\n    math.clamp(x, 0, 1)\nend\nlocal ratio = $clamp01(speed / 16)\n$assert_eq(ratio, 1)\nlocal field = $nameof(RunService.Heartbeat)",
       "emit": "local __alloy = require(\"@alloy\")\n\n\nlocal ratio = math . clamp ( (speed / 16) , 0 , 1 )\n__alloy.assert_eq(\"macros.aly:5\", \"ratio\", ratio, \"1\", 1)\nlocal field = \"Heartbeat\"",
       "points": [
@@ -141,7 +141,7 @@
       "id": "attributes",
       "eyebrow": "Metadata",
       "title": "Attributes with checked placement",
-      "thesis": "Built-in attributes drive codegen; declared ones are metadata with typed arguments that Attributes reads at runtime. Completion after @ lists only what fits the position.",
+      "thesis": "Built-in attributes drive codegen. Declared ones are metadata with typed arguments, and Attributes reads them at runtime. Completion after @ lists only what fits the position.",
       "src": "attribute icon(asset: string) on struct, enum, variant\nattribute range(min: number, max: number) on field\n\n@icon(\"rbxassetid://100\")\n@derive(Serialize)\nstruct Item as\n    @range(0, 99)\n    count: number\nend",
       "emit": "\n\nlocal Item = {} Item.__index = Item setmetatable(Item, { __call = function(_, f)  return setmetatable(f, Item) end }) function Item.new(f) return Item(f) end\n\n\n\n type Item = typeof(setmetatable({} :: { count: number }, Item)) __alloy.attrs(Item, { own = { icon = { \"rbxassetid://100\" } }, fields = { count = { range = { 0, 99 } } } })\n",
       "points": [
@@ -154,7 +154,7 @@
       "id": "remotes",
       "eyebrow": "Networking",
       "title": "Typed remotes with generated serializers",
-      "thesis": "One declaration names the parameters, their wire widths, and the side that fires. The compiler generates the serializer; fire, fire_all, on, and call are the whole surface.",
+      "thesis": "One declaration names the parameters, their wire widths, and the side that fires. The compiler generates the serializer. fire, fire_all, on, and call are the whole surface.",
       "src": "export remote Damage(target: Player, @u16 amount: number) from client\nexport remote Toast(message: string, seconds: number = 3) from server\nexport remote function GetProfile(id: number) -> Profile from client\n\nDamage.on(function(player, target, amount) end)\nlocal profile = await GetProfile.call(1)",
       "emit": "local __alloy = require(\"@alloy\") local Damage = __alloy.remote({ name = \"Damage\", from = \"client\", params = { { \"target\", \"Player\" }, { \"amount\", \"number\", u16 = {} } } })\nlocal Toast = __alloy.remote({ name = \"Toast\", from = \"server\", params = { { \"message\", \"string\" }, { \"seconds\", \"number\", default = 3 } } })\nlocal GetProfile = __alloy.remote({ name = \"GetProfile\", from = \"client\", params = { { \"id\", \"number\" } }, returns = \"Profile\" })\n\nDamage.on(function(player, target, amount) end)\nlocal profile = __alloy.await(GetProfile.call(1))",
       "points": [
@@ -169,7 +169,7 @@
       "title": "ALX: markup that lowers to your UI library",
       "cls": "markup",
       "mode": "alx",
-      "thesis": "An .alx file is luaux markup with Alloy inside the holes. Tags, attributes, fragments, and comments lower to the configured factory; the language server answers hover and completion for tags and attributes itself.",
+      "thesis": "An .alx file is luaux markup with Alloy inside the holes. Tags, attributes, fragments, and comments lower to the configured factory. The language server answers hover and completion for tags and attributes itself.",
       "src": "local function Row(props: { item: Item })\n    return (\n        <TextButton Size={UDim2.new(1, 0, 0, 24)}>\n            {props.item.name} x{props.item.count}\n        </TextButton>\n    )\nend",
       "emit": "local function Row(props: { item: Item })\n    return (\n        React.createElement(\"TextButton\", { Size = UDim2.new(1, 0, 0, 24) },\n            props.item.name, \" x\", props.item.count\n        )\n    )\nend",
       "points": [
@@ -182,7 +182,7 @@
       "id": "tests",
       "eyebrow": "Testing",
       "title": "Inline tests that vanish from the ship artifact",
-      "thesis": "A @test function runs under alloy test. The ship artifact blanks it line for line; the check artifact keeps it typed, so the editor still sees it.",
+      "thesis": "A @test function runs under alloy test. The ship artifact blanks it line for line. The check artifact keeps it typed, so the editor still sees it.",
       "src": "@test\nfunction clamp_keeps_range()\n    $assert(math.clamp(5, 0, 1) == 1)\nend",
       "emit": "\n\n\n",
       "points": [

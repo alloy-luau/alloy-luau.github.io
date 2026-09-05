@@ -80,10 +80,10 @@ export default function Home() {
               The checker runs strict. The compiler holds the rest.
             </h2>
             <p className="mb-8 max-w-[42em] text-[17px] text-ink-2">
-              Luau strict mode is the floor: <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">alloy init</code>{" "}
+              Luau strict mode is the floor. <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">alloy init</code>{" "}
               writes it into <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">.luaurc</code> and{" "}
-              <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">.config.luau</code>. Five contracts the
-              checker cannot see are compile errors on top.
+              <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">.config.luau</code>. The compiler adds five
+              contracts the checker cannot see. Each one is a compile error.
             </p>
           </Reveal>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -115,9 +115,9 @@ export default function Home() {
                     <h3 className="display m-0 text-[18px] font-bold">And the lints</h3>
                   </div>
                   <p className="m-0 text-[14.5px] text-ink-2">
-                    Nil discipline, unreachable and empty defaults, legacy scheduler globals, unused imports. With{" "}
-                    <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">[lint] strict = true</code>, no
-                    implicit <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">any</code>.
+                    The lints cover nil discipline, unreachable and empty defaults, the legacy scheduler globals, and unused
+                    imports. With <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">[lint] strict = true</code>,
+                    they also reject an implicit <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">any</code>.
                   </p>
                 </div>
                 <Link href="/docs/#lints" className="mt-4 text-[14px]">
@@ -189,8 +189,8 @@ export default function Home() {
             <h2 className="display mb-3 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">One binary, one server, one extension.</h2>
             <p className="mb-5 max-w-[40em] text-[16px] text-ink-2">
               The <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">alloy</code> command builds, checks, lints,
-              formats, and documents. The language server proxies luau-lsp over a mirror of compiled files, so hover,
-              completion, and diagnostics land on Alloy lines. The VS Code extension wires both up.
+              formats, and documents. The language server runs luau-lsp over a mirror of the compiled files. Hover,
+              completion, and diagnostics land on the Alloy lines. The VS Code extension connects both.
             </p>
             <div className="mt-auto">
               <CodePane
@@ -204,10 +204,10 @@ export default function Home() {
             <div className="eyebrow">Install</div>
             <h2 className="display mb-3 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">From the repository.</h2>
             <p className="mb-5 max-w-[40em] text-[16px] text-ink-2">
-              The build script compiles every crate and the extension, then installs the two binaries into{" "}
+              The build script compiles every crate and the extension. It then installs the two binaries into{" "}
               <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">~/.alloy/bin</code>. Add that directory to
-              your PATH, install the <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">.vsix</code>, and open a
-              folder with an <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">.aly</code> file.
+              your PATH. Install the <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">.vsix</code>, and open a
+              folder that holds an <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">.aly</code> file.
             </p>
             <div className="mt-auto">
               <CodePane
