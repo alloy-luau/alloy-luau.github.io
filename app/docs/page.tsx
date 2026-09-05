@@ -302,7 +302,7 @@ export default function Docs() {
             <div className="prose">
               <p>
                 {inline(
-                  "`alloy lint` runs them; `[lint]` in alloy.toml sets `deny`, `warn`, and `allow` lists, and `strict = true` turns the strict-only ones on. The language server shows the same lints as warnings.",
+                  "`alloy lint` runs them; `[lint]` in alloy.toml sets `deny`, `warn`, and `allow` lists, and `strict = true` turns the strict-only ones on. The ones marked Flux know the Alloy form of a Luau habit and carry the rewrite; `alloy lint --fix` applies the rewrites that keep the program the same. The language server shows the same lints as warnings.",
                 )}
               </p>
             </div>
