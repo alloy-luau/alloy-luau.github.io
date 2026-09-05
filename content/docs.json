@@ -348,7 +348,7 @@
     {
       "group": "Attributes",
       "key": "@test",
-      "markdown": "```alloy\n@test\nfunction name() ... end\n```\nA test that `alloy test` runs. The ship artifact blanks it; the check artifact keeps it typed."
+      "markdown": "```alloy\n@test\nfunction name() ... end\n```\nA test beside the code it tests. The ship artifact blanks it, line for line; the check artifact keeps it typed; `alloy test` writes it into a lest spec with everything it reaches. An `async` test is awaited."
     },
     {
       "group": "Attributes",
@@ -503,7 +503,17 @@
     {
       "group": "Articles",
       "key": "topic:lint",
-      "markdown": "**alloy lint**\n\nRuns the lints over the project, or over one file. A lint is advice: the code runs, and the lint names a habit that costs bugs. Flux is the set that knows the Alloy form of a Luau habit: `a and a.b` for `a?.b`, `if f then f() end` for `f?()`, `typeof(x) == \"T\"` for `x is T`, `\"a\" .. b` for `` `a{b}` ``. Each of those carries its rewrite, and `--fix` applies the ones that keep the program the same.\n\n```\nalloy lint                 the project of the nearest alloy.toml\nalloy lint src/game.aly    one file\nalloy lint --fix           apply the rewrites that keep the program the same\nalloy lint --strict        the strict-only lints too\nalloy lint --deny-warnings fail on any hit\nalloy lint --list          every lint with its default level\n```\n\nThe `[lint]` table of alloy.toml sets the levels:\n\n```toml\n[lint]\nstrict = true\ndeny = [\"optional_access\"]\nallow = [\"concat_interpolation\"]\n```\n\n`alloy doc lints` lists them; `alloy doc <name>` explains one. The language server shows the same lints as warnings, with the rewrite in the message."
+      "markdown": "**alloy lint**\n\nRuns the lints over the project, or over one file, and nothing else; `alloy flux` runs them with the compile and the type check. A lint is advice: the code runs, and the lint names a habit that costs bugs. The lints are Flux's, in seven groups:\n\n  correctness   code that is wrong, or cannot run\n  suspicious    code that is probably not what the author meant\n  style         a Luau habit with an Alloy form: `a and a.b` for `a?.b`, `typeof(x) == \"T\"` for `x is T`\n  complexity    a simple thing done in a hard way; the limits sit in `[flux]`\n  perf          code that runs slower than the plain form\n  roblox        a Roblox API that is deprecated or misused\n  pedantic      strict rules, off until `[lint] strict = true`\n\nA lint whose rewrite keeps the program the same carries it, and `--fix` applies those.\n\n```\nalloy lint                 the project of the nearest alloy.toml\nalloy lint src/game.aly    one file\nalloy lint --fix           apply the rewrites that keep the program the same\nalloy lint -W pedantic     a level for this run: -W warns, -A allows, -D denies\nalloy lint --deny-warnings fail on any hit\nalloy lint --list          every lint with its group and default level\n```\n\nThe `[lint]` table of alloy.toml sets the levels. A list takes a lint name or a group name, and a name beats its group:\n\n```toml\n[lint]\nstrict = true\ndeny = [\"correctness\"]\nwarn = [\"pedantic\"]\nallow = [\"concat_interpolation\", \"luau\"]\n```\n\n`luau` is the group of the type checker's own lints, `LocalUnused` and the rest, which `alloy flux` reports. `alloy doc lints` lists every lint; `alloy doc <name>` explains one, and `alloy doc <group>` lists a group. The language server shows the same lints as warnings, with the rewrite in the message."
+    },
+    {
+      "group": "Articles",
+      "key": "topic:flux",
+      "markdown": "**alloy flux**\n\nFlux is the whole analysis in one run, what clippy is to cargo. It compiles every source, runs luau-lsp over the check artifact and maps the type errors onto the Alloy lines, and runs every lint at its `[lint]` level: Flux's own seven groups, and the checker's lints under the `luau` group. It also sees what one file cannot: `circular_import` reports two files that import each other.\n\n```\nalloy flux                 the project of the nearest alloy.toml\nalloy flux src/game.aly    one file: the compile and the lints\nalloy flux --fix           apply the rewrites that keep the program the same\nalloy flux -D correctness  deny a group for this run; -W warns, -A allows\nalloy flux --explain manual_floor_div\nalloy flux --no-typecheck  skip luau-lsp\nalloy flux --list          every lint with its group and default level\n```\n\nThe check artifact keeps the source's lines, so a type error on line 12 of the output is on line 12 of the source; the column maps through the span map. The artifacts go into a mirror of the project under the temp directory, with the root's Luau configuration and a link to every other folder, so requires resolve as they do in the editor.\n\nThe `[flux]` table:\n\n```toml\n[flux]\ntypecheck = true                  # run luau-lsp over the check artifact\ndefinitions = []                  # extra .d.luau or .d.aly files; the project's .d.aly join on their own\nroblox_types = true               # load the Roblox globals\nsecurity_level = \"PluginSecurity\" # LocalUserSecurity, RobloxScriptSecurity, None\n# luau_lsp = \"/path/to/luau-lsp\"  # unset: the PATH, then ~/.alloy/bin and ~/.ember/bin\ntoo_many_arguments = 7\ntoo_many_lines = 100\nmax_nesting = 5\ncognitive_complexity = 25\n```\n\nThe Roblox globals come from the luau-lsp extension's storage when the editor has them, and download once into `~/.alloy/types` otherwise. A `--@alloy-ignore` line silences the checker's report on that line, as it does in the editor."
+    },
+    {
+      "group": "Articles",
+      "key": "topic:test",
+      "markdown": "**alloy test**\n\nA test lives beside the code it tests: a `@test` function in the module, blanked from the ship artifact. `alloy test` builds the project, then writes one lest spec per source that holds a `@test`, under `[test] out`:\n\n```\nsrc/inventory.aly        ->  tests/inventory.spec.luau\nsrc/ui/menu.aly          ->  tests/ui/menu.spec.luau\n```\n\nA spec carries the tests and every top-level statement they reach: the imports they use, the locals and functions they call, the structs and the impls those need. The rest of the module stays out, so its side effects stay out of the test VM. The slice keeps the source's lines, so a failure points at the real one. Each relative `require` in the spec points at the build output, the runtime included, and the spec ends with a `describe` that registers each test by name; an `async` test is awaited.\n\n```alloy\nlocal function clamp01(x: number): number\n    return math.clamp(x, 0, 1)\nend\n\n@test\nfunction clamp_keeps_range()\n    $assert_eq(clamp01(2), 1)\nend\n```\n\n```\nalloy test                 build, then write the specs\nalloy test --run           and run lest on the suite\nalloy test --check         write nothing; fail when a spec would change\nalloy test src/game.aly    one file's spec, to stdout\n```\n\nThe `[test]` table:\n\n```toml\n[test]\nout = \"tests\"     # where the specs go\nsuite = \"alloy\"   # the suite name in lest.toml\nlest = true       # write lest.toml and the @lest alias when the root has none\n```\n\nWith `lest = true`, the first run writes a `lest.toml` with one suite over `tests/**/*.spec.luau` on the native backend, and adds `lest = \".lest/core\"` to the aliases of `.luaurc`, which is where lest puts its framework. `lest` then runs the suite; on its VM the runtime falls back to plain coroutines, so an `await` settles at once. `$assert` and `$assert_eq` raise, and lest reports the line."
     },
     {
       "group": "Articles",
@@ -513,7 +523,7 @@
     {
       "group": "Articles",
       "key": "topic:check",
-      "markdown": "**alloy check**\n\nCompiles every source of the project and writes nothing. The report carries the compiler's diagnostics and the lints at their `[lint]` levels, and the exit code is one on any diagnostic or denied lint. `alloy check <file>` does the same for one file."
+      "markdown": "**alloy check**\n\nCompiles every source of the project and writes nothing. The report carries the compiler's diagnostics and the lints at their `[lint]` levels, and the exit code is one on any diagnostic or denied lint. `alloy check <file>` does the same for one file. `alloy flux` is the same run with the type check on top."
     },
     {
       "group": "Articles",
@@ -523,7 +533,7 @@
     {
       "group": "Articles",
       "key": "topic:config",
-      "markdown": "**alloy.toml**\n\n```toml\n[build]\nin = \"src\"\nout = \"build\"\nexclude = []\nclean = false\nartifact = \"ship\"\n\n[emit]\n# wait_timeout = 5\n# std_require = \"@alloy\"\n# erase_type_imports = false\n\n[lint]\nstrict = false\ndeny = []\nwarn = []\nallow = []\n```\n\nEvery key has a default, and an unknown key is an error. `alloy init` writes the file, plus `.luaurc` and `.config.luau` when the folder has neither: strict mode and the `@alloy` alias for the runtime the build writes. `[project]` and `[mount]` describe the DataModel tree; `alloy doc mount` explains them."
+      "markdown": "**alloy.toml**\n\n```toml\n[build]\nin = \"src\"\nout = \"build\"\nexclude = []\nclean = false\nartifact = \"ship\"\n\n[emit]\n# wait_timeout = 5\n# std_require = \"@alloy\"\n# erase_type_imports = false\n\n[lint]\nstrict = false\ndeny = []\nwarn = []\nallow = []\n\n[flux]\ntypecheck = true\ndefinitions = []\n\n[test]\nout = \"tests\"\nsuite = \"alloy\"\n```\n\nEvery key has a default, and an unknown key is an error. `alloy doc lint`, `alloy doc flux`, `alloy doc fmt`, and `alloy doc test` explain their tables. `alloy init` writes the file, plus `.luaurc` and `.config.luau` when the folder has neither: strict mode and the `@alloy` alias for the runtime the build writes. `[project]` and `[mount]` describe the DataModel tree; `alloy doc mount` explains them."
     },
     {
       "group": "Articles",
@@ -545,128 +555,352 @@
     {
       "default": "warn",
       "detail": "A parameter typed `T?`, or the result of a function that returns `T?`, is indexed with `.` or called with `:` while nothing in the function checks it for nil. Guard it with `if x then`, `x and`, `assert(x)`, or use `?.` and `?:`, which stop the chain at nil.",
+      "group": "correctness",
       "name": "optional_access",
       "summary": "a value that may be nil is indexed without a guard"
     },
     {
       "default": "warn",
       "detail": "The arms of this `match` already cover every variant of the enum, so the `default` arm never runs. Delete it: with no `default`, the compiler reports a new variant as a missing arm instead of routing it here in silence.",
+      "group": "correctness",
       "name": "unreachable_default",
       "summary": "a `default` arm after arms that cover every variant"
     },
     {
       "default": "warn",
       "detail": "An empty `default` swallows every variant the arms do not name, including the ones added later. Name the variants, or write the fallback the default stands for.",
+      "group": "correctness",
       "name": "empty_default",
       "summary": "a `default` arm with an empty body"
     },
     {
       "default": "warn",
-      "detail": "The legacy scheduler globals run on the 30 Hz legacy pipeline and their timing drifts. `task.wait`, `task.spawn`, `task.delay`, and `task.defer` are the replacements; `unpack` is `table.unpack`. `alloy lint --fix` rewrites them.",
-      "name": "deprecated_global",
-      "summary": "a call to `wait`, `spawn`, `delay`, or `unpack`"
-    },
-    {
-      "default": "warn",
       "detail": "The name an `import` binds appears nowhere after the import. The require still runs, so the module loads for nothing. Remove the name, or the import.",
+      "group": "correctness",
       "name": "unused_import",
       "summary": "an imported name the file never uses"
     },
     {
       "default": "warn",
-      "detail": "Flux. `a and a.b` reads `a` twice to guard one index. `a?.b` is the guard: it stops at nil and yields nil. With `or` after it, `a?.b ?? x` is the same when `b` is never false; the lint leaves that rewrite to the author. `alloy lint --fix` rewrites the plain form.",
-      "name": "manual_safe_access",
-      "summary": "`a and a.b`, the guard written by hand"
+      "detail": "The target and the value are the same name or the same path, so the statement does nothing. One side is a typo: the value was meant to come from somewhere else, or the target was meant to be a different field.",
+      "group": "correctness",
+      "name": "self_assignment",
+      "summary": "`x = x`, an assignment that changes nothing"
     },
     {
       "default": "warn",
-      "detail": "Flux. The three-line nil check assigns when `x` is nil and nothing else. `x ??= v` is that statement, and it reads `x` once. `alloy lint --fix` rewrites it.",
-      "name": "manual_coalesce",
-      "summary": "`if x == nil then x = v end`, a coalescing assignment by hand"
+      "detail": "Nothing runs after `return`, `break`, or `continue` in the same block, so the statement is dead. Luau rejects most of these as syntax errors; Alloy reports the rest here. Delete the code, or move the jump.",
+      "group": "correctness",
+      "name": "unreachable_code",
+      "summary": "a statement after `return`, `break`, or `continue`"
     },
     {
       "default": "warn",
-      "detail": "Flux. The `and ... or` idiom yields `b` when `a` is false or nil, whatever `c` was; that is the classic Lua trap. `c ? a : b` picks by `c` alone. When `a` is a literal that is never false, the two are the same and `alloy lint --fix` rewrites it; otherwise the lint shows the ternary and leaves the change to the author.",
+      "detail": "The condition is a literal, so one branch always runs and the other never does. A leftover from debugging, or a flag that should be a named constant. `while true do` is the idiom for a loop that breaks from inside, so it does not fire.",
+      "group": "correctness",
+      "name": "constant_condition",
+      "summary": "`if true`, `if false`, or `if nil`"
+    },
+    {
+      "default": "warn",
+      "detail": "The second `key = value` in a constructor overwrites the first, in silence. One of the two is a typo for another key, or the first value was meant to be gone.",
+      "group": "correctness",
+      "name": "duplicate_key",
+      "summary": "a table constructor that sets one key twice"
+    },
+    {
+      "default": "warn",
+      "detail": "`not` binds tighter than `==`, so `not a == b` is `(not a) == b`, a boolean compared to `b`. The test the author meant is `a ~= b`. `alloy flux --fix` rewrites it; `not a ~= b` becomes `a == b`.",
+      "group": "correctness",
+      "name": "misplaced_not",
+      "summary": "`not a == b`, which compares `not a` to `b`"
+    },
+    {
+      "default": "warn",
+      "detail": "Both branches hold the same statements, so the condition decides nothing. One branch was meant to differ, or the `if` is a leftover. The ternary form `c ? a : a` fires too.",
+      "group": "correctness",
+      "name": "identical_branches",
+      "summary": "an `if` whose `then` and `else` bodies are the same"
+    },
+    {
+      "default": "warn",
+      "detail": "A cycle of `import` lines: Luau's `require` of a module that is still loading is an error at runtime, and the first file to load decides which one fails. Move the shared part into a third module that both import. `alloy flux` reports it; a single-file lint cannot see it.",
+      "group": "correctness",
+      "name": "circular_import",
+      "summary": "two files that import each other"
+    },
+    {
+      "default": "warn",
+      "detail": "Flux. The `and ... or` idiom yields `b` when `a` is false or nil, whatever `c` was; that is the classic Lua trap. `c ? a : b` picks by `c` alone. When `a` is a literal that is never false, the two are the same and `alloy flux --fix` rewrites it; otherwise the lint shows the ternary and leaves the change to the author.",
+      "group": "suspicious",
       "name": "and_or_ternary",
       "summary": "`c and a or b` in place of a ternary"
     },
     {
       "default": "warn",
-      "detail": "Flux. `parent->X` is `FindFirstChild(\"X\")` and `parent=>X` is `WaitForChild(\"X\")`, typed from the sourcemap and shorter to read. A call with a second argument stays as it is. `alloy lint --fix` rewrites the one-argument form.",
-      "name": "manual_child_lookup",
-      "summary": "`:FindFirstChild(\"X\")` or `:WaitForChild(\"X\")` with a literal name"
+      "detail": "The block runs nothing. An `if` with an empty body was meant to hold something, or its condition was meant to be inverted; an empty `else` is a leftover. A block that holds only a comment does not fire: the comment says why it is empty.",
+      "group": "suspicious",
+      "name": "empty_block",
+      "summary": "an `if`, `else`, or loop body with nothing in it"
     },
     {
       "default": "warn",
-      "detail": "Flux. A block that tests a function and calls it is `f?(...)`: the call runs when `f` is set and yields nil when it is not. `alloy lint --fix` rewrites it.",
+      "detail": "For a boolean `x`, `x == true` is `x` and `x == false` is `not x`. For any other value the comparison is always false, which is rarely the intent. No automatic rewrite: the checker knows the type, the lint does not.",
+      "group": "suspicious",
+      "name": "bool_comparison",
+      "summary": "`x == true` or `x == false`"
+    },
+    {
+      "default": "warn",
+      "detail": "The `if` converts a condition to a boolean by hand. `return c` is the statement when `c` is a comparison, and `alloy flux --fix` rewrites that case; for a plain value, `return c == true` or `return not not c` keeps the boolean type.",
+      "group": "suspicious",
+      "name": "needless_bool",
+      "summary": "`if c then return true else return false end`"
+    },
+    {
+      "default": "warn",
+      "detail": "Flux. `a and a.b` reads `a` twice to guard one index. `a?.b` is the guard: it stops at nil and yields nil. With `or` after it, `a?.b ?? x` is the same when `b` is never false; the lint leaves that rewrite to the author. `alloy flux --fix` rewrites the plain form.",
+      "group": "style",
+      "name": "manual_safe_access",
+      "summary": "`a and a.b`, the guard written by hand"
+    },
+    {
+      "default": "warn",
+      "detail": "Flux. The three-line nil check assigns when `x` is nil and nothing else. `x ??= v` is that statement, and it reads `x` once. `alloy flux --fix` rewrites it.",
+      "group": "style",
+      "name": "manual_coalesce",
+      "summary": "`if x == nil then x = v end`, a coalescing assignment by hand"
+    },
+    {
+      "default": "warn",
+      "detail": "Flux. A block that tests a function and calls it is `f?(...)`: the call runs when `f` is set and yields nil when it is not. `alloy flux --fix` rewrites it.",
+      "group": "style",
       "name": "nil_check_call",
       "summary": "`if f then f(...) end`, an optional call by hand"
     },
     {
       "default": "warn",
-      "detail": "Flux. `x is T` compiles to the right test for the name, `type`, `typeof`, or `IsA`, and the checker narrows `x` in the branch. A string comparison narrows nothing. `alloy lint --fix` rewrites primitives, `Instance`, and the Roblox datatypes.",
+      "detail": "Flux. `x is T` compiles to the right test for the name, `type`, `typeof`, or `IsA`, and the checker narrows `x` in the branch. A string comparison narrows nothing. `alloy flux --fix` rewrites primitives, `Instance`, and the Roblox datatypes.",
+      "group": "style",
       "name": "manual_type_test",
       "summary": "`typeof(x) == \"T\"` in place of `x is T`"
     },
     {
       "default": "warn",
-      "detail": "Flux. Luau iterates a table without a wrapper, arrays in order and then the rest, and honors `__iter`. `pairs` and `ipairs` add a call and hide the metamethod. `alloy lint --fix` removes them.",
+      "detail": "Flux. Luau iterates a table without a wrapper, arrays in order and then the rest, and honors `__iter`. `pairs` and `ipairs` add a call and hide the metamethod. `alloy flux --fix` removes them.",
+      "group": "style",
       "name": "legacy_iterator",
       "summary": "`pairs` or `ipairs` around a `for ... in` table"
     },
     {
       "default": "warn",
-      "detail": "Flux. Floor division is an operator: `a // b`. The lint fires when the argument is one division with no other operator around it, so the rewrite is the same value. `alloy lint --fix` rewrites it, in parentheses where a neighbour binds tighter.",
+      "detail": "Flux. Floor division is an operator: `a // b`. The lint fires when the argument is one division with no other operator around it, so the rewrite is the same value. `alloy flux --fix` rewrites it, in parentheses where a neighbour binds tighter.",
+      "group": "style",
       "name": "manual_floor_div",
       "summary": "`math.floor(a / b)` in place of `a // b`"
     },
     {
       "default": "warn",
-      "detail": "Flux. A value declared `T[]`, `Array<T>`, or with an array literal carries methods: `xs:push(v)` and `xs:pop()`. The `table` functions work on it too, but the method names the intent and keeps the type. `alloy lint --fix` rewrites the two-argument insert and the one-argument remove.",
+      "detail": "Flux. A value declared `T[]`, `Array<T>`, or with an array literal carries methods: `xs:push(v)` and `xs:pop()`. The `table` functions work on it too, but the method names the intent and keeps the type. `alloy flux --fix` rewrites the two-argument insert and the one-argument remove.",
+      "group": "style",
       "name": "manual_push",
       "summary": "`table.insert` or `table.remove` on a value typed as an Array"
     },
     {
       "default": "warn",
-      "detail": "Flux. A chain such as `\"Hello \" .. name .. \"!\"` is one interpolated string: `` `Hello {name}!` ``. The backtick form calls `tostring` on each hole, so a `tostring(x)` in the chain becomes `{x}`. The lint skips a chain whose literals hold a backtick, a brace, or an escape. `alloy lint --fix` rewrites the rest.",
+      "detail": "Flux. A chain such as `\"Hello \" .. name .. \"!\"` is one interpolated string: `` `Hello {name}!` ``. The backtick form calls `tostring` on each hole, so a `tostring(x)` in the chain becomes `{x}`. The lint skips a chain whose literals hold a backtick, a brace, or an escape. `alloy flux --fix` rewrites the rest.",
+      "group": "style",
       "name": "concat_interpolation",
       "summary": "a `..` chain that joins literals and values"
     },
     {
       "default": "warn",
       "detail": "Flux. `pcall` yields a flag and a value the caller has to test by hand, and the error loses its traceback. `Result.pcall(f, ...)` yields a `Result` with the traceback on the `Err`, and `try` unwraps it or returns it. No automatic rewrite: the surrounding code changes with it.",
+      "group": "style",
       "name": "raw_pcall",
       "summary": "a `pcall` or `xpcall`"
     },
     {
       "default": "warn",
-      "detail": "Flux. `import` resolves the path at build time, binds only the names the file uses, and carries the types; the checker follows it and `unused_import` watches it. `require` binds the whole module at runtime. `alloy lint --fix` rewrites `local X = require(\"./x\")` to `import X from \"./x\"`; an instance path stays for the author.",
+      "detail": "Flux. `import` resolves the path at build time, binds only the names the file uses, and carries the types; the checker follows it and `unused_import` watches it. `require` binds the whole module at runtime. `alloy flux --fix` rewrites `local X = require(\"./x\")` to `import X from \"./x\"`; an instance path stays for the author.",
+      "group": "style",
       "name": "raw_require",
       "summary": "a `require` where an `import` would do"
     },
     {
       "default": "warn",
       "detail": "Flux. The metatable idiom writes the constructor, the `__index`, and the method table by hand, and the checker sees plain tables. `struct X as ... end` with `impl X` emits the same tables with types, `new X(...)` for construction, and traits for shared behaviour. No automatic rewrite.",
+      "group": "style",
       "name": "manual_class",
       "summary": "`X.__index = X`, the class idiom by hand"
     },
     {
+      "default": "warn",
+      "detail": "Flux. Two returns that differ only in the value are one: `return c ? a : b`. The ternary picks by `c` alone, so the rewrite is the same program. `alloy flux --fix` rewrites it.",
+      "group": "style",
+      "name": "manual_ternary_return",
+      "summary": "`if c then return a else return b end`"
+    },
+    {
+      "default": "warn",
+      "detail": "A `return` with no value right before the function's `end` does what falling off the end does. Delete it. `alloy flux --fix` removes it.",
+      "group": "style",
+      "name": "redundant_return",
+      "summary": "a bare `return` at the end of a function"
+    },
+    {
+      "default": "warn",
+      "detail": "The local is read once, on the next line, by the `return`. `return v` says the same in one statement; a call goes in parentheses, `return (f())`, so the return keeps one value as the local did. `alloy flux --fix` rewrites it.",
+      "group": "style",
+      "name": "local_then_return",
+      "summary": "`local x = v` followed by `return x`"
+    },
+    {
+      "default": "warn",
+      "detail": "Flux. The numeric loop indexes the table by hand on its first line. `for i, v in t do` binds both, in order, and reads as what it is. `alloy flux --fix` rewrites the header and drops the index line.",
+      "group": "style",
+      "name": "numeric_for_index",
+      "summary": "`for i = 1, #t do local v = t[i]`"
+    },
+    {
+      "default": "warn",
+      "detail": "A long parameter list is hard to call in the right order. Group the parameters into a struct or a table, or split the function. The limit is `too_many_arguments` in `[flux]`, seven by default; `self` does not count.",
+      "group": "complexity",
+      "name": "too_many_arguments",
+      "summary": "a function with more parameters than `[flux] too_many_arguments`"
+    },
+    {
+      "default": "warn",
+      "detail": "A function this long does several things. Name the parts and call them. The limit is `too_many_lines` in `[flux]`, one hundred by default, counted between the header and the `end`.",
+      "group": "complexity",
+      "name": "too_many_lines",
+      "summary": "a function longer than `[flux] too_many_lines`"
+    },
+    {
+      "default": "warn",
+      "detail": "Each `if`, loop, `match`, and function inside another adds a level the reader has to hold. Return early, invert the condition, or move the inner block into its own function. The limit is `max_nesting` in `[flux]`, five by default.",
+      "group": "complexity",
+      "name": "deep_nesting",
+      "summary": "blocks nested deeper than `[flux] max_nesting`"
+    },
+    {
+      "default": "warn",
+      "detail": "Every `if`, `elseif`, `else`, loop, `match`, ternary, `and`, and `or` adds one, and a branch inside another adds its depth on top. A score past the limit means the function is hard to follow; split it where the deepest branches begin. The limit is `cognitive_complexity` in `[flux]`, twenty-five by default.",
+      "group": "complexity",
+      "name": "cognitive_complexity",
+      "summary": "a function whose branches score past `[flux] cognitive_complexity`"
+    },
+    {
+      "default": "warn",
+      "detail": "An `if` whose only statement is another `if`, with no `else` on either, is one `if a and b then`. `alloy flux --fix` rewrites it; `alloy fmt` then fixes the indent of the body.",
+      "group": "complexity",
+      "name": "collapsible_if",
+      "summary": "`if a then if b then ... end end`"
+    },
+    {
+      "default": "warn",
+      "detail": "An `else` whose only statement is an `if` is an `elseif`, one `end` shorter and one level shallower. `alloy flux --fix` rewrites it; `alloy fmt` then fixes the indent.",
+      "group": "complexity",
+      "name": "collapsible_else_if",
+      "summary": "`else if ... end end` in place of `elseif`"
+    },
+    {
+      "default": "warn",
+      "detail": "Each `..` copies the whole string so far, so the loop is quadratic in the output. Push the pieces into a table and `table.concat` it once after the loop.",
+      "group": "perf",
+      "name": "concat_in_loop",
+      "summary": "`s = s .. x` inside a loop"
+    },
+    {
+      "default": "warn",
+      "detail": "The service never changes, so the lookup repeats for nothing. Bind it once above the loop, or at the top of the file, as the Roblox style guide does.",
+      "group": "perf",
+      "name": "service_in_loop",
+      "summary": "`game:GetService` inside a loop"
+    },
+    {
+      "default": "warn",
+      "detail": "The three-argument insert shifts elements, and computes a length that the two-argument form computes itself. `table.insert(t, v)` appends. `alloy flux --fix` rewrites it.",
+      "group": "perf",
+      "name": "table_insert_position",
+      "summary": "`table.insert(t, #t + 1, v)`"
+    },
+    {
+      "default": "warn",
+      "detail": "The legacy scheduler globals run on the 30 Hz legacy pipeline and their timing drifts. `task.wait`, `task.spawn`, `task.delay`, and `task.defer` are the replacements; `unpack` is `table.unpack`. `alloy flux --fix` rewrites them.",
+      "group": "roblox",
+      "name": "deprecated_global",
+      "summary": "a call to `wait`, `spawn`, `delay`, or `unpack`"
+    },
+    {
+      "default": "warn",
+      "detail": "Flux. `parent->X` is `FindFirstChild(\"X\")` and `parent=>X` is `WaitForChild(\"X\")`, typed from the sourcemap and shorter to read. A call with a second argument stays as it is. `alloy flux --fix` rewrites the one-argument form.",
+      "group": "roblox",
+      "name": "manual_child_lookup",
+      "summary": "`:FindFirstChild(\"X\")` or `:WaitForChild(\"X\")` with a literal name"
+    },
+    {
+      "default": "warn",
+      "detail": "The lowercase members are the pre-2014 names, kept for old places and gone from the docs. `Connect`, `Wait`, `Destroy`, `Clone`, `GetChildren`, `FindFirstChild`, and `IsA` are the current ones, and the checker knows only those. A method of the same name that the file declares does not fire. `alloy flux --fix` rewrites them.",
+      "group": "roblox",
+      "name": "deprecated_method",
+      "summary": "a lowercase Roblox method: `:connect`, `:wait`, `:remove`, `:clone`"
+    },
+    {
+      "default": "warn",
+      "detail": "With the parent set first, every property written after it replicates and fires a change on its own. Create the instance, set its properties, then set `Parent` last. No automatic rewrite: the assignments move.",
+      "group": "roblox",
+      "name": "instance_new_parent",
+      "summary": "`Instance.new(class, parent)`, the parent as an argument"
+    },
+    {
+      "default": "warn",
+      "detail": "The body movers are deprecated. `LinearVelocity` replaces `BodyVelocity`, `AlignPosition` replaces `BodyPosition`, `AlignOrientation` replaces `BodyGyro`, `VectorForce` replaces `BodyForce` and `BodyThrust`, `AngularVelocity` replaces `BodyAngularVelocity`, and `LineForce` with `AlignOrientation` replaces `RocketPropulsion`. Each needs an `Attachment`; no automatic rewrite.",
+      "group": "roblox",
+      "name": "deprecated_body_mover",
+      "summary": "`BodyVelocity`, `BodyPosition`, `BodyGyro`, and the other body movers"
+    },
+    {
       "default": "strict",
-      "detail": "Strict only. Flux. `any` turns the checker off for the value and everything read from it. `unknown` keeps the checker on, and `x is T` narrows it where the code needs a shape. The lint skips the `any_cast` the compiler writes.",
+      "detail": "Pedantic. Flux. `any` turns the checker off for the value and everything read from it. `unknown` keeps the checker on, and `x is T` narrows it where the code needs a shape. The lint skips the `any_cast` the compiler writes.",
+      "group": "pedantic",
       "name": "explicit_any",
       "summary": "an annotation of `any`"
     },
     {
       "default": "strict",
-      "detail": "Strict only. A parameter of a named function with no annotation is `any` to the checker, and every use of it goes unchecked. Write the type. A callback passed as an argument is exempt: the checker infers its parameters from the callee.",
+      "detail": "Pedantic. A parameter of a named function with no annotation is `any` to the checker, and every use of it goes unchecked. Write the type. A callback passed as an argument is exempt: the checker infers its parameters from the callee.",
+      "group": "pedantic",
       "name": "implicit_any",
       "summary": "a named function parameter with no type"
     },
     {
       "default": "strict",
-      "detail": "Strict only. An exported function, or a method in an `impl`, is an interface others call; without a return annotation, a change to its body changes its type in silence. Write the return type.",
+      "detail": "Pedantic. An exported function, or a method in an `impl`, is an interface others call; without a return annotation, a change to its body changes its type in silence. Write the return type.",
+      "group": "pedantic",
       "name": "missing_return_type",
       "summary": "a public function with no return type"
+    },
+    {
+      "default": "strict",
+      "detail": "Pedantic. The comment marks work that is not done. The lint lists them so a release can hold until they are, or until they become tickets.",
+      "group": "pedantic",
+      "name": "todo_comment",
+      "summary": "a `TODO`, `FIXME`, `XXX`, or `HACK` comment"
+    },
+    {
+      "default": "strict",
+      "detail": "Pedantic. A `print` left over from debugging writes to the output of every player. Remove it, or route it through a logger the project can turn off.",
+      "group": "pedantic",
+      "name": "print_debug",
+      "summary": "a `print` call"
+    },
+    {
+      "default": "strict",
+      "detail": "Pedantic. An `export` is the interface of the module. A comment line right above it, `--` or `---`, says what it is for; the language server shows it on hover.",
+      "group": "pedantic",
+      "name": "missing_doc",
+      "summary": "an exported declaration with no comment above it"
     }
   ],
   "version": "0.1.0-rc.1"

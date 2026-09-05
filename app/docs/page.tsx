@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import CodePane from "@/components/CodePane";
 import Markdown, { inline } from "@/components/Markdown";
 import Nav from "@/components/Nav";
-import { contracts, lints, referenceGroups, slides, stdItems, topic, version } from "@/lib/content";
+import { contracts, lintGroups, referenceGroups, slides, stdItems, topic, version } from "@/lib/content";
 
 // The book: one page, chaptered like the Cargo Book. The sidebar lists
 // every section; the column reads top to bottom.
@@ -85,11 +85,13 @@ const chapters: TocChapter[] = [
       { id: "build", label: "alloy build", number: "5.1" },
       { id: "check", label: "alloy check", number: "5.2" },
       { id: "lint", label: "alloy lint", number: "5.3" },
-      { id: "fmt", label: "alloy fmt", number: "5.4" },
-      { id: "doc", label: "alloy doc", number: "5.5" },
-      { id: "config", label: "alloy.toml", number: "5.6" },
-      { id: "luaurc", label: ".luaurc and .config.luau", number: "5.7" },
-      { id: "mount", label: "Mounts and project files", number: "5.8" },
+      { id: "flux", label: "alloy flux", number: "5.4" },
+      { id: "fmt", label: "alloy fmt", number: "5.5" },
+      { id: "test", label: "alloy test", number: "5.6" },
+      { id: "doc", label: "alloy doc", number: "5.7" },
+      { id: "config", label: "alloy.toml", number: "5.8" },
+      { id: "luaurc", label: ".luaurc and .config.luau", number: "5.9" },
+      { id: "mount", label: "Mounts and project files", number: "5.10" },
     ],
   },
   {
@@ -164,7 +166,7 @@ export default function Docs() {
                 <code>src</code> and compile under <code>build</code>. The runtime sits beside them as <code>alloy.luau</code>.
               </p>
             </div>
-            {shell("mkdir game && cd game\nalloy init          # alloy.toml, .luaurc, .config.luau\nmkdir src\nalloy build         # src/**/*.aly -> build/**/*.luau\nalloy check         # the same compile, nothing written, plus the lints")}
+            {shell("mkdir game && cd game\nalloy init          # alloy.toml, .luaurc, .config.luau\nmkdir src\nalloy build         # src/**/*.aly -> build/**/*.luau\nalloy flux          # the compile, the type check, and the lints\nalloy test --run    # one lest spec per source with a @test, then lest")}
             <CodePane
               code={"-- src/hello.aly\nstruct Greeting as\n    name: string\n    times: number = 1\nend\n\nlocal g = new Greeting { name = \"world\" }\n\nfor _ = 1, g.times do\n    print(`hello, {g.name}`)\nend"}
               mode="alloy"
@@ -253,10 +255,16 @@ export default function Docs() {
           <Sub id="lint" number="5.3" title="alloy lint">
             <Markdown text={topic("lint")} />
           </Sub>
-          <Sub id="fmt" number="5.4" title="alloy fmt">
+          <Sub id="flux" number="5.4" title="alloy flux">
+            <Markdown text={topic("flux")} />
+          </Sub>
+          <Sub id="fmt" number="5.5" title="alloy fmt">
             <Markdown text={topic("fmt")} />
           </Sub>
-          <Sub id="doc" number="5.5" title="alloy doc">
+          <Sub id="test" number="5.6" title="alloy test">
+            <Markdown text={topic("test")} />
+          </Sub>
+          <Sub id="doc" number="5.7" title="alloy doc">
             <div className="prose">
               <p>
                 Prints one entry of this book on the terminal: a keyword, an operator, an intrinsic, an attribute, a std
@@ -266,13 +274,13 @@ export default function Docs() {
             </div>
             {shell("alloy doc                 # the index\nalloy doc struct          # one keyword\nalloy doc '??='           # one operator\nalloy doc lints           # every lint\nalloy doc optional_access # one lint\nalloy doc strict          # an article")}
           </Sub>
-          <Sub id="config" number="5.6" title="alloy.toml">
+          <Sub id="config" number="5.8" title="alloy.toml">
             <Markdown text={topic("config")} />
           </Sub>
-          <Sub id="luaurc" number="5.7" title=".luaurc and .config.luau">
+          <Sub id="luaurc" number="5.9" title=".luaurc and .config.luau">
             <Markdown text={topic("luaurc")} />
           </Sub>
-          <Sub id="mount" number="5.8" title="Mounts and project files">
+          <Sub id="mount" number="5.10" title="Mounts and project files">
             <Markdown text={topic("mount")} />
           </Sub>
         </Section>
@@ -302,23 +310,33 @@ export default function Docs() {
             <div className="prose">
               <p>
                 {inline(
-                  "`alloy lint` runs them; `[lint]` in alloy.toml sets `deny`, `warn`, and `allow` lists, and `strict = true` turns the strict-only ones on. The ones marked Flux know the Alloy form of a Luau habit and carry the rewrite; `alloy lint --fix` applies the rewrites that keep the program the same. The language server shows the same lints as warnings.",
+                  "`alloy flux` and `alloy lint` run them; `[lint]` in alloy.toml sets `deny`, `warn`, and `allow` lists by lint or by group, and `strict = true` turns the pedantic group on. A lint whose rewrite keeps the program the same carries it, and `alloy flux --fix` applies those. The language server shows the same lints as warnings.",
                 )}
               </p>
             </div>
-            {lints.map((l) => (
-              <article key={l.name} className="entry">
-                <h3>
-                  {l.name}{" "}
-                  <span className="chip ml-2 text-[11px]">{l.default === "strict" ? "off until [lint] strict" : l.default}</span>
-                </h3>
+            {lintGroups.map((g) => (
+              <div key={g.name} id={`lints-${g.name}`}>
+                <h4 className="display mt-8 mb-1 text-[17px] font-bold">
+                  {g.name} <span className="chip ml-2 text-[11px]">{g.lints.length}</span>
+                </h4>
                 <div className="prose">
-                  <p>
-                    <b>{inline(l.summary)}</b>
-                  </p>
-                  <p>{inline(l.detail)}</p>
+                  <p>{inline(g.summary)}</p>
                 </div>
-              </article>
+                {g.lints.map((l) => (
+                  <article key={l.name} className="entry">
+                    <h3>
+                      {l.name}{" "}
+                      <span className="chip ml-2 text-[11px]">{l.default === "strict" ? "off until [lint] strict" : l.default}</span>
+                    </h3>
+                    <div className="prose">
+                      <p>
+                        <b>{inline(l.summary)}</b>
+                      </p>
+                      <p>{inline(l.detail)}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
             ))}
           </Sub>
         </Section>

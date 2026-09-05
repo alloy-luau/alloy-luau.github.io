@@ -5,7 +5,7 @@ import docsJson from "@/content/docs.json";
 import slidesJson from "@/content/slides.json";
 
 export type Entry = { key: string; group: string; markdown: string };
-export type LintDoc = { name: string; default: string; summary: string; detail: string };
+export type LintDoc = { name: string; group: string; default: string; summary: string; detail: string };
 export type Slide = {
   id: string;
   eyebrow: string;
@@ -21,6 +21,25 @@ export type Slide = {
 export const version: string = docsJson.version;
 export const entries: Entry[] = docsJson.entries;
 export const lints: LintDoc[] = docsJson.lints;
+
+/** The lint groups in book order, with what each holds. */
+const GROUP_SUMMARIES: [string, string][] = [
+  ["correctness", "Code that is wrong, or cannot run."],
+  ["suspicious", "Code that is probably not what the author meant."],
+  ["style", "A Luau habit with an Alloy form."],
+  ["complexity", "A simple thing done in a hard way; the limits sit in `[flux]`."],
+  ["perf", "Code that runs slower than the plain form."],
+  ["roblox", "A Roblox API that is deprecated or misused."],
+  ["pedantic", "Strict rules, off until `[lint] strict = true`."],
+];
+
+export const lintGroups: { name: string; summary: string; lints: LintDoc[] }[] = GROUP_SUMMARIES.map(
+  ([name, summary]) => ({
+    name,
+    summary,
+    lints: lints.filter((l) => l.group === name),
+  }),
+).filter((g) => g.lints.length > 0);
 export const slides: Slide[] = slidesJson.slides as Slide[];
 export const stdItems: [string, string][] = slidesJson.stdItems as [string, string][];
 
@@ -89,8 +108,10 @@ export const commands: [string, string][] = [
   ["alloy build", "the project of the nearest alloy.toml"],
   ["alloy build file.aly", "one file to stdout; --check for what luau-lsp sees"],
   ["alloy check", "compile everything, write nothing, report errors and lints"],
-  ["alloy lint", "the lints of the [lint] table; --strict, --deny-warnings"],
+  ["alloy flux", "the compile, the type check, and every lint; --fix rewrites"],
+  ["alloy lint", "the lints alone; -W, -A, -D set a level for the run"],
   ["alloy fmt", "format the sources in place; --check writes nothing"],
+  ["alloy test --run", "a lest spec per source with a @test, then lest"],
   ["alloy doc strict", "an article; `alloy doc` lists every topic"],
   ["alloy init", "alloy.toml, .luaurc, and .config.luau"],
   ["rojo serve .alloy/build.project.json", "the compiled tree, from the [mount] table"],
