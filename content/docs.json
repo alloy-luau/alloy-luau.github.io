@@ -1,972 +1,982 @@
 {
+  "version": "0.1.0-rc.1",
   "entries": [
     {
-      "group": "Operators",
       "key": "?",
+      "group": "Operators",
       "markdown": "```alloy\nlocal label = n > 2 ? \"big\" : \"small\"\n```\nThe ternary: `c ? a : b` is `if c then a else b`. A `:` that touches its receiver, `x:upper()`, stays a method call inside the branches; the else marker has a space before it."
     },
     {
-      "group": "Operators",
       "key": ":",
+      "group": "Operators",
       "markdown": "```alloy\nc ? a : b\n```\nThe else of a ternary. Touching a name it is a method call, `obj:method()`; after a name with a space it starts a type, `x: T`."
     },
     {
-      "group": "Operators",
       "key": "??=",
+      "group": "Operators",
       "markdown": "```alloy\na ??= b\n```\nAssigns `b` to `a` when `a` is nil. An index on the left runs once.\n\nEmits `if a == nil then a = b end`."
     },
     {
-      "group": "Operators",
       "key": "??",
+      "group": "Operators",
       "markdown": "```alloy\na ?? b\n```\nNil coalescing: `a` when it is not nil, else `b`. Unlike `or`, `false` passes through."
     },
     {
-      "group": "Operators",
       "key": "?.",
+      "group": "Operators",
       "markdown": "```alloy\na?.b\n```\nSafe index: nil when `a` is nil, else `a.b`. The `?` guards the rest of the chain, and `!` ends the guard.\n\nEmits `a.b` under a nil check on a temp."
     },
     {
-      "group": "Operators",
       "key": "?[",
+      "group": "Operators",
       "markdown": "```alloy\na?[k]\n```\nSafe index by key: nil when `a` is nil, else `a[k]`."
     },
     {
-      "group": "Operators",
       "key": "?:",
+      "group": "Operators",
       "markdown": "```alloy\na?:m(x)\n```\nSafe method call: nil when `a` is nil, and `x` does not evaluate. Else `a:m(x)`."
     },
     {
-      "group": "Operators",
       "key": "?(",
+      "group": "Operators",
       "markdown": "```alloy\nf?(x)\n```\nSafe call: nil when `f` is nil, and `x` does not evaluate."
     },
     {
-      "group": "Operators",
       "key": "->",
+      "group": "Operators",
       "markdown": "```alloy\na->b\n```\nChild lookup: `a:FindFirstChild(\"b\")`, nil when the child is missing. The right side is a Name, a string, an interpolated string, or `[expr]`.\n\nAfter a parameter list, `-> T` is the return type."
     },
     {
-      "group": "Operators",
       "key": "=>",
+      "group": "Operators",
       "markdown": "```alloy\na=>b\n```\nBlocking child lookup: `a:WaitForChild(\"b\")`. With `wait_timeout` under `[emit]` in alloy.toml the call takes that timeout and can return nil."
     },
     {
-      "group": "Operators",
       "key": "!",
+      "group": "Operators",
       "markdown": "```alloy\na!\n```\nNon-nil assert. Throws when `a` is nil, with the source text in the message. The type loses its `?`.\n\nEmits `if a == nil then error(...) else a` on a temp."
     },
     {
-      "group": "Operators",
       "key": "...",
+      "group": "Operators",
       "markdown": "```alloy\n{ ...base, x = 1 }\n```\nTable spread. Emits `spread(base, { x = 1 })` from the std. A positional entry after a spread is an error."
     },
     {
-      "group": "Keywords",
       "key": "is",
-      "markdown": "```alloy\nx is T\n```\nType test. `T` is a type name: a primitive, a Roblox datatype, an Instance class, `Enum.Name`, or an Alloy struct or enum. `x is not T` negates.\n\nEmits `type`, `typeof`, `IsA`, or a metatable check, chosen by the name."
+      "group": "Keywords",
+      "markdown": "```alloy\nx is T\n```\nType test. `T` is a type name: a primitive, a Roblox datatype, an Instance class, `Enum.Name`, or an Alloy struct or enum. `x is not T` negates.\n\nEmits `type`, `typeof`, `IsA`, or a metatable check, chosen by the name.\n\nIn an `if`, a test on a plain name narrows it in the branch. Luau refines a primitive, a class, and a datatype on its own; the check artifact adds a cast for a struct, an enum, an imported type, and `RBXScriptSignal`, and gives `table` and `function` a shape that indexes and calls. `x is not T` narrows the else branch, or the code after a guard that returns, breaks, continues, or errors."
     },
     {
-      "group": "Keywords",
       "key": "in",
+      "group": "Keywords",
       "markdown": "```alloy\nx in t\n```\nMembership. Searches an Array by value, a Set or HashMap through `:has`, a string by substring, and a raw table by key.\n\nEmits `contains(t, x)` from the std."
     },
     {
-      "group": "Keywords",
       "key": "bor",
+      "group": "Keywords",
       "markdown": "```alloy\na bor b\n```\nBitwise or. Emits `bit32.bor(a, b)`. Operands are 32-bit unsigned."
     },
     {
-      "group": "Keywords",
       "key": "band",
+      "group": "Keywords",
       "markdown": "```alloy\na band b\n```\nBitwise and. Emits `bit32.band(a, b)`."
     },
     {
-      "group": "Keywords",
       "key": "bxor",
+      "group": "Keywords",
       "markdown": "```alloy\na bxor b\n```\nBitwise exclusive or. Emits `bit32.bxor(a, b)`."
     },
     {
-      "group": "Keywords",
       "key": "bnot",
+      "group": "Keywords",
       "markdown": "```alloy\nbnot a\n```\nBitwise not. Emits `bit32.bnot(a)`. `$bnot(x)` takes a parenthesized operand."
     },
     {
-      "group": "Keywords",
       "key": "shl",
+      "group": "Keywords",
       "markdown": "```alloy\na shl n\n```\nShift left. Emits `bit32.lshift(a, n)`."
     },
     {
-      "group": "Keywords",
       "key": "shr",
+      "group": "Keywords",
       "markdown": "```alloy\na shr n\n```\nShift right. Emits `bit32.rshift(a, n)`."
     },
     {
-      "group": "Keywords",
       "key": "struct",
+      "group": "Keywords",
       "markdown": "```alloy\nstruct Name as\n    field: T\nend\n```\nA record with fields. `impl Name` adds methods. `Name { x = 1 }` is the raw constructor and `new Name(...)` calls `Name.new`. `@derive(Eq, Debug, Clone)` on the line before generates methods. A field or a method marked `private` belongs to the impl alone.\n\nEmits a table type plus a metatable with `__index` and a `__tostring`, so `print(v)` and `` `{v}` `` show `Name { x = 1, y = 2 }`. A `to_string` in the impl, an `impl Display`, replaces the default printer."
     },
     {
-      "group": "Keywords",
       "key": "impl",
+      "group": "Keywords",
       "markdown": "```alloy\nimpl Name ... end\nimpl Trait for Name ... end\n```\nMethods for a struct, an enum, or a foreign type such as `Vector3` or `string`. A foreign impl needs `export` and works project wide.\n\nEmits functions on the class table."
     },
     {
-      "group": "Keywords",
       "key": "trait",
+      "group": "Keywords",
       "markdown": "```alloy\ntrait Name\n    function m(self): T\nend\n```\nA behavior contract: method signatures, with a body as a default. `impl Trait for Name` implements it and `<T: Trait>` bounds a generic. Operator traits map to metamethods: `Add`, `Eq`, `Ord`, `Call`, `Display`.\n\nEmits a type with the method signatures."
     },
     {
-      "group": "Keywords",
       "key": "interface",
+      "group": "Keywords",
       "markdown": "```alloy\ninterface Name extends Base as\n    field: T\nend\n```\nA structural object shape, sugar over `type`. A known base flattens into one table type; any other base joins with `&`."
     },
     {
-      "group": "Keywords",
       "key": "enum",
+      "group": "Keywords",
       "markdown": "```alloy\nenum Name as\n    Unit\n    Payload(T)\nend\n```\nVariants with optional payloads. A unit enum is a string union at runtime; a payload enum is a tagged table. `match` takes it apart and `impl Name` adds methods."
     },
     {
-      "group": "Keywords",
       "key": "match",
+      "group": "Keywords",
       "markdown": "```alloy\nmatch expr with\n    case Pat then ...\n    default ...\nend\n```\nPattern match, as a statement or an expression. A pattern binds payloads, `_` matches anything, `or` joins alternatives, and `and expr` is a guard. An exhaustive match needs no `default`.\n\nEmits an if-chain on the tag."
     },
     {
-      "group": "Keywords",
       "key": "with",
+      "group": "Keywords",
       "markdown": "Opens the arms of a `match`."
     },
     {
-      "group": "Keywords",
       "key": "case",
+      "group": "Keywords",
       "markdown": "```alloy\ncase Pat then ...\n```\nOne arm of a `match`. The arm runs to the next `case`, `default`, or `end`."
     },
     {
-      "group": "Keywords",
       "key": "default",
+      "group": "Keywords",
       "markdown": "The fallback arm of a `match`. Required when the scrutinee is a literal, a struct, or a table."
     },
     {
-      "group": "Keywords",
       "key": "as",
+      "group": "Keywords",
       "markdown": "Marks where a declaration's name, or its `extends` list, ends and the members begin: `struct Vec2 as x: number end`.\n\nIn `import { }` and `export { }`, renames a name."
     },
     {
-      "group": "Keywords",
       "key": "extends",
+      "group": "Keywords",
       "markdown": "```alloy\ninterface Name extends Base, Other as\n```\nThe base shapes of an interface."
     },
     {
-      "group": "Keywords",
       "key": "import",
-      "markdown": "```alloy\nimport { a, b as c, type T } from \"./m\"\nimport * as M from \"./m\"\nimport Name from \"./m\"\nimport M, { a, type T } from \"./m\"\nimport type { T } from \"./m\"\n```\nBrings names from another module into this file. `{ }` picks exports by name, `as` renames one, `* as M` takes the whole module, and a bare name takes its default export. `M, { a }` takes the module and names from it in one line: `local M = require(\"./m\") local a = M.a`. `type` marks a type-only import, which costs nothing at runtime.\n\n`import(\"./m\")` is the expression form: a `require`, typed from the module when the path is a string or an instance chain. `import<<T>>(expr)` gives a dynamic path the type `T`; without it the value is `unknown`."
+      "group": "Keywords",
+      "markdown": "```alloy\nimport { a, b as c, type T } from \"./m\"\nimport * as M from \"./m\"\nimport Name from \"./m\"\nimport M, { a, type T } from \"./m\"\nimport type { T } from \"./m\"\n```\nBrings names from another module into this file. `{ }` picks exports by name, `as` renames one, `* as M` takes the whole module, and a bare name takes its default export. `M, { a }` takes the module and names from it in one line: `local M = require(\"./m\") local a = M.a`. `type` marks a type-only import, which costs nothing at runtime.\n\n`import(\"./m\")` is the expression form: a `require`, typed from the module when the path is a string or an instance chain. `import<<T>>(expr)` gives a dynamic path the type `T`; without it the value is `unknown`.\n\nA path that ends in `.json` or `.toml` imports a data file as a table; `alloy doc data` explains."
     },
     {
-      "group": "Keywords",
       "key": "export",
+      "group": "Keywords",
       "markdown": "```alloy\nexport local x = 1\nexport function f() end\nexport { a, b as c }\nexport default expr\n```\nAdds a name to the table the module returns at the end of its scope."
     },
     {
-      "group": "Keywords",
       "key": "from",
+      "group": "Keywords",
       "markdown": "The module path of an `import` or `export`, or the side that fires a `remote`: `from client`, `from server`."
     },
     {
-      "group": "Keywords",
       "key": "const",
+      "group": "Keywords",
       "markdown": "```alloy\nconst x = expr\n```\nA binding that cannot be reassigned; the value stays mutable. Luau has `const` of its own, so the keyword passes through and a reassignment is a compile error there too."
     },
     {
-      "group": "Keywords",
       "key": "async",
+      "group": "Keywords",
       "markdown": "```alloy\nasync function f() ... end\nasync do ... end\n```\nReturns a Future. The body runs on `task.spawn` under `xpcall`, and the Future memoizes the result."
     },
     {
-      "group": "Keywords",
       "key": "await",
+      "group": "Keywords",
       "markdown": "```alloy\nawait expr\n```\nYields until the Future settles, then returns its value or rethrows its error. Accepts a Future or any value with `andThen`."
     },
     {
-      "group": "Keywords",
       "key": "try",
+      "group": "Keywords",
       "markdown": "```alloy\ntry expr\ntry do ... end\n```\nReturns early with the `Err`, inside a function that returns `Result`. `try do` is a block whose value is a Result."
     },
     {
-      "group": "Keywords",
       "key": "macro",
+      "group": "Keywords",
       "markdown": "```alloy\nmacro name(params) ... end\n```\nA compile-time template with expression parameters, called as `$name(...)`. Every `local` in the body is renamed per expansion."
     },
     {
-      "group": "Keywords",
       "key": "new",
+      "group": "Keywords",
       "markdown": "```alloy\nnew Name(...)\nnew Name(...) { Field = value }\n```\nConstructs a value. `new Name(...)` calls the constructor a struct's impl wrote, `new` or `New`, or the `new` of a Roblox datatype, an Instance, or any class; braces after it set fields on the new value, one per line. `new Name { ... }` is a struct's fields form, the only way to construct one that writes no constructor. A struct never constructs without `new`."
     },
     {
-      "group": "Keywords",
       "key": "delete",
+      "group": "Keywords",
       "markdown": "```alloy\ndelete expr\n```\n`expr:Destroy()`."
     },
     {
-      "group": "Keywords",
       "key": "attribute",
+      "group": "Keywords",
       "markdown": "```alloy\nattribute name(params) on target, ...\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, interface, type."
     },
     {
-      "group": "Keywords",
       "key": "on",
+      "group": "Keywords",
       "markdown": "The targets of an `attribute` declaration."
     },
     {
-      "group": "Keywords",
       "key": "remote",
+      "group": "Keywords",
       "markdown": "```alloy\nremote Name(params) from client\nremote function Name(params): R from server\n```\nA typed channel between server and client. The compiler generates the serializer. Use `.fire`, `.fire_all`, `.on`, and `.call`."
     },
     {
-      "group": "Keywords",
       "key": "where",
+      "group": "Keywords",
       "markdown": "```alloy\nfor x in xs where cond do\nif local x = f() where cond then\n```\nA filter. In a loop it emits `if not (cond) then continue end` on the `do` line."
     },
     {
-      "group": "Keywords",
       "key": "satisfies",
+      "group": "Keywords",
       "markdown": "```alloy\nexpr satisfies T\n```\nChecks the literal against `T` under contextual typing and reports a key `T` does not name. The type is `T`."
     },
     {
-      "group": "Keywords",
       "key": "private",
+      "group": "Keywords",
       "markdown": "```alloy\nstruct Counter as\n    read name: string\n    private count: number = 0\nend\n\nimpl Counter\n    function bump(self): number\n        self.count += 1\n        return self.count\n    end\n\n    private function reset(self)\n        self.count = 0\n    end\nend\n```\nA field or an `impl` method that only the struct's own methods reach. The word compiles to nothing at runtime: the check artifact keeps the private members out of the struct's public type, so `c.count` and `c:reset()` in other code are type errors in the editor and under `alloy flux`, and the `private_access` lint reports them in the same file. A private field may still be set in `new Counter { }`. A struct with type parameters keeps one view. `public` is the default and needs no word."
     },
     {
-      "group": "Keywords",
       "key": "public",
+      "group": "Keywords",
       "markdown": "```alloy\nimpl Counter\n    public function peek(self): number\n        return self.count\n    end\nend\n```\nThe default visibility, written out for symmetry with `private`. A public member is part of the struct's type in every file. Both words are reserved."
     },
     {
-      "group": "Keywords",
       "key": "read",
+      "group": "Keywords",
       "markdown": "```alloy\nread x: T\n```\nA read-only field. `read T[]` is `ReadArray<T>`."
     },
     {
-      "group": "Keywords",
       "key": "write",
+      "group": "Keywords",
       "markdown": "```alloy\nwrite x: T\n```\nA write-only field. `write T[]` is `WriteArray<T>`."
     },
     {
-      "group": "Intrinsics",
       "key": "$dbg",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$dbg(expr)\n```\nPrints `file:line: <source text> = <value>` and returns the value."
     },
     {
-      "group": "Intrinsics",
       "key": "$todo",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$todo(\"why\")\n```\n`error(\"todo at file:line: why\")`."
     },
     {
-      "group": "Intrinsics",
       "key": "$unreachable",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$unreachable()\n```\n`error(\"unreachable at file:line\")`."
     },
     {
-      "group": "Intrinsics",
       "key": "$assert",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$assert(cond)\n```\n`assert(cond, \"assertion failed: <source text>\")`."
     },
     {
-      "group": "Intrinsics",
       "key": "$assert_eq",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$assert_eq(a, b)\n```\nAn `error` that names both source texts and both values when they differ."
     },
     {
-      "group": "Intrinsics",
       "key": "$nameof",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$nameof(a.b.c)\n```\nThe string `\"c\"`."
     },
     {
-      "group": "Intrinsics",
       "key": "$stringify",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$stringify(expr)\n```\nThe source text of `expr` as a string."
     },
     {
-      "group": "Intrinsics",
       "key": "$matches",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$matches(e, Pat(_))\n```\nA pattern test without a `match`: `e.tag == \"Pat\"`."
     },
     {
-      "group": "Intrinsics",
       "key": "$bnot",
+      "group": "Intrinsics",
       "markdown": "```alloy\n$bnot(x)\n```\n`bit32.bnot(x)`, for a parenthesized operand."
     },
     {
-      "group": "Derives",
       "key": "derive:Eq",
+      "group": "Derives",
       "markdown": "```alloy\n@derive(Eq)\n```\nGenerates `__eq`: two values are equal when every field is."
     },
     {
-      "group": "Derives",
       "key": "derive:Debug",
+      "group": "Derives",
       "markdown": "```alloy\n@derive(Debug)\n```\nGenerates `debug` and `__tostring`: the struct's name and its fields, as text. Every struct prints that way by default; the derive adds the `debug` method, and a `to_string` in the impl replaces both."
     },
     {
-      "group": "Derives",
       "key": "derive:Clone",
+      "group": "Derives",
       "markdown": "```alloy\n@derive(Clone)\n```\nGenerates `clone`: a shallow copy with the same metatable."
     },
     {
-      "group": "Derives",
       "key": "derive:Serialize",
+      "group": "Derives",
       "markdown": "```alloy\n@derive(Serialize)\n```\nGenerates `to_table` and `from_table`, the plain-table forms for storage and remotes."
     },
     {
-      "group": "Attributes",
       "key": "@derive",
+      "group": "Attributes",
       "markdown": "```alloy\n@derive(Eq, Debug, Clone)\n```\nGenerates methods from the field list: `Eq` is `__eq`, `Ord` is `__lt` and `__le`, `Debug` is `debug` and `__tostring`, `Clone` is `clone`, `Serialize` is `to_table` and `from_table`. Any trait whose methods all have defaults derives too."
     },
     {
-      "group": "Attributes",
       "key": "@native",
+      "group": "Attributes",
       "markdown": "```alloy\n@native\nfunction hot() end\n```\nLuau's own: compiles the function natively. Passes through to the emit."
     },
     {
-      "group": "Attributes",
       "key": "@checked",
+      "group": "Attributes",
       "markdown": "```alloy\n@checked\nfunction f(x: number) end\n```\nLuau's own: the runtime checks the argument types of a native-typed function. Passes through to the emit."
     },
     {
-      "group": "Attributes",
       "key": "@deprecated",
+      "group": "Attributes",
       "markdown": "```alloy\n@deprecated\nfunction old() end\n```\nLuau's own: a call to the function is a lint. Passes through to the emit."
     },
     {
-      "group": "Attributes",
       "key": "@inline",
+      "group": "Attributes",
       "markdown": "```alloy\n@inline\nfunction small() end\n```\nLuau's own: asks the compiler to inline the function. Passes through to the emit."
     },
     {
-      "group": "Attributes",
       "key": "@noinline",
+      "group": "Attributes",
       "markdown": "```alloy\n@noinline\nfunction big() end\n```\nLuau's own: keeps the function out of line. Passes through to the emit."
     },
     {
-      "group": "Attributes",
       "key": "@rename",
+      "group": "Attributes",
       "markdown": "```alloy\n@rename(\"regen_per_second\")\nregen: number\n```\nThe key a field takes in the tables `@derive(Serialize)` writes and reads.\n\n**Applies to** `field`"
     },
     {
-      "group": "Attributes",
       "key": "@skip",
+      "group": "Attributes",
       "markdown": "```alloy\n@skip\nconnection: RBXScriptConnection?\n```\nLeaves a field out of the tables `@derive(Serialize)` writes and reads: a handle, a cache, anything that is not data.\n\n**Applies to** `field`"
     },
     {
-      "group": "Attributes",
       "key": "@test",
+      "group": "Attributes",
       "markdown": "```alloy\n@test\nfunction name() ... end\n```\nA test beside the code it tests. The ship artifact blanks it, line for line; the check artifact keeps it typed; `alloy test` writes it into a lest spec with everything it reaches. An `async` test is awaited."
     },
     {
-      "group": "Attributes",
       "key": "@unreliable",
+      "group": "Attributes",
       "markdown": "```alloy\n@unreliable\nremote ...\n```\nAn UnreliableRemoteEvent. An error when the packed size can pass 900 bytes."
     },
     {
-      "group": "Attributes",
       "key": "@ratelimit",
+      "group": "Attributes",
       "markdown": "```alloy\n@ratelimit(count, seconds)\n```\nA per-player token bucket on the server, for client-to-server remotes."
     },
     {
-      "group": "Attributes",
       "key": "@timeout",
+      "group": "Attributes",
       "markdown": "```alloy\n@timeout(seconds)\n```\nRejects the caller's Future after the window, on a `remote function`."
     },
     {
-      "group": "Attributes",
       "key": "@immediate",
+      "group": "Attributes",
       "markdown": "```alloy\n@immediate\n```\nSends the remote at once, outside the per-frame batch."
     },
     {
-      "group": "Attributes",
       "key": "@validate",
+      "group": "Attributes",
       "markdown": "```alloy\n@validate(fn)\n```\nA server-side predicate on the decoded arguments, after the shape check."
     },
     {
-      "group": "Attributes",
       "key": "@u8",
+      "group": "Attributes",
       "markdown": "The wire width of a `number` parameter on a `remote`: 8-bit unsigned."
     },
     {
-      "group": "Attributes",
       "key": "@u16",
+      "group": "Attributes",
       "markdown": "The wire width of a `number` parameter on a `remote`: 16-bit unsigned."
     },
     {
-      "group": "Attributes",
       "key": "@u32",
+      "group": "Attributes",
       "markdown": "The wire width of a `number` parameter on a `remote`: 32-bit unsigned."
     },
     {
-      "group": "Attributes",
       "key": "@i8",
+      "group": "Attributes",
       "markdown": "The wire width of a `number` parameter on a `remote`: 8-bit signed."
     },
     {
-      "group": "Attributes",
       "key": "@i16",
+      "group": "Attributes",
       "markdown": "The wire width of a `number` parameter on a `remote`: 16-bit signed."
     },
     {
-      "group": "Attributes",
       "key": "@i32",
+      "group": "Attributes",
       "markdown": "The wire width of a `number` parameter on a `remote`: 32-bit signed."
     },
     {
-      "group": "Attributes",
       "key": "@f32",
+      "group": "Attributes",
       "markdown": "The wire width of a `number` parameter on a `remote`: 32-bit float. The default is f64."
     },
     {
-      "group": "Keywords",
       "key": "declare",
+      "group": "Keywords",
       "markdown": "```alloy\ndeclare function name(params): R\ndeclare extern type Name with ... end\ndeclare name: T\n```\nA definition-file statement. Luau's own definition syntax, in a `.d.aly`, which compiles to `.d.luau` and joins the analyzer's definitions; no runtime."
     },
     {
-      "group": "Std",
       "key": "HashMap",
+      "group": "Std",
       "markdown": "```alloy\nlocal m = HashMap.new()\nm:set(key, value)\nlocal v = m:get(key)\n```\nA map with methods, from the std. `HashMap.from(t)` wraps a table.\n\nMethods: `get`, `set`, `has`, `remove`, `len`, `keys`, `values`, `entries`, `get_or_insert`, `clear`."
     },
     {
-      "group": "Std",
       "key": "Set",
+      "group": "Std",
       "markdown": "```alloy\nlocal s = Set.new()\ns:add(value)\n```\nA set with methods, from the std. `Set.from(t)` wraps an array.\n\nMethods: `add`, `has`, `remove`, `len`, `union`, `intersection`, `difference`, `to_array`."
     },
     {
-      "group": "Std",
       "key": "Array",
-      "markdown": "```alloy\nlocal xs = [ 1, 2, 3 ]\nlocal ys: Array<number> = xs:map(f)\n```\nThe array type of the std. An array literal carries its metatable, so methods work on it. `T[]` and `Array<T>` name the same type.\n\nMethods: `len`, `is_empty`, `push`, `pop`, `first`, `last`, `map`, `filter`, `find`, `find_index`, `contains`, `index_of`, `for_each`, `reduce`, `slice`, `concat`, `reverse`, `sort_by`, `join`."
+      "group": "Std",
+      "markdown": "```alloy\nlocal xs = [ 1, 2, 3 ]\nlocal ys: Array<number> = xs:map(f)\n```\nThe array type of the std. An array literal carries its metatable, so methods work on it. `T[]` and `Array<T>` name the same type.\n\nMethods: `len`, `is_empty`, `push`, `pop`, `first`, `last`, `map`, `filter`, `find`, `find_index`, `contains`, `index_of`, `for_each`, `reduce`, `slice`, `concat`, `reverse`, `sort_by`, `join`.\n\nLuau rejects an alias that names itself with other arguments, so `map` returns the same shape under a second name, and the third `map` in one chain is `any`. Annotate the accumulator of `reduce` when its body uses it: `xs:reduce(function(acc: number, x) return acc + x end, 0)`."
     },
     {
-      "group": "Std",
       "key": "Future",
+      "group": "Std",
       "markdown": "```alloy\nlocal f = Future.delay(1)\nlocal v = await f\n```\nA memoized task, from the std. `async function` returns one; `await` yields until it settles.\n\nStatics: `resolve`, `reject`, `delay`, `all`, `race`, `any`, `all_settled`. Methods: `cancel`, `is_settled`, `andThen`."
     },
     {
-      "group": "Std",
       "key": "Result",
+      "group": "Std",
       "markdown": "```alloy\nlocal r: Result<number, string> = Ok(1)\nlocal v = r:unwrap_or(0)\n```\n`Ok(value)` or `Err(error)`, from the std. `try` turns a throw into an Err; `?` returns an Err early.\n\nMethods: `unwrap`, `expect`, `unwrap_or`, `map`, `map_err`, `is_ok`, `is_err`, `ok`. `Result.pcall(f, ...)` wraps a throwing call."
     },
     {
-      "group": "Std",
       "key": "Ok",
+      "group": "Std",
       "markdown": "```alloy\nOk(value)\n```\nThe success case of a `Result`."
     },
     {
-      "group": "Std",
       "key": "Err",
+      "group": "Std",
       "markdown": "```alloy\nErr(error)\n```\nThe failure case of a `Result`."
     },
     {
-      "group": "Std",
       "key": "Queue",
+      "group": "Std",
       "markdown": "```alloy\nlocal q = Queue.new()\nq:push(job)\nlocal next = q:pop()\n```\nA first-in, first-out queue, from the std. `Queue.from(t)` fills one from an array; a `for` loop reads it front to back without a pop.\n\nMethods: `push`, `pop`, `peek`, `len`, `is_empty`, `clear`, `to_array`."
     },
     {
-      "group": "Std",
       "key": "Heap",
+      "group": "Std",
       "markdown": "```alloy\nlocal open = Heap.new(function(a, b) return a.cost < b.cost end)\nopen:push(node)\nlocal nearest = open:pop()\n```\nA binary heap, from the std: `pop` yields the least value under `less`, which defaults to `<`. A `for` loop reads it in order without a pop; `to_array` sorts.\n\nMethods: `push`, `pop`, `peek`, `len`, `is_empty`, `clear`, `to_array`."
     },
     {
-      "group": "Std",
       "key": "Scope",
+      "group": "Std",
       "markdown": "```alloy\nlocal scope = Scope.new()\nscope:add(part.Touched:Connect(on_touch))\nscope:add(function() print(\"bye\") end)\ndelete scope\n```\nA cleanup bag, from the std. `add` takes anything `delete` accepts, or a function, and gives it back. `clean` runs them newest first and empties the bag; `delete scope` does the same, and `extend` makes a child scope inside this one.\n\nMethods: `add`, `remove`, `clean`, `extend`, `len`, `Destroy`."
     },
     {
-      "group": "Std",
       "key": "Iter",
+      "group": "Std",
       "markdown": "```alloy\nlocal names = Iter.from(players):filter(function(p) return p.Team == team end):map(function(p) return p.Name end):take(5):collect()\n```\nA lazy iterator, from the std. Nothing runs until `collect`, `for_each`, or a `for` loop pulls. `Iter.from` takes an array, a function, or anything with `__iter`; `Iter.range(a, b, step)` counts.\n\nMethods: `next`, `map`, `filter`, `take`, `skip`, `take_while`, `chain`, `collect`, `for_each`, `count`, `any`, `all`, `find`, `reduce`, `first`, `last`."
     },
     {
-      "group": "Std",
       "key": "Symbol",
+      "group": "Std",
       "markdown": "```alloy\nlocal key = Symbol.new(\"name\")\n```\nA unique key that no string can collide with, from the std."
     },
     {
-      "group": "Std",
       "key": "Signal",
+      "group": "Std",
       "markdown": "```alloy\nlocal changed = Signal.new()\nlocal conn = changed:Connect(function(id, value) end)\nchanged:Fire(1, 2)\n```\nA typed signal, from the std. `Signal.new<T...>()` fires `T...`; handlers run on reused threads, in order, and may disconnect during a fire.\n\nMethods: `Connect`, `Once`, `Wait`, `Fire`, `FireDeferred`, `DisconnectAll`, `Destroy`. A connection has `Connected` and `Disconnect`.\n\n`Signal.collect(source)` turns any signal with `Connect` or `connect`, a Roblox one included, into an iterator that drains the queued events in order, plus the connection: `for id, value in Signal.collect(changed) do`. `Signal.wrap(source)` gives a Signal that fires with the source."
     },
     {
-      "group": "Std",
       "key": "Partial",
+      "group": "Std",
       "markdown": "```alloy\ntype Partial<T> = { [K in keyof T]: T[K]? }\nlocal changes: Partial<Entity> = { name = \"b\" }\n```\nEvery field of `T`, optional. A language-level type; the std builds it with a type function. A `type Partial` in a file replaces it there."
     },
     {
-      "group": "Std",
       "key": "Readonly",
+      "group": "Std",
       "markdown": "```alloy\ntype Readonly<T> = { [K in keyof T]: read T[K] }\n```\nEvery field of `T`, read only. A language-level type; the std builds it with a type function. A `type Readonly` in a file replaces it there."
     },
     {
-      "group": "Std",
       "key": "Sink",
+      "group": "Std",
       "markdown": "```alloy\ntype Sink<T> = { [K in keyof T]: write T[K] }\n```\nEvery field of `T`, write only. A language-level type; the std builds it with a type function. A `type Sink` in a file replaces it there."
     },
     {
-      "group": "Std",
       "key": "Attributes",
+      "group": "Std",
       "markdown": "```alloy\nlocal value = Attributes.get(Target, attr)\n```\nDeclared metadata, readable at runtime. `get`, `field`, `variant`, `of`, and `fields` read what `@attr` declared."
     },
     {
-      "group": "Attributes",
       "key": "@sealed",
+      "group": "Attributes",
       "markdown": "```alloy\n@sealed\nstruct Config as\n    volume: number\nend\nlocal c = new Config { volume = 1 }\nc.volume = 2  -- fine: declared\nc.volme = 2   -- error: Config has no field volme\n```\nA struct is open: a write to a name it does not declare makes a new key, and a typo goes unnoticed. `@sealed` makes that write an error at runtime, with the struct's name and the key in the message, and the check artifact rejects it from the table type. A declared field set to nil writes through. To stop writes to a declared field, mark it `read`.\n\nEmits `__newindex` on the class table."
     },
     {
-      "group": "Articles",
       "key": "topic:strict",
+      "group": "Articles",
       "markdown": "**Strict by default**\n\nEvery `.aly` file checks in Luau strict mode unless the project says otherwise. `alloy init` writes `.luaurc` and `.config.luau` with `languageMode = \"strict\"`, and the language server gives a workspace with neither file the same setting. A `--!nonstrict` or `--!nocheck` line at the top of a file still wins for that file.\n\nOn top of the checker, the compiler holds these at compile time:\n\n  match           every variant has an arm, or a `default` (`alloy doc exhaustive`)\n  new Name { }    every field without a default is set; no unknown field\n  impl T for S    every method of the trait, with the trait's arity\n  @sealed         no write to an undeclared field, at runtime and at check time\n  remote          no function, thread, Future, or Signal in a parameter (`alloy doc wire`)\n\n`alloy lint` adds the nil discipline and, with `[lint] strict = true`, the no-implicit-any rules (`alloy doc lints`)."
     },
     {
-      "group": "Articles",
       "key": "topic:exhaustive",
+      "group": "Articles",
       "markdown": "**Exhaustive match**\n\nA `match` with no `default` must cover every value. For an enum, that is every variant, each with payloads that cover; `Color.Red`, a bare unit variant, `Some(x)`, `_`, and `a or b` all count. When a variant has no arm, the compiler names it:\n\n```\nthis match is not exhaustive: `Msg` has no arm for `Leave`; add it or a `default` arm\n```\n\nA literal, a struct, or an array pattern set needs a `default`. A guarded arm proves nothing about coverage.\n\nThe other direction is a lint: a `default` under arms that already cover every variant never runs, and `unreachable_default` says so, because that default would hide the next variant added."
     },
     {
-      "group": "Articles",
       "key": "topic:wire",
+      "group": "Articles",
       "markdown": "**Wire types**\n\nA `remote` carries data across the network. A parameter typed as a function, a `thread`, a `Future`, or a `Signal` cannot be serialized, so the declaration is an error:\n\n```\nremote Ping(cb: () -> ()) from client\n-- remote `Ping`: parameter `cb` has type `() -> ()`, which is a function type; a remote carries only data\n```\n\nSend an id, a name, or a plain table, and keep the callback on the side that owns it. `@u8`, `@u16`, `@i32`, `@f32` and the other width attributes set how a number packs."
     },
     {
-      "group": "Articles",
       "key": "topic:lint",
+      "group": "Articles",
       "markdown": "**alloy lint**\n\nRuns the lints over the project, or over one file, and nothing else; `alloy flux` runs them with the compile and the type check. A lint is advice: the code runs, and the lint names a habit that costs bugs. The lints are Flux's, in seven groups:\n\n  correctness   code that is wrong, or cannot run\n  suspicious    code that is probably not what the author meant\n  style         a Luau habit with an Alloy form: `a and a.b` for `a?.b`, `typeof(x) == \"T\"` for `x is T`\n  complexity    a simple thing done in a hard way; the limits sit in `[flux]`\n  perf          code that runs slower than the plain form\n  roblox        a Roblox API that is deprecated or misused\n  pedantic      strict rules, off until `[lint] strict = true`\n  naming        the case of names, off until `warn = [\"naming\"]`\n\nA lint whose rewrite keeps the program the same carries it, and `--fix` applies those; in the editor each one is a quick fix, and `source.fixAll` applies every rewrite of the file.\n\n```\nalloy lint                 the project of the nearest alloy.toml\nalloy lint src/game.aly    one file\nalloy lint --fix           apply the rewrites that keep the program the same\nalloy lint -W pedantic     a level for this run: -W warns, -A allows, -D denies\nalloy lint --deny-warnings fail on any hit\nalloy lint --list          every lint with its group and default level\n```\n\nThe `[lint]` table of alloy.toml sets the levels. A list takes a lint name or a group name, and a name beats its group:\n\n```toml\n[lint]\nstrict = true\ndeny = [\"correctness\"]\nwarn = [\"pedantic\"]\nallow = [\"concat_interpolation\", \"luau\"]\n```\n\n`luau` is the group of the type checker's own lints, `LocalUnused` and the rest, which `alloy flux` reports. `alloy doc lints` lists every lint; `alloy doc <name>` explains one, and `alloy doc <group>` lists a group. The language server shows the same lints as warnings, with the rewrite in the message."
     },
     {
-      "group": "Articles",
       "key": "topic:flux",
+      "group": "Articles",
       "markdown": "**alloy flux**\n\nFlux is the whole analysis in one run, what clippy is to cargo. It compiles every source, runs luau-lsp over the check artifact and maps the type errors onto the Alloy lines, and runs every lint at its `[lint]` level: Flux's own seven groups, and the checker's lints under the `luau` group. It also sees what one file cannot: `circular_import` reports two files that import each other.\n\n```\nalloy flux                 the project of the nearest alloy.toml\nalloy flux src/game.aly    one file: the compile and the lints\nalloy flux --fix           apply the rewrites that keep the program the same\nalloy flux -D correctness  deny a group for this run; -W warns, -A allows\nalloy flux --explain manual_floor_div\nalloy flux --no-typecheck  skip luau-lsp\nalloy flux --watch         run again after every change\nalloy flux --list          every lint with its group and default level\n```\n\nThe check artifact keeps the source's lines, so a type error on line 12 of the output is on line 12 of the source; the column maps through the span map. The artifacts go into a mirror of the project under the temp directory, with the root's Luau configuration and a link to every other folder, so requires resolve as they do in the editor.\n\nThe `[flux]` table:\n\n```toml\n[flux]\ntypecheck = true                  # run luau-lsp over the check artifact\ndefinitions = []                  # extra .d.luau or .d.aly files; the project's .d.aly join on their own\nroblox_types = true               # load the Roblox globals\nsecurity_level = \"PluginSecurity\" # LocalUserSecurity, RobloxScriptSecurity, None\n# luau_lsp = \"/path/to/luau-lsp\"  # unset: the PATH, then ~/.alloy/bin and ~/.ember/bin\ntoo_many_arguments = 7\ntoo_many_lines = 100\nmax_nesting = 5\ncognitive_complexity = 25\n```\n\nThe Roblox globals come from the luau-lsp extension's storage when the editor has them, and download once into `~/.alloy/types` otherwise. A `--@alloy-ignore` line silences the checker's report on that line, as it does in the editor."
     },
     {
-      "group": "Articles",
       "key": "topic:test",
+      "group": "Articles",
       "markdown": "**alloy test**\n\nA test lives beside the code it tests: a `@test` function in the module, blanked from the ship artifact. `alloy test` builds the project, then writes one lest spec per source that holds a `@test`, under `[test] out`:\n\n```\nsrc/inventory.aly        ->  tests/inventory.spec.luau\nsrc/ui/menu.aly          ->  tests/ui/menu.spec.luau\n```\n\nA spec carries the tests and every top-level statement they reach: the imports they use, the locals and functions they call, the structs and the impls those need. The rest of the module stays out, so its side effects stay out of the test VM. The slice keeps the source's lines, so a failure points at the real one. Each relative `require` in the spec points at the build output, the runtime included, and the spec ends with a `describe` that registers each test by name; an `async` test is awaited.\n\n```alloy\nlocal function clamp01(x: number): number\n    return math.clamp(x, 0, 1)\nend\n\n@test\nfunction clamp_keeps_range()\n    $assert_eq(clamp01(2), 1)\nend\n```\n\n```\nalloy test                 build, then write the specs\nalloy test --run           and run lest on the suite\nalloy test --coverage      run lest with line coverage\nalloy test --filter hit    run the tests whose name holds `hit`\nalloy test -- --reporter json   the rest goes to lest as given\nalloy test --watch         write again after every change\nalloy test --check         write nothing; fail when a spec would change\nalloy test src/game.aly    one file's spec, to stdout\n```\n\nThe `[test]` table:\n\n```toml\n[test]\nout = \"tests\"     # where the specs go\nsuite = \"alloy\"   # the suite name in lest.toml\nlest = true       # write lest.toml and the @lest alias when the root has none\n```\n\nWith `lest = true`, the first run writes a `lest.toml` with one suite over `tests/**/*.spec.luau` on the native backend, and adds `lest = \".lest/core\"` to the aliases of `.luaurc`, which is where lest puts its framework. `lest` then runs the suite; on its VM the runtime falls back to plain coroutines, so an `await` settles at once. `$assert` and `$assert_eq` raise, and lest reports the line."
     },
     {
-      "group": "Articles",
       "key": "topic:fmt",
+      "group": "Articles",
       "markdown": "**alloy fmt**\n\nAnneal formats `.aly` and `.alx` files in place. The layout comes from the tokens and the `[fmt]` options, not from how the author laid the code out: the spacing between tokens, which bracket groups break, the quotes of a string, the parentheses of a call. Statements keep their lines, at most one blank line stays between them, and a long string or a long comment keeps its text. The program is the same afterwards; the token stream changes only where an option asks for a rewrite.\n\n```\nalloy fmt                  the sources of the project\nalloy fmt src/ui.aly dir/  the paths given\nalloy fmt --check          write nothing; fail when a file would change\n```\n\nA bracket group, the arguments of a call, a table, or an array, stays on one line when it fits in `column_width`, and breaks one element per line when it does not, or when a trailing comma in the source asks for it. An `import { }` list breaks on a trailing comma even when written on one line, and on every list with more than one name under `expand_imports`. A callback argument indents its body once: `foo(function()` opens one level, not two.\n\nThe options, with their defaults:\n\n```toml\n[fmt]\ncolumn_width = 100\nline_endings = \"unix\"                 # windows\nindent_type = \"spaces\"                # tabs\nindent_width = 4\nquote_style = \"auto-prefer-double\"    # auto-prefer-single, force-double, force-single, preserve\nleading_zero = \"add\"                  # `.5` becomes `0.5`; strip, preserve\ncall_parentheses = \"always\"           # no-single-string, no-single-table, none, input\nspace_after_function_names = \"never\"  # definitions, calls, always\ncollapse_simple_statement = \"never\"   # function-only, conditional-only, always\nblock_newline_gaps = \"never\"          # preserve keeps a blank line at a block's edge\nmagic_trailing_comma = true           # a trailing comma keeps a group expanded\ntrailing_comma = true                 # an expanded group ends its last element with a comma\nspace_inside_braces = true            # { a }\nspace_inside_parens = false           # f(a)\nspace_inside_brackets = false         # t[k]\nspace_inside_array = true             # [ 1, 2 ]; Alloy's own\nalign_struct_fields = false           # the `:` of a struct's fields line up; Alloy's own\nexpand_imports = false                # an import list with more than one name breaks one per line; Alloy's own\nexclude = []                          # paths to leave alone; `*` matches any run\n\n[fmt.call_chains]\nstyle = \"preserve\"                    # method: break before each call past the first; full: before every call\nmin_calls = 3\n\n[fmt.sort_requires]\nenabled = false                       # sort the `import` lines at the top of the file\ngrouping = \"flat\"                     # by-kind: aliases, then absolute, then relative paths\n\n[fmt.alx]\nattribute_quotes = \"double\"           # single, preserve\nbracket_same_line = false             # the `>` of a broken tag on the last attribute's line\nattribute_per_line = false            # every attribute of a broken tag on its own line\nself_closing_space = true             # <Frame />\ntext_wrap = \"fill\"                    # preserve keeps the author's line breaks in text\nblank_lines = true                    # a blank line between children stays\n```\n\nThe names follow larvae and stylua where the option is theirs, so a config ports over. In an `.alx` file the code formats the same way and the markup prints from its tree: a tag that fits stays on one line, a tag that does not breaks its attributes and then its children, and text flows with the holes in it."
     },
     {
-      "group": "Articles",
       "key": "topic:check",
+      "group": "Articles",
       "markdown": "**alloy check**\n\nCompiles every source of the project and writes nothing. The report carries the compiler's diagnostics and the lints at their `[lint]` levels, and the exit code is one on any diagnostic or denied lint. `alloy check <file>` does the same for one file. `alloy flux` is the same run with the type check on top."
     },
     {
-      "group": "Articles",
       "key": "topic:build",
+      "group": "Articles",
       "markdown": "**alloy build**\n\nCompiles every `.aly` and `.alx` under `[build] in` to Luau under `[build] out`, mirroring the tree, and writes the runtime as `alloy.luau` at the output root. A plain `.luau` or `.lua` beside the sources is copied as it is, so a `require(\"./other\")` finds it in the output. A file that did not change is not rewritten, so a Rojo sync stays quiet. `artifact = \"ship\"` writes the code Roblox runs; `\"check\"` writes what luau-lsp sees, with the types kept. `clean = true` removes an output whose source is gone.\n\n```\nalloy build                one project\nalloy build src/game.aly   one file, to stdout\nalloy build --check --map  the check artifact and its chunk map\n```"
     },
     {
-      "group": "Articles",
       "key": "topic:config",
-      "markdown": "**alloy.toml**\n\n```toml\n[build]\nin = \"src\"\nout = \"build\"\nexclude = []\nclean = false\nartifact = \"ship\"\n\n[emit]\n# wait_timeout = 5\n# std_require = \"@alloy\"\n# erase_type_imports = false\n\n[lint]\nstrict = false\ndeny = []\nwarn = []\nallow = []\n\n[flux]\ntypecheck = true\ndefinitions = []\n\n[test]\nout = \"tests\"\nsuite = \"alloy\"\n```\n\nEvery key has a default, and an unknown key is an error. `alloy doc lint`, `alloy doc flux`, `alloy doc fmt`, and `alloy doc test` explain their tables. `alloy init` writes the file, plus `.luaurc` and `.config.luau` when the folder has neither: strict mode and the `@alloy` alias for the runtime the build writes. `[project]` and `[mount]` describe the DataModel tree; `alloy doc mount` explains them."
+      "group": "Articles",
+      "markdown": "**alloy.toml**\n\n```toml\n[build]\nin = \"src\"\nout = \"build\"\nexclude = []\nclean = false\nartifact = \"ship\"\n\n[emit]\n# wait_timeout = 5\n# std_require = \"@alloy\"\n# erase_type_imports = false\n\n[lint]\nstrict = false\ndeny = []\nwarn = []\nallow = []\n\n[flux]\ntypecheck = true\ndefinitions = []\n\n[test]\nout = \"tests\"\nsuite = \"alloy\"\n```\n\nEvery key has a default, and an unknown key is an error. `alloy doc lint`, `alloy doc flux`, `alloy doc fmt`, and `alloy doc test` explain their tables. `alloy init` writes the file, plus `.luaurc` and `.config.luau` when the folder has neither: strict mode and the `@alloy` alias for the runtime the build writes. `[project]` and `[mount]` describe the DataModel tree; `alloy doc mount` explains them.\n\nThe editor checks the file against a JSON Schema. `alloy self schema` prints it. `alloy self code` writes it to `~/.alloy/alloy.schema.json` and points VS Code (Even Better TOML) and Zed (Tombi, taplo) at it, so every key completes with its type, default, and text, and an unknown key is marked."
     },
     {
-      "group": "Articles",
       "key": "topic:luaurc",
+      "group": "Articles",
       "markdown": "**.luaurc and .config.luau**\n\nLuau reads its settings from `.luaurc`, a JSON file, or from `.config.luau`, a Luau chunk that returns `{ luau = { ... } }`. With both, `.config.luau` wins. Alloy reads and writes both the same way: `languageMode` and `aliases` are the keys it uses.\n\n```json\n{ \"languageMode\": \"strict\", \"aliases\": { \"alloy\": \"./build/alloy\" } }\n```\n\n```luau\nreturn { luau = { languagemode = \"strict\", aliases = { alloy = \"./build/alloy\" } } }\n```\n\nThe language server copies the file into its mirror, and adds `languagemode = \"strict\"` when the file sets no mode, so the default stays strict."
     },
     {
-      "group": "Articles",
       "key": "topic:directives",
+      "group": "Articles",
       "markdown": "**Directives**\n\nA comment that starts with `--@alloy-` silences diagnostics: the compiler's, the lints, and the checker's type errors, which the language server drops on the silenced lines before the editor sees them.\n\n```alloy\n--@alloy-nocheck        this file: nothing is reported\n--@alloy-ignore         the next line with code is silent\nlocal x = y.z --@alloy-ignore   at the end of a line: that line\n```\n\nUse one for a line the new solver gets wrong, and say why in the comment beside it. Luau's own `--!strict`, `--!nonstrict`, and `--!nocheck` pass through and set the checker's mode for the file.\n\nEvery diagnostic carries the book section it belongs to as its code, `Alloy(4.2)`; the number links to the section in the editor, and `alloy doc 4.2` prints it."
     },
     {
+      "key": "topic:ingots",
       "group": "Articles",
+      "markdown": "**Ingots**\n\nAn ingot is an Alloy extension. It ships as an executable beside an `ingot.toml`, and the compiler and the language server start it once and keep it alive. Over a framed pipe, one request per file, an ingot can:\n\n  transform   edit the Alloy source before the desugar; the line count holds, and every position maps back\n  output      edit the ship Luau after the desugar\n  lint        report findings under its own lint names, with rewrites\n  format      edit a file after Anneal laid it out\n  hover       answer a hover in the editor\n  complete    add completion items\n  actions     add code actions\n\nName one in alloy.toml. A path is relative to the root; a release is pinned by version and unpacks once into `.alloy/ingots/`:\n\n```toml\n[ingots]\ntailwind = \"ingots/tailwind\"\nlogger = { repo = \"someone/logger-ingot\", version = \"0.2.0\" }\n\n[ingot.tailwind]\n# the ingot's own options, over the defaults its manifest declares\nsort_classes = true\n```\n\nThe manifest names the ingot, the protocol revision, the hooks the host may send, the options with their defaults, and the lints with their levels:\n\n```toml\nname = \"tailwind\"\napi = 1\nhooks = [\"transform\", \"lint\", \"hover\", \"complete\"]\nrun = \"first\"          # the pass its transform runs in: first, last, or a number\nkinds = [\"alx\"]        # the file kinds it wants; unset means all\n\n[options]\nsort_classes = false\n\n[lints.unknown_class]\ndefault = \"warn\"\nsummary = \"a class no utility defines\"\n```\n\nAn ingot's lint is `<ingot>/<lint>` in `[lint]`, and the ingot's name is a group, so `allow = [\"tailwind\"]` silences all of them. `alloy lint --list` shows them under the ingot; `alloy doc tailwind/unknown_class` explains one.\n\nWrite one in Rust with the `alloy-ingot` crate: implement `Handler`, call `serve`. `alloy ingot new <name>` writes the project, `alloy ingot info <dir>` prints what a manifest declares, and `alloy ingot run <dir> <file>` pushes one file through it and reports the line count, because a transform that adds a line breaks the map. An edit is a byte span and its text; the host applies every edit of one reply at once, so no edit sees another's output. An ingot that hangs costs one request: the host kills it after a timeout and reports the loss.\n\nThe design follows larvae's native worms. Nothing is embedded: no interpreter, no wasm."
+    },
+    {
       "key": "topic:mount",
+      "group": "Articles",
       "markdown": "**Mounts and project files**\n\nOne table in alloy.toml says where each folder lands in the DataModel, and `alloy build` writes every file that follows from it:\n\n```toml\n[project]\nname = \"game\"\nruntime = \"@game/ReplicatedStorage/Alloy\"\n\n[mount]\n# alias = [path, mount]\nserver = [\"src/server\", \"@game/ServerScriptService/Server\"]\nclient = [\"src/client\", \"@game/StarterPlayer/StarterPlayerScripts/Client\"]\nshared = [\"src/shared\", \"@game/ReplicatedStorage/Shared\"]\npkg = [\"Packages\", \"@game/ReplicatedStorage/Packages\"]\n```\n\n  default.project.json        a Rojo project over the sources\n  .alloy/build.project.json   the same tree over the compiled output, for `rojo serve` and `rojo build`\n  .alloy/sourcemap.json       the instance tree with the source paths; the language server reads it\n  .luaurc                     gains an alias per mount, so `@pkg/jecs` resolves in the editor\n\nRoblox reads no `.luaurc`, so the ship artifact rewrites `require(\"@pkg/jecs\")` into the relative instance path from the file's mount, `../../ReplicatedStorage/Packages/jecs` from a server script, and requires the runtime the same way. A path under `[build] in` points at its output in the build project; any other path, such as a package folder, is mounted as it is. `.server.` and `.client.` name the script class, `init` names its directory, and a `StarterPlayerScripts` between a service and a leaf keeps its own class."
+    },
+    {
+      "key": "topic:data",
+      "group": "Articles",
+      "markdown": "**JSON and TOML data**\n\nA source imports a `.json` or `.toml` file as a table. Three forms name one:\n\n```alloy\nimport data from \"./data.json\"\nimport { coins, pets } from \"./config.toml\"\nlocal limits = import(\"./limits.toml\")\nlocal raw = require(\"./raw.json\")\n```\n\nThe emit drops the extension: `require(\"./data\")`. `alloy build` writes each data file a source names as a Luau module at the same place in the output, `src/data.json` becomes `build/data.luau`, and `clean` keeps it. A file that no source names stays as it is; `alloy.toml` and `default.project.json` never build.\n\nThe module returns the document as a table:\n\n```luau\nreturn {\n    name = \"game\",\n    [\"max-players\"] = 12,\n    pets = {\n        {\n            name = \"cat\",\n            legs = 4,\n        },\n    },\n}\n```\n\nKeys keep the document's order. A key that is not a Luau name, or is a keyword, goes in brackets. A JSON `null` is `nil`, a TOML datetime is a string, and a whole number has no `.0`.\n\nThe type check and the language server write the same module into their mirrors, so hover on `data` shows its table type, `data.` completes its keys, `import { | } from \"./config.toml\"` lists the top-level keys with their types, and go to definition on the path or on a name opens the file.\n\nThree cases are diagnostics on the import: the file is missing, the document does not parse (the message names the line), and the file's stem collides with a module beside it. `x.json` beside `x.aly` or `x.luau` would build the same `x.luau`, so one of them gets a new name. A data path is relative, `./` or `../`, and stays under `[build] in`."
     }
   ],
   "lints": [
     {
-      "default": "warn",
-      "detail": "A parameter typed `T?`, or the result of a function that returns `T?`, is indexed with `.` or called with `:` while nothing in the function checks it for nil. Guard it with `if x then`, `x and`, `assert(x)`, or use `?.` and `?:`, which stop the chain at nil.",
-      "group": "correctness",
       "name": "optional_access",
-      "summary": "a value that may be nil is indexed without a guard"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a value that may be nil is indexed without a guard",
+      "detail": "A parameter typed `T?`, or the result of a function that returns `T?`, is indexed with `.` or called with `:` while nothing in the function checks it for nil. Guard it with `if x then`, `x and`, `assert(x)`, or use `?.` and `?:`, which stop the chain at nil."
     },
     {
-      "default": "warn",
-      "detail": "The arms of this `match` already cover every variant of the enum, so the `default` arm never runs. Delete it: with no `default`, the compiler reports a new variant as a missing arm instead of routing it here in silence.",
-      "group": "correctness",
       "name": "unreachable_default",
-      "summary": "a `default` arm after arms that cover every variant"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a `default` arm after arms that cover every variant",
+      "detail": "The arms of this `match` already cover every variant of the enum, so the `default` arm never runs. Delete it: with no `default`, the compiler reports a new variant as a missing arm instead of routing it here in silence."
     },
     {
-      "default": "warn",
-      "detail": "An empty `default` swallows every variant the arms do not name, including the ones added later. Name the variants, or write the fallback the default stands for.",
-      "group": "correctness",
       "name": "empty_default",
-      "summary": "a `default` arm with an empty body"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a `default` arm with an empty body",
+      "detail": "An empty `default` swallows every variant the arms do not name, including the ones added later. Name the variants, or write the fallback the default stands for."
     },
     {
-      "default": "warn",
-      "detail": "The name an `import` binds appears nowhere after the import. The require still runs, so the module loads for nothing. Remove the name, or the import.",
-      "group": "correctness",
       "name": "unused_import",
-      "summary": "an imported name the file never uses"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "an imported name the file never uses",
+      "detail": "The name an `import` binds appears nowhere after the import. The require still runs, so the module loads for nothing. Remove the name, or the import."
     },
     {
-      "default": "warn",
-      "detail": "The target and the value are the same name or the same path, so the statement does nothing. One side is a typo: the value was meant to come from somewhere else, or the target was meant to be a different field.",
-      "group": "correctness",
       "name": "self_assignment",
-      "summary": "`x = x`, an assignment that changes nothing"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "`x = x`, an assignment that changes nothing",
+      "detail": "The target and the value are the same name or the same path, so the statement does nothing. One side is a typo: the value was meant to come from somewhere else, or the target was meant to be a different field."
     },
     {
-      "default": "warn",
-      "detail": "Nothing runs after `return`, `break`, or `continue` in the same block, so the statement is dead. Luau rejects most of these as syntax errors; Alloy reports the rest here. Delete the code, or move the jump.",
-      "group": "correctness",
       "name": "unreachable_code",
-      "summary": "a statement after `return`, `break`, or `continue`"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a statement after `return`, `break`, or `continue`",
+      "detail": "Nothing runs after `return`, `break`, or `continue` in the same block, so the statement is dead. Luau rejects most of these as syntax errors; Alloy reports the rest here. Delete the code, or move the jump."
     },
     {
-      "default": "warn",
-      "detail": "The condition is a literal, so one branch always runs and the other never does. A leftover from debugging, or a flag that should be a named constant. `while true do` is the idiom for a loop that breaks from inside, so it does not fire.",
-      "group": "correctness",
       "name": "constant_condition",
-      "summary": "`if true`, `if false`, or `if nil`"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "`if true`, `if false`, or `if nil`",
+      "detail": "The condition is a literal, so one branch always runs and the other never does. A leftover from debugging, or a flag that should be a named constant. `while true do` is the idiom for a loop that breaks from inside, so it does not fire."
     },
     {
-      "default": "warn",
-      "detail": "The second `key = value` in a constructor overwrites the first, in silence. One of the two is a typo for another key, or the first value was meant to be gone.",
-      "group": "correctness",
       "name": "duplicate_key",
-      "summary": "a table constructor that sets one key twice"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a table constructor that sets one key twice",
+      "detail": "The second `key = value` in a constructor overwrites the first, in silence. One of the two is a typo for another key, or the first value was meant to be gone."
     },
     {
-      "default": "warn",
-      "detail": "`not` binds tighter than `==`, so `not a == b` is `(not a) == b`, a boolean compared to `b`. The test the author meant is `a ~= b`. `alloy flux --fix` rewrites it; `not a ~= b` becomes `a == b`.",
-      "group": "correctness",
       "name": "misplaced_not",
-      "summary": "`not a == b`, which compares `not a` to `b`"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "`not a == b`, which compares `not a` to `b`",
+      "detail": "`not` binds tighter than `==`, so `not a == b` is `(not a) == b`, a boolean compared to `b`. The test the author meant is `a ~= b`. `alloy flux --fix` rewrites it; `not a ~= b` becomes `a == b`."
     },
     {
-      "default": "warn",
-      "detail": "Both branches hold the same statements, so the condition decides nothing. One branch was meant to differ, or the `if` is a leftover. The ternary form `c ? a : a` fires too.",
-      "group": "correctness",
       "name": "identical_branches",
-      "summary": "an `if` whose `then` and `else` bodies are the same"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "an `if` whose `then` and `else` bodies are the same",
+      "detail": "Both branches hold the same statements, so the condition decides nothing. One branch was meant to differ, or the `if` is a leftover. The ternary form `c ? a : a` fires too."
     },
     {
-      "default": "warn",
-      "detail": "A member marked `private` belongs to the struct's own methods. This access sits outside every `impl` of that struct, in the same file; in the editor and under `alloy flux` the type checker reports it as an error, since the public type of the struct has no such member. The lint reads names, so a plain table with a field of the same name fires it too; `--@alloy-ignore` silences that line.",
-      "group": "correctness",
       "name": "private_access",
-      "summary": "a private field or method read outside its struct's impl"
-    },
-    {
-      "default": "warn",
-      "detail": "A cycle of `import` lines: Luau's `require` of a module that is still loading is an error at runtime, and the first file to load decides which one fails. Move the shared part into a third module that both import. `alloy flux` reports it; a single-file lint cannot see it.",
       "group": "correctness",
+      "default": "warn",
+      "summary": "a private field or method read outside its struct's impl",
+      "detail": "A member marked `private` belongs to the struct's own methods. This access sits outside every `impl` of that struct, in the same file; in the editor and under `alloy flux` the type checker reports it as an error, since the public type of the struct has no such member. The lint reads names, so a plain table with a field of the same name fires it too; `--@alloy-ignore` silences that line."
+    },
+    {
       "name": "circular_import",
-      "summary": "two files that import each other"
+      "group": "correctness",
+      "default": "warn",
+      "summary": "two files that import each other",
+      "detail": "A cycle of `import` lines: Luau's `require` of a module that is still loading is an error at runtime, and the first file to load decides which one fails. Move the shared part into a third module that both import. `alloy flux` reports it; a single-file lint cannot see it."
     },
     {
-      "default": "warn",
-      "detail": "Flux. The `and ... or` idiom yields `b` when `a` is false or nil, whatever `c` was; that is the classic Lua trap. `c ? a : b` picks by `c` alone. When `a` is a literal that is never false, the two are the same and `alloy flux --fix` rewrites it; otherwise the lint shows the ternary and leaves the change to the author.",
-      "group": "suspicious",
       "name": "and_or_ternary",
-      "summary": "`c and a or b` in place of a ternary"
+      "group": "suspicious",
+      "default": "warn",
+      "summary": "`c and a or b` in place of a ternary",
+      "detail": "Flux. The `and ... or` idiom yields `b` when `a` is false or nil, whatever `c` was; that is the classic Lua trap. `c ? a : b` picks by `c` alone. When `a` is a literal that is never false, the two are the same and `alloy flux --fix` rewrites it; otherwise the lint shows the ternary and leaves the change to the author."
     },
     {
-      "default": "warn",
-      "detail": "A `local`, a `local function`, or a loop variable that appears nowhere after its declaration. A leftover, or a typo in the name that reads it. Prefix it with `_` to say it is unused on purpose; `alloy flux --fix` does that. The type checker reports the scoped cases this lint cannot see.",
-      "group": "suspicious",
       "name": "unused_variable",
-      "summary": "a local that nothing reads"
+      "group": "suspicious",
+      "default": "warn",
+      "summary": "a local that nothing reads",
+      "detail": "A `local`, a `local function`, or a loop variable that appears nowhere after its declaration. A leftover, or a typo in the name that reads it. Prefix it with `_` to say it is unused on purpose; `alloy flux --fix` does that. The type checker reports the scoped cases this lint cannot see."
     },
     {
-      "default": "warn",
-      "detail": "The block runs nothing. An `if` with an empty body was meant to hold something, or its condition was meant to be inverted; an empty `else` is a leftover. A block that holds only a comment does not fire: the comment says why it is empty.",
-      "group": "suspicious",
       "name": "empty_block",
-      "summary": "an `if`, `else`, or loop body with nothing in it"
+      "group": "suspicious",
+      "default": "warn",
+      "summary": "an `if`, `else`, or loop body with nothing in it",
+      "detail": "The block runs nothing. An `if` with an empty body was meant to hold something, or its condition was meant to be inverted; an empty `else` is a leftover. A block that holds only a comment does not fire: the comment says why it is empty."
     },
     {
-      "default": "warn",
-      "detail": "For a boolean `x`, `x == true` is `x` and `x == false` is `not x`. For any other value the comparison is always false, which is rarely the intent. No automatic rewrite: the checker knows the type, the lint does not.",
-      "group": "suspicious",
       "name": "bool_comparison",
-      "summary": "`x == true` or `x == false`"
-    },
-    {
-      "default": "warn",
-      "detail": "The `if` converts a condition to a boolean by hand. `return c` is the statement when `c` is a comparison, and `alloy flux --fix` rewrites that case; for a plain value, `return c == true` or `return not not c` keeps the boolean type.",
       "group": "suspicious",
+      "default": "warn",
+      "summary": "`x == true` or `x == false`",
+      "detail": "For a boolean `x`, `x == true` is `x` and `x == false` is `not x`. For any other value the comparison is always false, which is rarely the intent. No automatic rewrite: the checker knows the type, the lint does not."
+    },
+    {
       "name": "needless_bool",
-      "summary": "`if c then return true else return false end`"
+      "group": "suspicious",
+      "default": "warn",
+      "summary": "`if c then return true else return false end`",
+      "detail": "The `if` converts a condition to a boolean by hand. `return c` is the statement when `c` is a comparison, and `alloy flux --fix` rewrites that case; for a plain value, `return c == true` or `return not not c` keeps the boolean type."
     },
     {
-      "default": "warn",
-      "detail": "Flux. `a and a.b` reads `a` twice to guard one index. `a?.b` is the guard: it stops at nil and yields nil. With `or` after it, `a?.b ?? x` is the same when `b` is never false; the lint leaves that rewrite to the author. `alloy flux --fix` rewrites the plain form.",
-      "group": "style",
       "name": "manual_safe_access",
-      "summary": "`a and a.b`, the guard written by hand"
+      "group": "style",
+      "default": "warn",
+      "summary": "`a and a.b`, the guard written by hand",
+      "detail": "Flux. `a and a.b` reads `a` twice to guard one index. `a?.b` is the guard: it stops at nil and yields nil. With `or` after it, `a?.b ?? x` is the same when `b` is never false; the lint leaves that rewrite to the author. `alloy flux --fix` rewrites the plain form."
     },
     {
-      "default": "warn",
-      "detail": "Flux. The three-line nil check assigns when `x` is nil and nothing else. `x ??= v` is that statement, and it reads `x` once. `alloy flux --fix` rewrites it.",
-      "group": "style",
       "name": "manual_coalesce",
-      "summary": "`if x == nil then x = v end`, a coalescing assignment by hand"
+      "group": "style",
+      "default": "warn",
+      "summary": "`if x == nil then x = v end`, a coalescing assignment by hand",
+      "detail": "Flux. The three-line nil check assigns when `x` is nil and nothing else. `x ??= v` is that statement, and it reads `x` once. `alloy flux --fix` rewrites it."
     },
     {
-      "default": "warn",
-      "detail": "Flux. A block that tests a function and calls it is `f?(...)`: the call runs when `f` is set and yields nil when it is not. `alloy flux --fix` rewrites it.",
-      "group": "style",
       "name": "nil_check_call",
-      "summary": "`if f then f(...) end`, an optional call by hand"
+      "group": "style",
+      "default": "warn",
+      "summary": "`if f then f(...) end`, an optional call by hand",
+      "detail": "Flux. A block that tests a function and calls it is `f?(...)`: the call runs when `f` is set and yields nil when it is not. `alloy flux --fix` rewrites it."
     },
     {
-      "default": "warn",
-      "detail": "Flux. `x is T` compiles to the right test for the name, `type`, `typeof`, or `IsA`, and the checker narrows `x` in the branch. A string comparison narrows nothing. `alloy flux --fix` rewrites primitives, `Instance`, and the Roblox datatypes.",
-      "group": "style",
       "name": "manual_type_test",
-      "summary": "`typeof(x) == \"T\"` in place of `x is T`"
+      "group": "style",
+      "default": "warn",
+      "summary": "`typeof(x) == \"T\"` in place of `x is T`",
+      "detail": "Flux. `x is T` compiles to the right test for the name, `type`, `typeof`, or `IsA`, and the checker narrows `x` in the branch. A string comparison narrows nothing. `alloy flux --fix` rewrites primitives, `Instance`, and the Roblox datatypes."
     },
     {
-      "default": "warn",
-      "detail": "Flux. Luau iterates a table without a wrapper, arrays in order and then the rest, and honors `__iter`. `pairs` and `ipairs` add a call and hide the metamethod. `alloy flux --fix` removes them.",
-      "group": "style",
       "name": "legacy_iterator",
-      "summary": "`pairs` or `ipairs` around a `for ... in` table"
+      "group": "style",
+      "default": "warn",
+      "summary": "`pairs` or `ipairs` around a `for ... in` table",
+      "detail": "Flux. Luau iterates a table without a wrapper, arrays in order and then the rest, and honors `__iter`. `pairs` and `ipairs` add a call and hide the metamethod. `alloy flux --fix` removes them."
     },
     {
-      "default": "warn",
-      "detail": "Flux. Floor division is an operator: `a // b`. The lint fires when the argument is one division with no other operator around it, so the rewrite is the same value. `alloy flux --fix` rewrites it, in parentheses where a neighbour binds tighter.",
-      "group": "style",
       "name": "manual_floor_div",
-      "summary": "`math.floor(a / b)` in place of `a // b`"
+      "group": "style",
+      "default": "warn",
+      "summary": "`math.floor(a / b)` in place of `a // b`",
+      "detail": "Flux. Floor division is an operator: `a // b`. The lint fires when the argument is one division with no other operator around it, so the rewrite is the same value. `alloy flux --fix` rewrites it, in parentheses where a neighbour binds tighter."
     },
     {
-      "default": "warn",
-      "detail": "Flux. A value declared `T[]`, `Array<T>`, or with an array literal carries methods: `xs:push(v)` and `xs:pop()`. The `table` functions work on it too, but the method names the intent and keeps the type. `alloy flux --fix` rewrites the two-argument insert and the one-argument remove.",
-      "group": "style",
       "name": "manual_push",
-      "summary": "`table.insert` or `table.remove` on a value typed as an Array"
+      "group": "style",
+      "default": "warn",
+      "summary": "`table.insert` or `table.remove` on a value typed as an Array",
+      "detail": "Flux. A value declared `T[]`, `Array<T>`, or with an array literal carries methods: `xs:push(v)` and `xs:pop()`. The `table` functions work on it too, but the method names the intent and keeps the type. `alloy flux --fix` rewrites the two-argument insert and the one-argument remove."
     },
     {
-      "default": "warn",
-      "detail": "Flux. A chain such as `\"Hello \" .. name .. \"!\"` is one interpolated string: `` `Hello {name}!` ``. The backtick form calls `tostring` on each hole, so a `tostring(x)` in the chain becomes `{x}`. The lint skips a chain whose literals hold a backtick, a brace, or an escape. `alloy flux --fix` rewrites the rest.",
-      "group": "style",
       "name": "concat_interpolation",
-      "summary": "a `..` chain that joins literals and values"
+      "group": "style",
+      "default": "warn",
+      "summary": "a `..` chain that joins literals and values",
+      "detail": "Flux. A chain such as `\"Hello \" .. name .. \"!\"` is one interpolated string: `` `Hello {name}!` ``. The backtick form calls `tostring` on each hole, so a `tostring(x)` in the chain becomes `{x}`. The lint skips a chain whose literals hold a backtick, a brace, or an escape. `alloy flux --fix` rewrites the rest."
     },
     {
-      "default": "warn",
-      "detail": "Flux. `pcall` yields a flag and a value the caller has to test by hand, and the error loses its traceback. `Result.pcall(f, ...)` yields a `Result` with the traceback on the `Err`, and `try` unwraps it or returns it. No automatic rewrite: the surrounding code changes with it.",
-      "group": "style",
       "name": "raw_pcall",
-      "summary": "a `pcall` or `xpcall`"
+      "group": "style",
+      "default": "warn",
+      "summary": "a `pcall` or `xpcall`",
+      "detail": "Flux. `pcall` yields a flag and a value the caller has to test by hand, and the error loses its traceback. `Result.pcall(f, ...)` yields a `Result` with the traceback on the `Err`, and `try` unwraps it or returns it. No automatic rewrite: the surrounding code changes with it."
     },
     {
-      "default": "warn",
-      "detail": "Flux. `import` resolves the path at build time, binds only the names the file uses, and carries the types; the checker follows it and `unused_import` watches it. `require` binds the whole module at runtime. `alloy flux --fix` rewrites `local X = require(\"./x\")` to `import X from \"./x\"`; an instance path stays for the author.",
-      "group": "style",
       "name": "raw_require",
-      "summary": "a `require` where an `import` would do"
+      "group": "style",
+      "default": "warn",
+      "summary": "a `require` where an `import` would do",
+      "detail": "Flux. `import` resolves the path at build time, binds only the names the file uses, and carries the types; the checker follows it and `unused_import` watches it. `require` binds the whole module at runtime. `alloy flux --fix` rewrites `local X = require(\"./x\")` to `import X from \"./x\"`; an instance path stays for the author."
     },
     {
-      "default": "warn",
-      "detail": "Flux. The metatable idiom writes the constructor, the `__index`, and the method table by hand, and the checker sees plain tables. `struct X as ... end` with `impl X` emits the same tables with types, `new X(...)` for construction, and traits for shared behaviour. No automatic rewrite.",
-      "group": "style",
       "name": "manual_class",
-      "summary": "`X.__index = X`, the class idiom by hand"
+      "group": "style",
+      "default": "warn",
+      "summary": "`X.__index = X`, the class idiom by hand",
+      "detail": "Flux. The metatable idiom writes the constructor, the `__index`, and the method table by hand, and the checker sees plain tables. `struct X as ... end` with `impl X` emits the same tables with types, `new X(...)` for construction, and traits for shared behaviour. No automatic rewrite."
     },
     {
-      "default": "warn",
-      "detail": "Flux. Two returns that differ only in the value are one: `return c ? a : b`. The ternary picks by `c` alone, so the rewrite is the same program. `alloy flux --fix` rewrites it.",
-      "group": "style",
       "name": "manual_ternary_return",
-      "summary": "`if c then return a else return b end`"
+      "group": "style",
+      "default": "warn",
+      "summary": "`if c then return a else return b end`",
+      "detail": "Flux. Two returns that differ only in the value are one: `return c ? a : b`. The ternary picks by `c` alone, so the rewrite is the same program. `alloy flux --fix` rewrites it."
     },
     {
-      "default": "warn",
-      "detail": "A `return` with no value right before the function's `end` does what falling off the end does. Delete it. `alloy flux --fix` removes it.",
-      "group": "style",
       "name": "redundant_return",
-      "summary": "a bare `return` at the end of a function"
+      "group": "style",
+      "default": "warn",
+      "summary": "a bare `return` at the end of a function",
+      "detail": "A `return` with no value right before the function's `end` does what falling off the end does. Delete it. `alloy flux --fix` removes it."
     },
     {
-      "default": "warn",
-      "detail": "The local is read once, on the next line, by the `return`. `return v` says the same in one statement; a call goes in parentheses, `return (f())`, so the return keeps one value as the local did. `alloy flux --fix` rewrites it.",
-      "group": "style",
       "name": "local_then_return",
-      "summary": "`local x = v` followed by `return x`"
-    },
-    {
-      "default": "warn",
-      "detail": "Flux. The numeric loop indexes the table by hand on its first line. `for i, v in t do` binds both, in order, and reads as what it is. `alloy flux --fix` rewrites the header and drops the index line.",
       "group": "style",
+      "default": "warn",
+      "summary": "`local x = v` followed by `return x`",
+      "detail": "The local is read once, on the next line, by the `return`. `return v` says the same in one statement; a call goes in parentheses, `return (f())`, so the return keeps one value as the local did. `alloy flux --fix` rewrites it."
+    },
+    {
       "name": "numeric_for_index",
-      "summary": "`for i = 1, #t do local v = t[i]`"
+      "group": "style",
+      "default": "warn",
+      "summary": "`for i = 1, #t do local v = t[i]`",
+      "detail": "Flux. The numeric loop indexes the table by hand on its first line. `for i, v in t do` binds both, in order, and reads as what it is. `alloy flux --fix` rewrites the header and drops the index line."
     },
     {
-      "default": "warn",
-      "detail": "A long parameter list is hard to call in the right order. Group the parameters into a struct or a table, or split the function. The limit is `too_many_arguments` in `[flux]`, seven by default; `self` does not count.",
-      "group": "complexity",
       "name": "too_many_arguments",
-      "summary": "a function with more parameters than `[flux] too_many_arguments`"
+      "group": "complexity",
+      "default": "warn",
+      "summary": "a function with more parameters than `[flux] too_many_arguments`",
+      "detail": "A long parameter list is hard to call in the right order. Group the parameters into a struct or a table, or split the function. The limit is `too_many_arguments` in `[flux]`, seven by default; `self` does not count."
     },
     {
-      "default": "warn",
-      "detail": "A function this long does several things. Name the parts and call them. The limit is `too_many_lines` in `[flux]`, one hundred by default, counted between the header and the `end`.",
-      "group": "complexity",
       "name": "too_many_lines",
-      "summary": "a function longer than `[flux] too_many_lines`"
+      "group": "complexity",
+      "default": "warn",
+      "summary": "a function longer than `[flux] too_many_lines`",
+      "detail": "A function this long does several things. Name the parts and call them. The limit is `too_many_lines` in `[flux]`, one hundred by default, counted between the header and the `end`."
     },
     {
-      "default": "warn",
-      "detail": "Each `if`, loop, `match`, and function inside another adds a level the reader has to hold. Return early, invert the condition, or move the inner block into its own function. The limit is `max_nesting` in `[flux]`, five by default.",
-      "group": "complexity",
       "name": "deep_nesting",
-      "summary": "blocks nested deeper than `[flux] max_nesting`"
+      "group": "complexity",
+      "default": "warn",
+      "summary": "blocks nested deeper than `[flux] max_nesting`",
+      "detail": "Each `if`, loop, `match`, and function inside another adds a level the reader has to hold. Return early, invert the condition, or move the inner block into its own function. The limit is `max_nesting` in `[flux]`, five by default."
     },
     {
-      "default": "warn",
-      "detail": "Every `if`, `elseif`, `else`, loop, `match`, ternary, `and`, and `or` adds one, and a branch inside another adds its depth on top. A score past the limit means the function is hard to follow; split it where the deepest branches begin. The limit is `cognitive_complexity` in `[flux]`, twenty-five by default.",
-      "group": "complexity",
       "name": "cognitive_complexity",
-      "summary": "a function whose branches score past `[flux] cognitive_complexity`"
+      "group": "complexity",
+      "default": "warn",
+      "summary": "a function whose branches score past `[flux] cognitive_complexity`",
+      "detail": "Every `if`, `elseif`, `else`, loop, `match`, ternary, `and`, and `or` adds one, and a branch inside another adds its depth on top. A score past the limit means the function is hard to follow; split it where the deepest branches begin. The limit is `cognitive_complexity` in `[flux]`, twenty-five by default."
     },
     {
-      "default": "warn",
-      "detail": "An `if` whose only statement is another `if`, with no `else` on either, is one `if a and b then`. `alloy flux --fix` rewrites it; `alloy fmt` then fixes the indent of the body.",
-      "group": "complexity",
       "name": "collapsible_if",
-      "summary": "`if a then if b then ... end end`"
-    },
-    {
-      "default": "warn",
-      "detail": "An `else` whose only statement is an `if` is an `elseif`, one `end` shorter and one level shallower. `alloy flux --fix` rewrites it; `alloy fmt` then fixes the indent.",
       "group": "complexity",
+      "default": "warn",
+      "summary": "`if a then if b then ... end end`",
+      "detail": "An `if` whose only statement is another `if`, with no `else` on either, is one `if a and b then`. `alloy flux --fix` rewrites it; `alloy fmt` then fixes the indent of the body."
+    },
+    {
       "name": "collapsible_else_if",
-      "summary": "`else if ... end end` in place of `elseif`"
+      "group": "complexity",
+      "default": "warn",
+      "summary": "`else if ... end end` in place of `elseif`",
+      "detail": "An `else` whose only statement is an `if` is an `elseif`, one `end` shorter and one level shallower. `alloy flux --fix` rewrites it; `alloy fmt` then fixes the indent."
     },
     {
-      "default": "warn",
-      "detail": "Each `..` copies the whole string so far, so the loop is quadratic in the output. Push the pieces into a table and `table.concat` it once after the loop.",
-      "group": "perf",
       "name": "concat_in_loop",
-      "summary": "`s = s .. x` inside a loop"
+      "group": "perf",
+      "default": "warn",
+      "summary": "`s = s .. x` inside a loop",
+      "detail": "Each `..` copies the whole string so far, so the loop is quadratic in the output. Push the pieces into a table and `table.concat` it once after the loop."
     },
     {
-      "default": "warn",
-      "detail": "The service never changes, so the lookup repeats for nothing. Bind it once above the loop, or at the top of the file, as the Roblox style guide does.",
-      "group": "perf",
       "name": "service_in_loop",
-      "summary": "`game:GetService` inside a loop"
-    },
-    {
-      "default": "warn",
-      "detail": "The three-argument insert shifts elements, and computes a length that the two-argument form computes itself. `table.insert(t, v)` appends. `alloy flux --fix` rewrites it.",
       "group": "perf",
+      "default": "warn",
+      "summary": "`game:GetService` inside a loop",
+      "detail": "The service never changes, so the lookup repeats for nothing. Bind it once above the loop, or at the top of the file, as the Roblox style guide does."
+    },
+    {
       "name": "table_insert_position",
-      "summary": "`table.insert(t, #t + 1, v)`"
+      "group": "perf",
+      "default": "warn",
+      "summary": "`table.insert(t, #t + 1, v)`",
+      "detail": "The three-argument insert shifts elements, and computes a length that the two-argument form computes itself. `table.insert(t, v)` appends. `alloy flux --fix` rewrites it."
     },
     {
-      "default": "warn",
-      "detail": "The legacy scheduler globals run on the 30 Hz legacy pipeline and their timing drifts. `task.wait`, `task.spawn`, `task.delay`, and `task.defer` are the replacements; `unpack` is `table.unpack`. `alloy flux --fix` rewrites them.",
-      "group": "roblox",
       "name": "deprecated_global",
-      "summary": "a call to `wait`, `spawn`, `delay`, or `unpack`"
+      "group": "roblox",
+      "default": "warn",
+      "summary": "a call to `wait`, `spawn`, `delay`, or `unpack`",
+      "detail": "The legacy scheduler globals run on the 30 Hz legacy pipeline and their timing drifts. `task.wait`, `task.spawn`, `task.delay`, and `task.defer` are the replacements; `unpack` is `table.unpack`. `alloy flux --fix` rewrites them."
     },
     {
-      "default": "warn",
-      "detail": "Flux. `parent->X` is `FindFirstChild(\"X\")` and `parent=>X` is `WaitForChild(\"X\")`, typed from the sourcemap and shorter to read. A call with a second argument stays as it is. `alloy flux --fix` rewrites the one-argument form.",
-      "group": "roblox",
       "name": "manual_child_lookup",
-      "summary": "`:FindFirstChild(\"X\")` or `:WaitForChild(\"X\")` with a literal name"
+      "group": "roblox",
+      "default": "warn",
+      "summary": "`:FindFirstChild(\"X\")` or `:WaitForChild(\"X\")` with a literal name",
+      "detail": "Flux. `parent->X` is `FindFirstChild(\"X\")` and `parent=>X` is `WaitForChild(\"X\")`, typed from the sourcemap and shorter to read. A call with a second argument stays as it is. `alloy flux --fix` rewrites the one-argument form."
     },
     {
-      "default": "warn",
-      "detail": "The lowercase members are the pre-2014 names, kept for old places and gone from the docs. `Connect`, `Wait`, `Destroy`, `Clone`, `GetChildren`, `FindFirstChild`, and `IsA` are the current ones, and the checker knows only those. A method of the same name that the file declares does not fire. `alloy flux --fix` rewrites them.",
-      "group": "roblox",
       "name": "deprecated_method",
-      "summary": "a lowercase Roblox method: `:connect`, `:wait`, `:remove`, `:clone`"
+      "group": "roblox",
+      "default": "warn",
+      "summary": "a lowercase Roblox method: `:connect`, `:wait`, `:remove`, `:clone`",
+      "detail": "The lowercase members are the pre-2014 names, kept for old places and gone from the docs. `Connect`, `Wait`, `Destroy`, `Clone`, `GetChildren`, `FindFirstChild`, and `IsA` are the current ones, and the checker knows only those. A method of the same name that the file declares does not fire. `alloy flux --fix` rewrites them."
     },
     {
-      "default": "warn",
-      "detail": "With the parent set first, every property written after it replicates and fires a change on its own. Create the instance, set its properties, then set `Parent` last. No automatic rewrite: the assignments move.",
-      "group": "roblox",
       "name": "instance_new_parent",
-      "summary": "`Instance.new(class, parent)`, the parent as an argument"
-    },
-    {
-      "default": "warn",
-      "detail": "The body movers are deprecated. `LinearVelocity` replaces `BodyVelocity`, `AlignPosition` replaces `BodyPosition`, `AlignOrientation` replaces `BodyGyro`, `VectorForce` replaces `BodyForce` and `BodyThrust`, `AngularVelocity` replaces `BodyAngularVelocity`, and `LineForce` with `AlignOrientation` replaces `RocketPropulsion`. Each needs an `Attachment`; no automatic rewrite.",
       "group": "roblox",
+      "default": "warn",
+      "summary": "`Instance.new(class, parent)`, the parent as an argument",
+      "detail": "With the parent set first, every property written after it replicates and fires a change on its own. Create the instance, set its properties, then set `Parent` last. No automatic rewrite: the assignments move."
+    },
+    {
       "name": "deprecated_body_mover",
-      "summary": "`BodyVelocity`, `BodyPosition`, `BodyGyro`, and the other body movers"
+      "group": "roblox",
+      "default": "warn",
+      "summary": "`BodyVelocity`, `BodyPosition`, `BodyGyro`, and the other body movers",
+      "detail": "The body movers are deprecated. `LinearVelocity` replaces `BodyVelocity`, `AlignPosition` replaces `BodyPosition`, `AlignOrientation` replaces `BodyGyro`, `VectorForce` replaces `BodyForce` and `BodyThrust`, `AngularVelocity` replaces `BodyAngularVelocity`, and `LineForce` with `AlignOrientation` replaces `RocketPropulsion`. Each needs an `Attachment`; no automatic rewrite."
     },
     {
-      "default": "strict",
-      "detail": "Pedantic. Flux. `any` turns the checker off for the value and everything read from it. `unknown` keeps the checker on, and `x is T` narrows it where the code needs a shape. The lint skips the `any_cast` the compiler writes.",
-      "group": "pedantic",
       "name": "explicit_any",
-      "summary": "an annotation of `any`"
+      "group": "pedantic",
+      "default": "strict",
+      "summary": "an annotation of `any`",
+      "detail": "Pedantic. Flux. `any` turns the checker off for the value and everything read from it. `unknown` keeps the checker on, and `x is T` narrows it where the code needs a shape. The lint skips the `any_cast` the compiler writes."
     },
     {
-      "default": "strict",
-      "detail": "Pedantic. A parameter of a named function with no annotation is `any` to the checker, and every use of it goes unchecked. Write the type. A callback passed as an argument is exempt: the checker infers its parameters from the callee.",
-      "group": "pedantic",
       "name": "implicit_any",
-      "summary": "a named function parameter with no type"
+      "group": "pedantic",
+      "default": "strict",
+      "summary": "a named function parameter with no type",
+      "detail": "Pedantic. A parameter of a named function with no annotation is `any` to the checker, and every use of it goes unchecked. Write the type. A callback passed as an argument is exempt: the checker infers its parameters from the callee."
     },
     {
-      "default": "strict",
-      "detail": "Pedantic. An exported function, or a method in an `impl`, is an interface others call; without a return annotation, a change to its body changes its type in silence. Write the return type.",
-      "group": "pedantic",
       "name": "missing_return_type",
-      "summary": "a public function with no return type"
+      "group": "pedantic",
+      "default": "strict",
+      "summary": "a public function with no return type",
+      "detail": "Pedantic. An exported function, or a method in an `impl`, is an interface others call; without a return annotation, a change to its body changes its type in silence. Write the return type."
     },
     {
-      "default": "strict",
-      "detail": "Pedantic. The comment marks work that is not done. The lint lists them so a release can hold until they are, or until they become tickets.",
-      "group": "pedantic",
       "name": "todo_comment",
-      "summary": "a `TODO`, `FIXME`, `XXX`, or `HACK` comment"
+      "group": "pedantic",
+      "default": "strict",
+      "summary": "a `TODO`, `FIXME`, `XXX`, or `HACK` comment",
+      "detail": "Pedantic. The comment marks work that is not done. The lint lists them so a release can hold until they are, or until they become tickets."
     },
     {
-      "default": "strict",
-      "detail": "Pedantic. A `print` left over from debugging writes to the output of every player. Remove it, or route it through a logger the project can turn off.",
-      "group": "pedantic",
       "name": "print_debug",
-      "summary": "a `print` call"
-    },
-    {
-      "default": "strict",
-      "detail": "Pedantic. An `export` is the interface of the module. A comment line right above it, `--` or `---`, says what it is for; the language server shows it on hover.",
       "group": "pedantic",
+      "default": "strict",
+      "summary": "a `print` call",
+      "detail": "Pedantic. A `print` left over from debugging writes to the output of every player. Remove it, or route it through a logger the project can turn off."
+    },
+    {
       "name": "missing_doc",
-      "summary": "an exported declaration with no comment above it"
+      "group": "pedantic",
+      "default": "strict",
+      "summary": "an exported declaration with no comment above it",
+      "detail": "Pedantic. An `export` is the interface of the module. A comment line right above it, `--` or `---`, says what it is for; the language server shows it on hover."
     },
     {
-      "default": "strict",
-      "detail": "Naming. Alloy code is snake_case: `player_count`, not `playerCount`. Engine members stay PascalCase and Luau builtins lowercase, so the three read as three namespaces. A PascalCase local for a service or a module, `local Players`, is not camelCase and does not fire.",
-      "group": "naming",
       "name": "camel_case_name",
-      "summary": "a local, function, or parameter in camelCase"
+      "group": "naming",
+      "default": "strict",
+      "summary": "a local, function, or parameter in camelCase",
+      "detail": "Naming. Alloy code is snake_case: `player_count`, not `playerCount`. Engine members stay PascalCase and Luau builtins lowercase, so the three read as three namespaces. A PascalCase local for a service or a module, `local Players`, is not camelCase and does not fire."
     },
     {
-      "default": "strict",
-      "detail": "Naming. A type name starts with a capital and has no underscore: `PlayerState`. The name of a type reads as one in a signature that way.",
-      "group": "naming",
       "name": "type_case",
-      "summary": "a struct, enum, trait, interface, or type not in PascalCase"
+      "group": "naming",
+      "default": "strict",
+      "summary": "a struct, enum, trait, interface, or type not in PascalCase",
+      "detail": "Naming. A type name starts with a capital and has no underscore: `PlayerState`. The name of a type reads as one in a signature that way."
     },
     {
-      "default": "strict",
-      "detail": "Naming. A local function is snake_case, `load_map`, so a call reads as a call and not as a constructor. A method of an engine protocol, `function Drop:Destroy`, keeps the host's case and does not fire.",
-      "group": "naming",
       "name": "pascal_case_function",
-      "summary": "a `local function` in PascalCase"
+      "group": "naming",
+      "default": "strict",
+      "summary": "a `local function` in PascalCase",
+      "detail": "Naming. A local function is snake_case, `load_map`, so a call reads as a call and not as a constructor. A method of an engine protocol, `function Drop:Destroy`, keeps the host's case and does not fire."
     }
-  ],
-  "version": "0.1.0-rc.1"
+  ]
 }
