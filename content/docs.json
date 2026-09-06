@@ -204,7 +204,7 @@
     {
       "key": "delete",
       "group": "Keywords",
-      "markdown": "```alloy\ndelete expr\n```\n`expr:Destroy()`."
+      "markdown": "```alloy\ndelete expr\n```\nDestroys the value: an Instance, a connection, a thread, a function, or a table with a `Destroy` or `Disconnect` method. `delete t.field` and `delete t[key]` then set the slot to nil, so the table holds nothing destroyed."
     },
     {
       "key": "attribute",
@@ -584,7 +584,7 @@
     {
       "key": "topic:mount",
       "group": "Articles",
-      "markdown": "**Mounts and project files**\n\nOne table in alloy.toml says where each folder lands in the DataModel, and `alloy build` writes every file that follows from it:\n\n```toml\n[project]\nname = \"game\"\nruntime = \"@game/ReplicatedStorage/Alloy\"\n\n[mount]\n# alias = [path, mount]\nserver = [\"src/server\", \"@game/ServerScriptService/Server\"]\nclient = [\"src/client\", \"@game/StarterPlayer/StarterPlayerScripts/Client\"]\nshared = [\"src/shared\", \"@game/ReplicatedStorage/Shared\"]\npkg = [\"Packages\", \"@game/ReplicatedStorage/Packages\"]\n```\n\n  default.project.json        a Rojo project over the sources\n  .alloy/build.project.json   the same tree over the compiled output, for `rojo serve` and `rojo build`\n  .alloy/sourcemap.json       the instance tree with the source paths; the language server reads it\n  .luaurc                     gains an alias per mount, so `@pkg/jecs` resolves in the editor\n\nRoblox reads no `.luaurc`, so the ship artifact rewrites `require(\"@pkg/jecs\")` into the relative instance path from the file's mount, `../../ReplicatedStorage/Packages/jecs` from a server script, and requires the runtime the same way. A path under `[build] in` points at its output in the build project; any other path, such as a package folder, is mounted as it is. `.server.` and `.client.` name the script class, `init` names its directory, and a `StarterPlayerScripts` between a service and a leaf keeps its own class."
+      "markdown": "**Mounts and project files**\n\nOne table in alloy.toml says where each folder lands in the DataModel, and `alloy build` writes every file that follows from it:\n\n```toml\n[project]\nname = \"game\"\nruntime = \"@game/ReplicatedStorage/Alloy\"\n\n[mount]\n# alias = [path, mount]\nserver = [\"src/server\", \"@game/ServerScriptService/Server\"]\nclient = [\"src/client\", \"@game/StarterPlayer/StarterPlayerScripts/Client\"]\nshared = [\"src/shared\", \"@game/ReplicatedStorage/Shared\"]\npkg = [\"Packages\", \"@game/ReplicatedStorage/Packages\"]\n```\n\n  default.project.json        a Rojo project over the sources\n  .alloy/build.project.json   the same tree over the compiled output, for `rojo serve` and `rojo build`\n  .alloy/sourcemap.json       the instance tree with the source paths; the language server reads it\n  .luaurc                     gains an alias per mount, so `@pkg/jecs` resolves in the editor\n\nRoblox reads no `.luaurc`, so the ship artifact rewrites `require(\"@pkg/jecs\")` into the mount's instance path, `@game/ReplicatedStorage/Packages/jecs`, and requires the runtime by its `[project] runtime` path the same way. A path under `[build] in` points at its output in the build project; any other path, such as a package folder, is mounted as it is. `.server.` and `.client.` name the script class, `init` names its directory, and a `StarterPlayerScripts` between a service and a leaf keeps its own class."
     },
     {
       "key": "topic:data",
@@ -689,7 +689,14 @@
       "group": "suspicious",
       "default": "warn",
       "summary": "a local that nothing reads",
-      "detail": "A `local`, a `local function`, or a loop variable that appears nowhere after its declaration. A leftover, or a typo in the name that reads it. Prefix it with `_` to say it is unused on purpose; `alloy flux --fix` does that. The type checker reports the scoped cases this lint cannot see."
+      "detail": "A `local` or a loop variable that appears nowhere after its declaration. A leftover, or a typo in the name that reads it. Prefix it with `_` to say it is unused on purpose; `alloy flux --fix` does that. The type checker reports the scoped cases this lint cannot see, and `unused_function` covers a function."
+    },
+    {
+      "name": "unused_function",
+      "group": "suspicious",
+      "default": "warn",
+      "summary": "a function that nothing calls",
+      "detail": "A `function`, a `local function`, an `async function`, or a local or const bound to a function value, whose name appears nowhere else in the file. An exported function, and a method of an `impl` or a `trait`, are for other files and do not fire. Prefix the name with `_` to keep it on purpose; `alloy flux --fix` does that."
     },
     {
       "name": "empty_block",
