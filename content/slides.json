@@ -76,7 +76,7 @@
       "eyebrow": "Types",
       "title": "Structs, traits, and impls emit the metatable pattern",
       "thesis": "An Alloy struct is a plain table that vanilla Luau can use. Fields carry defaults and read or write marks. impl adds methods. A trait is a type of signatures plus default bodies.",
-      "src": "struct Vec2 as\n    x: number\n    y: number = 0\nend\nimpl Vec2\n    function len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = new Vec2 { x = 3, y = 4 }",
+      "src": "struct Vec2 as\n    x: number\n    y: number = 0\nend\nimpl Vec2 as\n    function len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = new Vec2 { x = 3, y = 4 }",
       "emit": "local Vec2 = {} Vec2.__index = Vec2 setmetatable(Vec2, { __call = function(_, f) if f.y == nil then f.y = 0 end return setmetatable(f, Vec2) end }) function Vec2.new(f) return Vec2(f) end\n\n\n type Vec2 = typeof(setmetatable({} :: { x: number, y: number? }, Vec2))\ndo\n    function Vec2.len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = Vec2({ x = 3, y = 4 })",
       "points": [
         "<b><code>new</code> is the only way in.</b> <code>new Vec2 { ... }</code> is the fields form; a struct whose impl writes <code>new</code> or <code>New</code> takes <code>new Vec2(...)</code> instead. Bare <code>Vec2 { }</code> and <code>Vec2(1, 2)</code> are diagnostics.",

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 import BookShell, { type TocChapter } from "@/components/BookShell";
 import type { Metadata } from "next";
@@ -10,6 +10,8 @@ import UpdatedPill from "@/components/UpdatedPill";
 import {
   contracts,
   lintGroups,
+  memberGroups,
+  memberLabel,
   plainText,
   referenceGroups,
   slides,
@@ -18,6 +20,7 @@ import {
   updatedAll,
   updatedAt,
   version,
+  type Entry,
   type SearchDoc,
 } from "@/lib/content";
 
@@ -56,6 +59,50 @@ function Section({
 /** The anchor of one reference entry, from its key. */
 function entryId(key: string): string {
   return `ref-${key.replace(/[^A-Za-z0-9_]/g, (c) => `_${c.charCodeAt(0)}`)}`;
+}
+
+/** The anchor of one member section. */
+function memberId(key: string, name: string): string {
+  return `${entryId(key)}-${name}`;
+}
+
+/** One std type as a reference page: the signature, the overview, an
+ *  index of the members, then a section for each of them. */
+function StdEntry({ entry }: { entry: Entry }) {
+  const groups = memberGroups(entry);
+
+  return (
+    <>
+      {entry.signature ? <CodePane code={entry.signature} mode="alloy" className="mb-3" /> : null}
+      <Markdown text={entry.markdown} />
+      {groups.length > 0 ? (
+        <nav className="member-index" aria-label={`${entry.key} members`}>
+          {groups.map((g) =>
+            g.members.map((m) => (
+              <a key={`${g.kind}-${m.name}`} href={`#${memberId(entry.key, m.name)}`} className="chip glass">
+                {m.name}
+              </a>
+            )),
+          )}
+        </nav>
+      ) : null}
+      {groups.map((g) => (
+        <div key={g.kind}>
+          <h4 className="member-kind">{g.title}</h4>
+          {g.members.map((m) => (
+            <section key={m.name} id={memberId(entry.key, m.name)} className="member glass">
+              <h5>{memberLabel(entry, m)}</h5>
+              <CodePane code={m.signature} mode="alloy" className="mb-2" />
+              <div className="prose">
+                <p>{inline(m.doc).map((n, j) => <Fragment key={j}>{n}</Fragment>)}</p>
+              </div>
+              <CodePane code={m.example} mode="alloy" />
+            </section>
+          ))}
+        </div>
+      ))}
+    </>
+  );
 }
 
 function Sub({
@@ -192,8 +239,18 @@ const index: SearchDoc[] = [
       id: entryId(e.key),
       label: e.key.replace(/^derive:/, "@derive(") + (e.key.startsWith("derive:") ? ")" : ""),
       number: `6.${i + 1}`,
-      text: plainText(e.markdown),
+      text: plainText(`${e.signature ?? ""} ${e.markdown}`),
     })),
+  ),
+  ...referenceGroups.flatMap((g, i) =>
+    g.keys.flatMap((e) =>
+      e.members.map((m) => ({
+        id: memberId(e.key, m.name),
+        label: memberLabel(e, m),
+        number: `6.${i + 1}`,
+        text: plainText(`${m.signature} ${m.doc}`),
+      })),
+    ),
   ),
   ...lintGroups.flatMap((g) =>
     g.lints.map((l) => ({
@@ -416,7 +473,7 @@ export default function Docs() {
               {g.keys.map((e) => (
                 <article key={e.key} id={entryId(e.key)} className="entry">
                   <h3>{e.key.replace(/^derive:/, "@derive(") + (e.key.startsWith("derive:") ? ")" : "")}</h3>
-                  <Markdown text={e.markdown} />
+                  {g.slug === "std" ? <StdEntry entry={e} /> : <Markdown text={e.markdown} />}
                 </article>
               ))}
             </Sub>

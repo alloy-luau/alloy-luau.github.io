@@ -5,7 +5,15 @@ import docsJson from "@/content/docs.json";
 import slidesJson from "@/content/slides.json";
 import updatedJson from "@/content/updated.json";
 
-export type Entry = { key: string; group: string; markdown: string };
+/** One documented member of a std type, as `alloy doc --json` writes it. */
+export type Member = {
+  name: string;
+  kind: "static" | "method" | "field" | "constant";
+  signature: string;
+  doc: string;
+  example: string;
+};
+export type Entry = { key: string; group: string; markdown: string; signature: string | null; members: Member[] };
 export type LintDoc = { name: string; group: string; default: string; summary: string; detail: string };
 export type Slide = {
   id: string;
@@ -20,7 +28,31 @@ export type Slide = {
 };
 
 export const version: string = docsJson.version;
-export const entries: Entry[] = docsJson.entries;
+export const entries: Entry[] = docsJson.entries as Entry[];
+
+/** The member headings, in the order a reference page prints them. */
+export const memberKinds: [Member["kind"], string][] = [
+  ["static", "Statics"],
+  ["method", "Methods"],
+  ["field", "Fields"],
+  ["constant", "Constants"],
+];
+
+/** An entry's members by kind, in that order, with the empty kinds gone. */
+export function memberGroups(entry: Entry): { kind: Member["kind"]; title: string; members: Member[] }[] {
+  return memberKinds
+    .map(([kind, title]) => ({ kind, title, members: entry.members.filter((m) => m.kind === kind) }))
+    .filter((g) => g.members.length > 0);
+}
+
+/** How a page names a member: `HashMap:get` for a method, `HashMap.new`
+ *  for a static, and the bare name for a shape that stands on its own. */
+export function memberLabel(entry: Entry, m: Member): string {
+  if (m.kind === "static") return `${entry.key}.${m.name}`;
+  if (m.kind === "method") return `${entry.key}:${m.name}`;
+
+  return m.signature.startsWith(`${entry.key}.`) ? `${entry.key}.${m.name}` : m.name;
+}
 export const lints: LintDoc[] = docsJson.lints;
 
 /** The lint groups in book order, with what each holds. */
@@ -90,7 +122,7 @@ export const contracts: { title: string; body: string; code: string; icon: strin
     icon: "trait",
     title: "Trait contract",
     body: "An impl writes every method the trait declares without a body, with the trait's arity.",
-    code: "trait Shape\n    function area(self): number\nend\nimpl Shape for Sq\nend\n-- `impl Shape for Sq` does not write `area`",
+    code: "trait Shape as\n    function area(self): number\nend\nimpl Shape for Sq as\nend\n-- `impl Shape for Sq` does not write `area`",
   },
   {
     icon: "sealed",

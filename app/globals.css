@@ -325,6 +325,76 @@ h3 code {
   color: var(--ink-2);
 }
 
+/* The reference sections of a std type: an index of the members, then
+   one glass card per member with its signature, doc, and example. */
+.member-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 18px;
+}
+
+.member-index a {
+  padding: 3px 10px;
+  font-size: 12px;
+  text-decoration: none;
+  color: var(--ink-2);
+}
+
+.member-index a:hover {
+  color: var(--ink);
+}
+
+.member-kind {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 22px 0 10px;
+}
+
+.member {
+  border-radius: 12px;
+  padding: 14px 16px 16px;
+  margin: 0 0 12px;
+  scroll-margin-top: 80px;
+}
+
+.member h5 {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 13.5px;
+  margin: 0 0 8px;
+  color: var(--accent-ink);
+}
+
+.member .prose {
+  max-width: none;
+}
+
+.member .prose p:last-child {
+  margin-bottom: 12px;
+}
+
+/* A pipe table in the book's prose, as the tooltips draw one. */
+.md-table-wrap {
+  margin: 0 0 14px;
+  overflow-x: auto;
+}
+
+.prose table.md-table {
+  border-collapse: collapse;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.prose table.md-table td {
+  padding: 5px 14px 5px 0;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
 kbd {
   font-family: var(--font-mono);
   font-size: 11px;

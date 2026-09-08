@@ -34,6 +34,7 @@ export function inline(text: string): ReactNode[] {
 type Block =
   | { kind: "fence"; lang: string; code: string }
   | { kind: "table"; text: string }
+  | { kind: "rows"; rows: string[][] }
   | { kind: "para"; text: string };
 
 function blocks(markdown: string): Block[] {
@@ -71,6 +72,24 @@ function blocks(markdown: string): Block[] {
       continue;
     }
 
+    // A pipe table, as lib/md.ts reads one: the `|---|` rule is a rule,
+    // not a row.
+    if (line.startsWith("|")) {
+      const rows: string[][] = [];
+
+      while (i < lines.length && lines[i].startsWith("|")) {
+        const body = lines[i].endsWith("|") ? lines[i].slice(1, -1) : lines[i].slice(1);
+        const cells = body.split("|");
+
+        if (!cells.every((c) => /^\s*-*\s*$/.test(c))) rows.push(cells.map((c) => c.trim()));
+
+        i += 1;
+      }
+
+      out.push({ kind: "rows", rows });
+      continue;
+    }
+
     if (line.trim() === "") {
       i += 1;
       continue;
@@ -78,7 +97,13 @@ function blocks(markdown: string): Block[] {
 
     const para: string[] = [];
 
-    while (i < lines.length && lines[i].trim() !== "" && !lines[i].startsWith("```") && !lines[i].startsWith("  ")) {
+    while (
+      i < lines.length &&
+      lines[i].trim() !== "" &&
+      !lines[i].startsWith("```") &&
+      !lines[i].startsWith("  ") &&
+      !lines[i].startsWith("|")
+    ) {
       para.push(lines[i]);
       i += 1;
     }
@@ -117,6 +142,28 @@ export default function Markdown({ text, emitSecond = false }: { text: string; e
           return (
             <div className="table" key={i}>
               {b.text}
+            </div>
+          );
+        }
+
+        if (b.kind === "rows") {
+          return (
+            <div className="md-table-wrap" key={i}>
+              <table className="md-table">
+                <tbody>
+                  {b.rows.map((cells, r) => (
+                    <tr key={r}>
+                      {cells.map((c, k) => (
+                        <td key={k}>
+                          {inline(c).map((n, j) => (
+                            <Fragment key={j}>{n}</Fragment>
+                          ))}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           );
         }

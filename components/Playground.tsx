@@ -140,7 +140,7 @@ struct Vec2 as
     y: number
 end
 
-impl Vec2
+impl Vec2 as
     function length(self): number
         return math.sqrt(self.x * self.x + self.y * self.y)
     end
