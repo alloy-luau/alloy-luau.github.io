@@ -480,7 +480,7 @@
     "date": "2026-09-07"
   },
   "entry:topic:flux": {
-    "hash": "f977714c025b5008",
+    "hash": "c779f40c22de445d",
     "date": "2026-09-08"
   },
   "entry:topic:test": {
@@ -558,6 +558,18 @@
   "lint:optional_access": {
     "hash": "a60ddd2ef91350e2",
     "date": "2026-09-07"
+  },
+  "lint:dropped_result": {
+    "hash": "092e0032b8a0274b",
+    "date": "2026-09-08"
+  },
+  "lint:static_call": {
+    "hash": "6dfb68d2c1b983e9",
+    "date": "2026-09-08"
+  },
+  "lint:argument_count": {
+    "hash": "bb14a3ee1ca1e6ba",
+    "date": "2026-09-08"
   },
   "lint:unreachable_default": {
     "hash": "5bdefbf9dfbeb223",
@@ -736,8 +748,8 @@
     "date": "2026-09-07"
   },
   "lint:deprecated_method": {
-    "hash": "745d7ec9a56f1cb1",
-    "date": "2026-09-07"
+    "hash": "10319a623ac71e16",
+    "date": "2026-09-08"
   },
   "lint:instance_new_parent": {
     "hash": "7a318de7c05e2af8",

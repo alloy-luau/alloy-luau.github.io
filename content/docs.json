@@ -604,7 +604,7 @@
     {
       "key": "topic:flux",
       "group": "Articles",
-      "markdown": "**alloy flux**\n\nFlux is the whole analysis in one run, what clippy is to cargo. It compiles every source, runs luau-lsp over the check artifact and maps the type errors onto the Alloy lines, and runs every lint at its `[lint]` level: Flux's own seven groups, and the checker's lints under the `luau` group. It also sees what one file cannot: `circular_import` reports two files that import each other.\n\n```\nalloy flux                 the project of the nearest alloy.toml\nalloy flux src/game.aly    one file: the compile, the lints, and the type check\nalloy flux --fix           apply the rewrites that keep the program the same\nalloy flux -D correctness  deny a group for this run; -W warns, -A allows\nalloy flux --explain manual_floor_div\nalloy flux --no-typecheck  skip luau-lsp\nalloy flux --watch         run again after every change\nalloy flux --list          every lint with its group and default level\n```\n\nOne file named on the command line still compiles the whole project, since the type check needs every module the file imports, and the report then covers that file alone. A file outside `[build] in` gets the compile and the lints, and the run says the type check did not run.\n\nThe check artifact keeps the source's lines, so a type error on line 12 of the output is on line 12 of the source; the column maps through the span map. The artifacts go into a mirror of the project under the temp directory, with the root's Luau configuration and a link to every other folder, so requires resolve as they do in the editor.\n\nThe `[flux]` table:\n\n```toml\n[flux]\ntypecheck = true                  # run luau-lsp over the check artifact\ndefinitions = []                  # extra .d.luau or .d.aly files; the project's .d.aly join on their own\nroblox_types = true               # load the Roblox globals\nsecurity_level = \"PluginSecurity\" # LocalUserSecurity, RobloxScriptSecurity, None\n# luau_lsp = \"/path/to/luau-lsp\"  # unset: the PATH, then ~/.alloy/bin and ~/.ember/bin\ntoo_many_arguments = 7\ntoo_many_lines = 100\nmax_nesting = 5\ncognitive_complexity = 25\n```\n\nThe Roblox globals come from the luau-lsp extension's storage when the editor has them, and download once into `~/.alloy/types` otherwise. A `--@alloy-ignore` line silences the checker's report on that line, as it does in the editor."
+      "markdown": "**alloy flux**\n\nFlux is the whole analysis in one run, what clippy is to cargo. It compiles every source, runs luau-lsp over the check artifact and maps the type errors onto the Alloy lines, and runs every lint at its `[lint]` level: Flux's own eight groups, and the checker's lints under the `luau` group. It also sees what one file cannot: `circular_import` reports two files that import each other.\n\n```\nalloy flux                 the project of the nearest alloy.toml\nalloy flux src/game.aly    one file: the compile, the lints, and the type check\nalloy flux --fix           apply the rewrites that keep the program the same\nalloy flux -D correctness  deny a group for this run; -W warns, -A allows\nalloy flux --explain manual_floor_div\nalloy flux --no-typecheck  skip luau-lsp\nalloy flux --watch         run again after every change\nalloy flux --list          every lint with its group and default level\n```\n\nOne file named on the command line still compiles the whole project, since the type check needs every module the file imports, and the report then covers that file alone. A file outside `[build] in` gets the compile and the lints, and the run says the type check did not run.\n\nThe check artifact keeps the source's lines, so a type error on line 12 of the output is on line 12 of the source; the column maps through the span map. The artifacts go into a mirror of the project under the temp directory, with the root's Luau configuration and a link to every other folder, so requires resolve as they do in the editor.\n\nThe `[flux]` table:\n\n```toml\n[flux]\ntypecheck = true                  # run luau-lsp over the check artifact\ndefinitions = []                  # extra .d.luau or .d.aly files; the project's .d.aly join on their own\nroblox_types = true               # load the Roblox globals\nsecurity_level = \"PluginSecurity\" # LocalUserSecurity, RobloxScriptSecurity, None\n# luau_lsp = \"/path/to/luau-lsp\"  # unset: the PATH, then ~/.alloy/bin and ~/.ember/bin\ntoo_many_arguments = 7\ntoo_many_lines = 100\nmax_nesting = 5\ncognitive_complexity = 25\n```\n\nThe Roblox globals come from the luau-lsp extension's storage when the editor has them, and download once into `~/.alloy/types` otherwise. A `--@alloy-ignore` line silences the checker's report on that line, as it does in the editor."
     },
     {
       "key": "topic:test",
@@ -704,6 +704,27 @@
       "default": "warn",
       "summary": "a value that may be nil is indexed without a guard",
       "detail": "A parameter typed `T?`, or the result of a function that returns `T?`, is indexed with `.` or called with `:` while nothing in the function checks it for nil. Guard it with `if x then`, `x and`, `assert(x)`, or use `?.` and `?:`, which stop the chain at nil."
+    },
+    {
+      "name": "dropped_result",
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a call of a `Result` function whose value nothing reads",
+      "detail": "A function that can fail answers with a `Result`, and the caller reads it with a `match`, an `if local Ok(v) = r`, or a method. A call statement that drops it loses the failure: the program goes on as if the call worked. Bind the value, or say the failure is expected by naming what to do with it."
+    },
+    {
+      "name": "static_call",
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a static of an `impl` called with `:`",
+      "detail": "A function in an `impl` that does not take `self` is a static: `Wallet.new()`. Called with `:`, the colon passes the table as the first argument, which the static never asked for, and the values shift by one. `alloy flux --fix` writes the dot."
+    },
+    {
+      "name": "argument_count",
+      "group": "correctness",
+      "default": "warn",
+      "summary": "a call passes more arguments than the function takes",
+      "detail": "The extra values are evaluated and dropped, so a mistake in the argument order reads as working code. The lint counts only the functions the file declares by a plain name with a fixed parameter list; a vararg, a default, or a name declared twice makes the count a range and the lint stands down. The checker reports the other direction, a call with too few arguments."
     },
     {
       "name": "unreachable_default",
@@ -1018,7 +1039,7 @@
       "group": "roblox",
       "default": "warn",
       "summary": "a lowercase Roblox method: `:connect`, `:wait`, `:remove`, `:clone`",
-      "detail": "The lowercase members are the pre-2014 names, kept for old places and gone from the docs. `Connect`, `Wait`, `Destroy`, `Clone`, `GetChildren`, `FindFirstChild`, and `IsA` are the current ones, and the checker knows only those. A method of the same name that the file declares does not fire. `alloy flux --fix` rewrites them."
+      "detail": "The lowercase members are the pre-2014 names, kept for old places and gone from the docs. `Connect`, `Wait`, `Destroy`, `Clone`, `GetChildren`, `FindFirstChild`, and `IsA` are the current ones, and the checker knows only those. A method of the same name that the file declares does not fire, and `:remove` and `:clone` fire only on a call with no arguments, since a `HashMap` has a `remove` of its own. `alloy flux --fix` rewrites them."
     },
     {
       "name": "instance_new_parent",
