@@ -6,17 +6,35 @@ import type { Metadata } from "next";
 import CodePane from "@/components/CodePane";
 import Markdown, { inline } from "@/components/Markdown";
 import Nav from "@/components/Nav";
-import { contracts, lintGroups, referenceGroups, slides, stdItems, topic, version } from "@/lib/content";
+import UpdatedPill from "@/components/UpdatedPill";
+import { contracts, lintGroups, referenceGroups, slides, stdItems, topic, updatedAll, updatedAt, version } from "@/lib/content";
 
 // The book: one page, chaptered like the Cargo Book. The sidebar lists
 // every section; the column reads top to bottom.
 
-function Section({ id, number, title, children }: { id: string; number: string; title: ReactNode; children: ReactNode }) {
+function Section({
+  id,
+  number,
+  title,
+  updated,
+  children,
+}: {
+  id: string;
+  number: string;
+  title: ReactNode;
+  updated?: string;
+  children: ReactNode;
+}) {
   return (
     <section id={id} className="mb-16 scroll-mt-20">
-      <h2 className="display mb-4 flex items-baseline gap-3 text-[26px] font-bold leading-[1.15] md:text-[32px]">
+      <h2 className="display mb-4 flex flex-wrap items-baseline gap-3 text-[26px] font-bold leading-[1.15] md:text-[32px]">
         <span className="font-mono text-[14px] font-normal text-muted">{number}</span>
         <span>{title}</span>
+        {updated ? (
+          <span className="ml-auto self-center">
+            <UpdatedPill date={updated} />
+          </span>
+        ) : null}
       </h2>
       {children}
     </section>
@@ -28,19 +46,45 @@ function entryId(key: string): string {
   return `ref-${key.replace(/[^A-Za-z0-9_]/g, (c) => `_${c.charCodeAt(0)}`)}`;
 }
 
-function Sub({ id, number, title, children }: { id: string; number: string; title: ReactNode; children: ReactNode }) {
+function Sub({
+  id,
+  number,
+  title,
+  updated,
+  children,
+}: {
+  id: string;
+  number: string;
+  title: ReactNode;
+  updated?: string;
+  children: ReactNode;
+}) {
   return (
     <section id={id} className="mb-12 scroll-mt-20">
-      <h3 className="display mb-3 flex items-baseline gap-3 text-[20px] font-bold leading-[1.2] md:text-[23px]">
+      <h3 className="display mb-3 flex flex-wrap items-baseline gap-3 text-[20px] font-bold leading-[1.2] md:text-[23px]">
         <span className="font-mono text-[13px] font-normal text-muted">{number}</span>
         <span dangerouslySetInnerHTML={typeof title === "string" ? { __html: title } : undefined}>
           {typeof title === "string" ? undefined : title}
         </span>
+        {updated ? (
+          <span className="ml-auto self-center">
+            <UpdatedPill date={updated} />
+          </span>
+        ) : null}
       </h3>
       {children}
     </section>
   );
 }
+
+// The day each chapter last changed: the page's own prose for the
+// hand-written ones, the table entries and tour chapters for the rest.
+const pageDate = updatedAt(["page:docs"]);
+const topicDate = (name: string) => updatedAt([`entry:topic:${name}`, "page:docs"]);
+const slideDates = slides.map((s) => updatedAt([`slide:${s.id}`]));
+const lintDate = updatedAt(lintGroups.flatMap((g) => g.lints.map((l) => `lint:${l.name}`)));
+const referenceDates = referenceGroups.map((g) => updatedAt(g.keys.map((e) => `entry:${e.key}`)));
+const latest = (dates: (string | undefined)[]) => dates.filter((d): d is string => Boolean(d)).sort().at(-1);
 
 const shell = (s: string) => <CodePane code={s} mode="sh" label="Shell" className="mb-4" />;
 
@@ -124,9 +168,12 @@ export default function Docs() {
             The reference chapters carry the same text the editor shows on hover, generated from the compiler&apos;s own
             table. The language chapters show each construct beside its emitted Luau.
           </p>
+          <div className="mt-5">
+            <UpdatedPill date={updatedAll} label="Last updated" size="md" />
+          </div>
         </div>
 
-        <Section id="intro" number="1" title="Introduction">
+        <Section id="intro" updated={pageDate} number="1" title="Introduction">
           <div className="prose">
             <p>
               Alloy is a strict superset of Luau. Every Luau file is already an Alloy file. A file that uses no Alloy
@@ -147,8 +194,8 @@ export default function Docs() {
           </div>
         </Section>
 
-        <Section id="getting-started" number="2" title="Getting started">
-          <Sub id="install" number="2.1" title="Install">
+        <Section id="getting-started" updated={pageDate} number="2" title="Getting started">
+          <Sub id="install" updated={pageDate} number="2.1" title="Install">
             <div className="prose">
               <p>
                 The build script compiles every crate and the VS Code extension. It then installs <code>alloy</code> and{" "}
@@ -165,7 +212,7 @@ export default function Docs() {
             </div>
           </Sub>
 
-          <Sub id="first-project" number="2.2" title="A first project">
+          <Sub id="first-project" updated={pageDate} number="2.2" title="A first project">
             <div className="prose">
               <p>
                 <code>alloy init</code> writes <code>alloy.toml</code>. When the folder has no Luau configuration, it also
@@ -189,7 +236,7 @@ export default function Docs() {
             </div>
           </Sub>
 
-          <Sub id="editor" number="2.3" title="The editor">
+          <Sub id="editor" updated={pageDate} number="2.3" title="The editor">
             <div className="prose">
               <p>
                 The language server is a proxy over luau-lsp. It compiles every open Alloy file into a mirror directory.
@@ -202,9 +249,9 @@ export default function Docs() {
           </Sub>
         </Section>
 
-        <Section id="language" number="3" title="The language">
+        <Section id="language" number="3" title="The language" updated={latest(slideDates)}>
           {slides.map((s, i) => (
-            <Sub key={s.id} id={s.id} number={`3.${i + 1}`} title={s.title}>
+            <Sub key={s.id} id={s.id} number={`3.${i + 1}`} title={s.title} updated={slideDates[i]}>
               <div className="prose">
                 <p>{s.thesis}</p>
               </div>
@@ -226,8 +273,8 @@ export default function Docs() {
           ))}
         </Section>
 
-        <Section id="strict" number="4" title="Strict by default">
-          <Sub id="contracts" number="4.1" title="The contracts">
+        <Section id="strict" number="4" title="Strict by default" updated={latest(["strict", "exhaustive", "wire", "directives"].map(topicDate))}>
+          <Sub id="contracts" updated={topicDate("strict")} number="4.1" title="The contracts">
             <Markdown text={topic("strict")} />
             <div className="mt-6 grid gap-3 md:grid-cols-2">
               {contracts.map((c) => (
@@ -241,37 +288,37 @@ export default function Docs() {
               ))}
             </div>
           </Sub>
-          <Sub id="exhaustive" number="4.2" title="Exhaustive match">
+          <Sub id="exhaustive" updated={topicDate("exhaustive")} number="4.2" title="Exhaustive match">
             <Markdown text={topic("exhaustive")} />
           </Sub>
-          <Sub id="wire" number="4.3" title="Wire types">
+          <Sub id="wire" updated={topicDate("wire")} number="4.3" title="Wire types">
             <Markdown text={topic("wire")} />
           </Sub>
-          <Sub id="directives" number="4.4" title="Directives">
+          <Sub id="directives" updated={topicDate("directives")} number="4.4" title="Directives">
             <Markdown text={topic("directives")} />
           </Sub>
         </Section>
 
-        <Section id="tooling" number="5" title="Tooling">
-          <Sub id="build" number="5.1" title="alloy build">
+        <Section id="tooling" number="5" title="Tooling" updated={latest(["build", "check", "lint", "flux", "fmt", "test", "config", "luaurc", "mount", "data", "ingots"].map(topicDate))}>
+          <Sub id="build" updated={topicDate("build")} number="5.1" title="alloy build">
             <Markdown text={topic("build")} />
           </Sub>
-          <Sub id="check" number="5.2" title="alloy check">
+          <Sub id="check" updated={topicDate("check")} number="5.2" title="alloy check">
             <Markdown text={topic("check")} />
           </Sub>
-          <Sub id="lint" number="5.3" title="alloy lint">
+          <Sub id="lint" updated={topicDate("lint")} number="5.3" title="alloy lint">
             <Markdown text={topic("lint")} />
           </Sub>
-          <Sub id="flux" number="5.4" title="alloy flux">
+          <Sub id="flux" updated={topicDate("flux")} number="5.4" title="alloy flux">
             <Markdown text={topic("flux")} />
           </Sub>
-          <Sub id="fmt" number="5.5" title="alloy fmt">
+          <Sub id="fmt" updated={topicDate("fmt")} number="5.5" title="alloy fmt">
             <Markdown text={topic("fmt")} />
           </Sub>
-          <Sub id="test" number="5.6" title="alloy test">
+          <Sub id="test" updated={topicDate("test")} number="5.6" title="alloy test">
             <Markdown text={topic("test")} />
           </Sub>
-          <Sub id="doc" number="5.7" title="alloy doc">
+          <Sub id="doc" updated={pageDate} number="5.7" title="alloy doc">
             <div className="prose">
               <p>
                 Prints one entry of this book on the terminal: a keyword, an operator, an intrinsic, an attribute, a std
@@ -281,26 +328,26 @@ export default function Docs() {
             </div>
             {shell("alloy doc                 # the index\nalloy doc struct          # one keyword\nalloy doc '??='           # one operator\nalloy doc lints           # every lint\nalloy doc optional_access # one lint\nalloy doc strict          # an article")}
           </Sub>
-          <Sub id="config" number="5.8" title="alloy.toml">
+          <Sub id="config" updated={topicDate("config")} number="5.8" title="alloy.toml">
             <Markdown text={topic("config")} />
           </Sub>
-          <Sub id="luaurc" number="5.9" title=".luaurc and .config.luau">
+          <Sub id="luaurc" updated={topicDate("luaurc")} number="5.9" title=".luaurc and .config.luau">
             <Markdown text={topic("luaurc")} />
           </Sub>
-          <Sub id="mount" number="5.10" title="Mounts and project files">
+          <Sub id="mount" updated={topicDate("mount")} number="5.10" title="Mounts and project files">
             <Markdown text={topic("mount")} />
           </Sub>
-          <Sub id="data" number="5.11" title="JSON and TOML data">
+          <Sub id="data" updated={topicDate("data")} number="5.11" title="JSON and TOML data">
             <Markdown text={topic("data")} />
           </Sub>
-          <Sub id="ingots" number="5.12" title="Ingots">
+          <Sub id="ingots" updated={topicDate("ingots")} number="5.12" title="Ingots">
             <Markdown text={topic("ingots")} />
           </Sub>
         </Section>
 
-        <Section id="reference" number="6" title="Reference">
+        <Section id="reference" number="6" title="Reference" updated={latest([...referenceDates, lintDate])}>
           {referenceGroups.map((g, i) => (
-            <Sub key={g.slug} id={`ref-${g.slug}`} number={`6.${i + 1}`} title={g.title}>
+            <Sub key={g.slug} id={`ref-${g.slug}`} number={`6.${i + 1}`} title={g.title} updated={referenceDates[i]}>
               {g.slug === "std" ? (
                 <div className="mb-6 grid gap-2 sm:grid-cols-2">
                   {stdItems.map(([name, what, key]) => (
@@ -323,7 +370,7 @@ export default function Docs() {
               ))}
             </Sub>
           ))}
-          <Sub id="lints" number={`6.${referenceGroups.length + 1}`} title="Lints">
+          <Sub id="lints" number={`6.${referenceGroups.length + 1}`} title="Lints" updated={lintDate}>
             <div className="prose">
               <p>
                 {inline(

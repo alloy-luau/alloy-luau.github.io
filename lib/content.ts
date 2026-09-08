@@ -3,6 +3,7 @@
 
 import docsJson from "@/content/docs.json";
 import slidesJson from "@/content/slides.json";
+import updatedJson from "@/content/updated.json";
 
 export type Entry = { key: string; group: string; markdown: string };
 export type LintDoc = { name: string; group: string; default: string; summary: string; detail: string };
@@ -119,3 +120,33 @@ export const commands: [string, string][] = [
   ["rojo serve .alloy/build.project.json", "the compiled tree, from the [mount] table"],
   ["alloy self install", "alloy and alloy-lsp into ~/.alloy/bin; self update fetches a release"],
 ];
+
+/** The day each piece of content last changed, by its key: `entry:<key>`,
+ * `lint:<name>`, `slide:<id>`, `cards`, `page:docs`. */
+const updated: Record<string, { hash: string; date: string }> = updatedJson;
+
+/** The latest day among the pieces named, or undefined when none is known. */
+export function updatedAt(keys: string[]): string | undefined {
+  let latest: string | undefined;
+
+  for (const key of keys) {
+    const date = updated[key]?.date;
+
+    if (date && (!latest || date > latest)) {
+      latest = date;
+    }
+  }
+
+  return latest;
+}
+
+/** The latest day any piece of the book changed. */
+export const updatedAll: string | undefined = updatedAt(Object.keys(updated));
+
+/** `2026-09-07` as `Sep 7, 2026`. */
+export function formatDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  return `${months[m - 1]} ${d}, ${y}`;
+}
