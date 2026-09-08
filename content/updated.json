@@ -464,8 +464,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:strict": {
-    "hash": "687069963f54e0ba",
-    "date": "2026-09-07"
+    "hash": "8370b232830f594b",
+    "date": "2026-09-08"
   },
   "entry:topic:exhaustive": {
     "hash": "1135c4621eb3c6f1",
@@ -500,12 +500,16 @@
     "date": "2026-09-07"
   },
   "entry:topic:config": {
-    "hash": "8cdb40cdc18c947b",
-    "date": "2026-09-07"
+    "hash": "5849e5bbab835936",
+    "date": "2026-09-08"
+  },
+  "entry:topic:init": {
+    "hash": "a21f59cd6067a23c",
+    "date": "2026-09-08"
   },
   "entry:topic:luaurc": {
-    "hash": "6e769b9e203f11ad",
-    "date": "2026-09-07"
+    "hash": "c75caa6571a14b92",
+    "date": "2026-09-08"
   },
   "entry:topic:directives": {
     "hash": "448ef9f73758d7a2",
@@ -548,8 +552,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:mount": {
-    "hash": "05f5afc285682543",
-    "date": "2026-09-07"
+    "hash": "029128816617c1e9",
+    "date": "2026-09-08"
   },
   "entry:topic:data": {
     "hash": "7b23e88386e007b9",
