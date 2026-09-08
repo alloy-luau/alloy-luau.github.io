@@ -26,7 +26,8 @@ export function complete(offset) {
 
 /**
  * The documentation of a std name or a keyword, for a hover the
- * analyzer answered with a type.
+ * analyzer answered with a type. `HashMap:get` and `HashMap.get` name
+ * one member; a std type name lists its members under the overview.
  * @param {string} name
  * @returns {string}
  */
