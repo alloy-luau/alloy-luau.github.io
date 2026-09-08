@@ -23,6 +23,11 @@ function Section({ id, number, title, children }: { id: string; number: string; 
   );
 }
 
+/** The anchor of one reference entry, from its key. */
+function entryId(key: string): string {
+  return `ref-${key.replace(/[^A-Za-z0-9_]/g, (c) => `_${c.charCodeAt(0)}`)}`;
+}
+
 function Sub({ id, number, title, children }: { id: string; number: string; title: ReactNode; children: ReactNode }) {
   return (
     <section id={id} className="mb-12 scroll-mt-20">
@@ -92,6 +97,8 @@ const chapters: TocChapter[] = [
       { id: "config", label: "alloy.toml", number: "5.8" },
       { id: "luaurc", label: ".luaurc and .config.luau", number: "5.9" },
       { id: "mount", label: "Mounts and project files", number: "5.10" },
+      { id: "data", label: "JSON and TOML data", number: "5.11" },
+      { id: "ingots", label: "Ingots", number: "5.12" },
     ],
   },
   {
@@ -283,6 +290,12 @@ export default function Docs() {
           <Sub id="mount" number="5.10" title="Mounts and project files">
             <Markdown text={topic("mount")} />
           </Sub>
+          <Sub id="data" number="5.11" title="JSON and TOML data">
+            <Markdown text={topic("data")} />
+          </Sub>
+          <Sub id="ingots" number="5.12" title="Ingots">
+            <Markdown text={topic("ingots")} />
+          </Sub>
         </Section>
 
         <Section id="reference" number="6" title="Reference">
@@ -290,16 +303,20 @@ export default function Docs() {
             <Sub key={g.slug} id={`ref-${g.slug}`} number={`6.${i + 1}`} title={g.title}>
               {g.slug === "std" ? (
                 <div className="mb-6 grid gap-2 sm:grid-cols-2">
-                  {stdItems.map(([name, what]) => (
-                    <div key={name} className="rounded-lg border border-line bg-panel px-4 py-3">
+                  {stdItems.map(([name, what, key]) => (
+                    <a
+                      key={name}
+                      href={`#${entryId(key)}`}
+                      className="block rounded-lg border border-line bg-panel px-4 py-3 no-underline transition-colors hover:border-accent-ink"
+                    >
                       <div className="font-mono text-[13.5px] text-accent-ink">{name}</div>
                       <div className="text-[13.5px] text-ink-2">{what}</div>
-                    </div>
+                    </a>
                   ))}
                 </div>
               ) : null}
               {g.keys.map((e) => (
-                <article key={e.key} id={`ref-${e.key.replace(/[^A-Za-z0-9_]/g, (c) => `_${c.charCodeAt(0)}`)}`} className="entry">
+                <article key={e.key} id={entryId(e.key)} className="entry">
                   <h3>{e.key.replace(/^derive:/, "@derive(") + (e.key.startsWith("derive:") ? ")" : "")}</h3>
                   <Markdown text={e.markdown} />
                 </article>

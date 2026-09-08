@@ -42,7 +42,8 @@ export const lintGroups: { name: string; summary: string; lints: LintDoc[] }[] =
   }),
 ).filter((g) => g.lints.length > 0);
 export const slides: Slide[] = slidesJson.slides as Slide[];
-export const stdItems: [string, string][] = slidesJson.stdItems as [string, string][];
+/** The std summary cards: the name, one line, and the key of the entry the card jumps to. */
+export const stdItems: [string, string, string][] = slidesJson.stdItems as [string, string, string][];
 
 /** One entry by key, or undefined. */
 export function entry(key: string): Entry | undefined {

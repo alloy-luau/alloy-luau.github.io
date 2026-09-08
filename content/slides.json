@@ -194,55 +194,83 @@
   "stdItems": [
     [
       "Array",
-      "Literals with the shared metatable: map, filter, find, reduce, slice, concat, sort_by, join."
+      "Literals carry the shared metatable: len, push, pop, first, last, map, filter, find, find_index, contains, index_of, for_each, reduce, slice, concat, reverse, sort_by, join; from, new, with_capacity.",
+      "Array"
+    ],
+    [
+      "ReadArray, WriteArray",
+      "What read T[] and write T[] name: the readers alone, or push alone.",
+      "ReadArray"
     ],
     [
       "HashMap",
-      "get, set, has, remove, keys, values, entries, get_or_insert, clear."
+      "get, set, has, remove, len, keys, values, entries, get_or_insert, clear; from.",
+      "HashMap"
     ],
     [
       "Set",
-      "add, has, remove, union, intersection, difference, to_array."
+      "add, has, remove, len, union, intersection, difference, to_array; from.",
+      "Set"
     ],
     [
       "Queue",
-      "push, pop, peek, len; a for loop reads it front to back."
+      "push, pop, peek, len, is_empty, clear, to_array; a for loop reads it front to back.",
+      "Queue"
     ],
     [
       "Heap",
-      "push, pop, peek under a comparator; to_array sorts."
+      "push, pop, peek, len, is_empty, clear under a comparator; to_array sorts; from.",
+      "Heap"
     ],
     [
       "Scope",
-      "add, remove, clean, extend; a cleanup bag that delete drains."
+      "add, remove, clean, extend, len; a cleanup bag that delete drains.",
+      "Scope"
     ],
     [
       "Iter",
-      "from, range, map, filter, take, skip, chain, collect, reduce."
+      "from, range, next, map, filter, take, skip, take_while, chain, collect, for_each, count, any, all, find, reduce, first, last.",
+      "Iter"
     ],
     [
       "Result",
-      "Ok and Err with unwrap, expect, unwrap_or, map, map_err; try and ? for early returns."
+      "Ok and Err with unwrap, expect, unwrap_or, map, map_err, is_ok, is_err, ok; try and ? for early returns; Result.pcall.",
+      "Result"
     ],
     [
       "Future",
-      "future, resolve, reject, delay, all, race, any, all_settled, cancel, andThen."
+      "async functions return one; resolve, reject, delay, all, race, any, all_settled; andThen, cancel, is_settled.",
+      "Future"
     ],
     [
       "Signal",
-      "The RBXScriptSignal shape: Connect, Once, Wait, Fire, FireDeferred; wrap and collect for any signal-like source."
+      "Connect, Once, Wait, Fire, FireDeferred, DisconnectAll, Destroy, each with a snake_case twin; wrap and collect for any signal-like source.",
+      "Signal"
     ],
     [
       "Symbol",
-      "A unique key no string can collide with."
+      "A unique key no string can collide with.",
+      "Symbol"
     ],
     [
       "Attributes",
-      "get, field, variant, of, fields: the metadata attributes declared."
+      "get, field, variant, of, fields: the metadata attributes declared.",
+      "Attributes"
     ],
     [
       "Partial, Readonly, Sink",
-      "Mapped types built by type functions, overridable per file."
+      "Mapped types built by type functions, overridable per file.",
+      "Partial"
+    ],
+    [
+      "Remote",
+      "fire, fire_all, fire_except, call, on, once, wait, on_ratelimited: the object a remote declaration binds.",
+      "remote"
+    ],
+    [
+      "Traits",
+      "Add, Sub, Mul, Div, Eq, PartialEq, Ord, Display, Debug, Clone, Serialize: the shapes a bound names.",
+      "Traits"
     ]
   ]
 }
