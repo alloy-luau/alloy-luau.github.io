@@ -199,7 +199,7 @@
     {
       "key": "const",
       "group": "Keywords",
-      "markdown": "```alloy\nconst x = expr\n```\nA binding that cannot be reassigned; the value stays mutable. Luau has `const` of its own, so the keyword passes through and a reassignment is a compile error there too."
+      "markdown": "```alloy\nconst x = expr\nconst LIMITS = { hp = 100 }\nLIMITS.hp = 1        -- allowed: the value is not frozen\n```\nA binding that cannot be reassigned. Luau has `const` of its own, so the keyword passes through and a reassignment is a compile error there too.\n\nThe freeze is shallow: it holds the name to one value, and that value stays mutable. A field of a `const` table takes an assignment, an index takes one, and `NAMES:push(x)` grows a `const` array. The pedantic lint `const_mutation` reports each of those, so a project that reads `const` as deep can turn it on."
     },
     {
       "key": "async",
@@ -259,7 +259,7 @@
     {
       "key": "private",
       "group": "Keywords",
-      "markdown": "```alloy\nstruct Counter as\n    read name: string\n    private count: number = 0\nend\n\nimpl Counter\n    function bump(self): number\n        self.count += 1\n        return self.count\n    end\n\n    private function reset(self)\n        self.count = 0\n    end\nend\n```\nA field or an `impl` method that only the struct's own methods reach. The word compiles to nothing at runtime: the check artifact keeps the private members out of the struct's public type, so `c.count` and `c:reset()` in other code are type errors in the editor and under `alloy flux`, and the `private_access` lint reports them in the same file. A private field may still be set in `new Counter { }`. A struct with type parameters keeps one view. `public` is the default and needs no word."
+      "markdown": "```alloy\nstruct Counter as\n    read name: string\n    private count: number = 0\nend\n\nimpl Counter\n    function bump(self): number\n        self.count += 1\n        return self.count\n    end\n\n    private function reset(self)\n        self.count = 0\n    end\nend\n```\nA field or an `impl` method that only the struct's own methods reach. The word compiles to nothing at runtime: the check artifact keeps the private members out of the struct's public type, so `c.count` and `c:reset()` in other code are type errors in the editor and under `alloy flux`, and the `private_access` lint reports them in the same file. A private field with no default has to be set in `new Counter { }`, so that one stays; a private field that carries a default draws `private_access` when a `new` outside the impl names it. A struct with type parameters keeps one view. `public` is the default and needs no word."
     },
     {
       "key": "public",
@@ -504,7 +504,7 @@
     {
       "key": "Future",
       "group": "Std",
-      "markdown": "```alloy\nasync function load(id: number): Profile\n    return await fetch(id)\nend\nlocal profiles = await Future.all([load(1), load(2)])\nlocal first = await Future.race([load(1), Future.delay(5)])\n```\nA memoized task, from the std: it runs once, settles once, and every `await` after that reads the same value. An `async function` returns one and its body runs on `task.spawn` under `xpcall`; `await` yields until it settles, then returns the value or rethrows; `try await` gives a Result instead.\n\n**Statics**\n\n| | |\n|---|---|\n| `Future.resolve(value)` | A settled Future. |\n| `Future.reject(error)` | A failed one, `Future<never>`. |\n| `Future.delay(seconds)` | Settles after the wait, `Future<()>`. |\n| `Future.all(futures)` | `Future<Array<T>>`: every value in order, with the Array methods on it; the first failure fails it. |\n| `Future.race(futures)` | The first to settle, value or failure. |\n| `Future.any(futures)` | The first to succeed; fails when all fail. |\n| `Future.all_settled(futures)` | An `Array` of `Result`s, one per Future, none of which fails it. |\n\n**Methods**\n\n| | |\n|---|---|\n| `andThen(on_resolve?, on_reject?)` | Runs a callback when it settles, and returns the Future for chaining. A callback may return a value; the Future keeps its own. |\n| `cancel()` | Closes the task; an `await` on it raises. |\n| `is_settled()` | Whether it has a value or a failure. |\n\nThe type is covariant: `race` and `any` over a list of `Future<number>` and `Future<string>` yield `Future<number | string>`. An `async function` without a return type and without a `return` value is `Future<()>`."
+      "markdown": "```alloy\nasync function load(id: number): Profile\n    return await fetch(id)\nend\nlocal profiles = await Future.all([load(1), load(2)])\nlocal first = await Future.race([load(1), Future.delay(5)])\n```\nA memoized task, from the std: it runs once, settles once, and every `await` after that reads the same value. An `async function` returns one and its body runs on `task.spawn` under `xpcall`; `await` yields until it settles, then returns the value or rethrows; `try await` gives a Result instead.\n\n**Statics**\n\n| | |\n|---|---|\n| `Future.resolve(value)` | A settled Future. |\n| `Future.reject(error)` | A failed one, `Future<never>`. |\n| `Future.delay(seconds)` | Settles after the wait, `Future<()>`. |\n| `Future.all(futures)` | `Future<Array<T>>`: every value in order, with the Array methods on it; the first failure fails it. |\n| `Future.race(futures)` | The first to settle, value or failure. |\n| `Future.any(futures)` | The first to succeed; fails when all fail. |\n| `Future.all_settled(futures)` | `Future<Array<Result<T, any>>>`: one Result per Future, in order, and no failure fails it. The error side is `any` because a rejection carries whatever it was rejected with, which the list's element type cannot name. |\n\n**Methods**\n\n| | |\n|---|---|\n| `f:andThen(on_resolve?, on_reject?)` | Runs a callback when it settles, and returns the Future for chaining. A callback may return a value; the Future keeps its own. |\n| `f:and_then(on_resolve?, on_reject?)` | The same function under a snake_case name. `andThen` is the one camelCase name the std carries, so a file that keeps to one spelling writes this. |\n| `f:cancel()` | Closes the task; an `await` on it raises. |\n| `f:is_settled()` | Whether it has a value or a failure. |\n\nThe type is covariant: `race` and `any` over a list of `Future<number>` and `Future<string>` yield `Future<number | string>`. An `async function` without a return type and without a `return` value is `Future<()>`."
     },
     {
       "key": "Result",
@@ -795,6 +795,13 @@
       "default": "warn",
       "summary": "a private field or method read outside its struct's impl",
       "detail": "A member marked `private` belongs to the struct's own methods. This access sits outside every `impl` of that struct, in the same file; in the editor and under `alloy flux` the type checker reports it as an error, since the public type of the struct has no such member. The lint reads names, so a plain table with a field of the same name fires it too; `--@alloy-ignore` silences that line."
+    },
+    {
+      "name": "duplicate_function",
+      "group": "correctness",
+      "default": "warn",
+      "summary": "one name given a `function` body twice",
+      "detail": "The second body replaces the first, so the first never runs. Either the two were meant to have different names, or one is a leftover from an edit. A `@cfg` pair is exempt: only one of the two reaches a build."
     },
     {
       "name": "circular_import",
@@ -1089,6 +1096,13 @@
       "default": "strict",
       "summary": "a `print` call",
       "detail": "Pedantic. A `print` left over from debugging writes to the output of every player. Remove it, or route it through a logger the project can turn off."
+    },
+    {
+      "name": "const_mutation",
+      "group": "pedantic",
+      "default": "strict",
+      "summary": "a write into the value a `const` holds",
+      "detail": "Pedantic. `const` freezes the binding, not the value: `const LIMITS = { hp = 100 }` still allows `LIMITS.hp = 1`, and `NAMES:push(x)` still grows the array. The lint reports a field assignment, an index assignment, and a call of a method that changes the value, so a name written as a constant reads as one."
     },
     {
       "name": "missing_doc",
