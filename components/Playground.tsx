@@ -23,6 +23,7 @@ import {
   CompletionContext,
   type Completion,
   type CompletionResult,
+  startCompletion,
 } from "@codemirror/autocomplete";
 import { lintGutter, setDiagnostics, type Diagnostic } from "@codemirror/lint";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
@@ -336,7 +337,7 @@ export default function Playground() {
 
     const bytePos = positions.byteOf(ctx.pos);
     const answer = JSON.parse(alloy.complete(bytePos)) as {
-      items: { label: string; kind: string; doc?: string | null; from: number }[];
+      items: { label: string; kind: string; doc?: string | null; from: number; insert?: string | null; suggest?: boolean }[];
       luau: boolean;
     };
     const options: Completion[] = [];
@@ -344,11 +345,24 @@ export default function Playground() {
 
     for (const item of answer.items) {
       from = Math.min(from, positions.charOf(item.from));
+      // An item with its own text inserts that text; `case ` and the
+      // pattern arms then open the list again for the next word.
+      const insert = item.insert ?? undefined;
+      const apply = item.suggest
+        ? (view: EditorView, _c: Completion, start: number, end: number) => {
+            const text = (insert ?? item.label).replace(/\$\{?\d(?::([^}]*))?\}?/g, "$1");
+            view.dispatch({ changes: { from: start, to: end, insert: text }, selection: { anchor: start + text.length } });
+            startCompletion(view);
+          }
+        : insert?.includes("$")
+          ? insert.replace(/\$\{?\d(?::([^}]*))?\}?/g, "$1")
+          : insert;
       options.push({
         label: item.label,
         type: item.kind,
         info: item.doc ? () => docNode(item.doc!) : undefined,
         boost: item.kind === "keyword" ? -1 : 0,
+        apply,
       });
     }
 
