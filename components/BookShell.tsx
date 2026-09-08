@@ -2,14 +2,56 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
+import type { SearchDoc } from "@/lib/content";
+
 export type TocItem = { id: string; label: string; sub?: boolean; number?: string };
 export type TocChapter = { title: string; items: TocItem[] };
+
+/** The words around the first hit of `q` in `text`. */
+function snippet(text: string, q: string): string {
+  const lower = text.toLowerCase();
+  const at = lower.indexOf(q);
+
+  if (at < 0) {
+    return text.slice(0, 90);
+  }
+
+  const start = Math.max(0, at - 40);
+  const end = Math.min(text.length, at + q.length + 60);
+
+  return `${start > 0 ? "…" : ""}${text.slice(start, end).trim()}${end < text.length ? "…" : ""}`;
+}
+
+/** The snippet with the hit marked. */
+function marked(text: string, q: string): ReactNode {
+  const at = text.toLowerCase().indexOf(q);
+
+  if (at < 0) {
+    return text;
+  }
+
+  return (
+    <>
+      {text.slice(0, at)}
+      <mark>{text.slice(at, at + q.length)}</mark>
+      {text.slice(at + q.length)}
+    </>
+  );
+}
 
 // The book frame: a sticky table of contents on the left, filtered by
 // the search box, with the section in view marked; the chapters on the
 // right. Every section is an element with the id the TOC names.
 
-export default function BookShell({ chapters, children }: { chapters: TocChapter[]; children: ReactNode }) {
+export default function BookShell({
+  chapters,
+  index = [],
+  children,
+}: {
+  chapters: TocChapter[];
+  index?: SearchDoc[];
+  children: ReactNode;
+}) {
   const [active, setActive] = useState<string>("");
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -99,12 +141,26 @@ export default function BookShell({ chapters, children }: { chapters: TocChapter
   };
 
   const q = query.trim().toLowerCase();
-  const shown = chapters
-    .map((c) => ({
-      ...c,
-      items: q ? c.items.filter((i) => i.label.toLowerCase().includes(q) || i.id.includes(q)) : c.items,
-    }))
-    .filter((c) => c.items.length > 0);
+  const shown = chapters;
+
+  // A query searches the text of every section and entry, not the
+  // titles alone: a title hit ranks first, then a hit in the body,
+  // each with the words around it.
+  const hits = useMemo(() => {
+    if (!q) return [];
+
+    const scored = index
+      .map((d) => {
+        const inLabel = d.label.toLowerCase().includes(q) || d.id.toLowerCase().includes(q);
+        const inText = d.text.toLowerCase().includes(q);
+
+        return { d, score: inLabel ? 2 : inText ? 1 : 0 };
+      })
+      .filter((h) => h.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    return scored.slice(0, 40);
+  }, [index, q]);
 
   const toc = (
     <nav className="toc" aria-label="Contents">
@@ -121,20 +177,34 @@ export default function BookShell({ chapters, children }: { chapters: TocChapter
           aria-label="Search the book"
         />
       </div>
-      {shown.map((c) => (
-        <div key={c.title}>
-          <div className="chapter">{c.title}</div>
-          {c.items.map((i) => (
-            <div key={i.id} className={i.sub ? "sub" : ""}>
-              <a href={`#${i.id}`} className={active === i.id ? "on" : ""} onClick={() => jump(i.id)}>
-                {i.number ? <small>{i.number}</small> : null}
-                {i.label}
-              </a>
-            </div>
+      {q ? (
+        <div className="results">
+          {hits.map(({ d, score }) => (
+            <a key={d.id} href={`#${d.id}`} className="result" onClick={() => jump(d.id)}>
+              <span className="result-head">
+                <small>{d.number}</small>
+                <span>{d.label}</span>
+              </span>
+              {score < 2 || d.text ? <span className="result-snippet">{marked(snippet(d.text, q), q)}</span> : null}
+            </a>
           ))}
+          {hits.length === 0 ? <p className="px-2 text-[13px] text-muted">Nothing matches.</p> : null}
         </div>
-      ))}
-      {shown.length === 0 ? <p className="px-2 text-[13px] text-muted">Nothing matches.</p> : null}
+      ) : (
+        shown.map((c) => (
+          <div key={c.title}>
+            <div className="chapter">{c.title}</div>
+            {c.items.map((i) => (
+              <div key={i.id} className={i.sub ? "sub" : ""}>
+                <a href={`#${i.id}`} className={active === i.id ? "on" : ""} onClick={() => jump(i.id)}>
+                  {i.number ? <small>{i.number}</small> : null}
+                  {i.label}
+                </a>
+              </div>
+            ))}
+          </div>
+        ))
+      )}
     </nav>
   );
 

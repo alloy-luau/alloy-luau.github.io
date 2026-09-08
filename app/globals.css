@@ -467,6 +467,54 @@ kbd {
   pointer-events: none;
 }
 
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.result {
+  display: block;
+  border-radius: 8px;
+  padding: 6px 8px;
+  text-decoration: none;
+  color: var(--ink-2);
+  transition: background 0.15s;
+}
+
+.result:hover {
+  background: var(--accent-soft);
+}
+
+.result-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.result-head small {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.result-snippet {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.result-snippet mark {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
 .search input {
   width: 100%;
   border: 1px solid var(--line);

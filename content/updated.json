@@ -147,6 +147,10 @@
     "hash": "4b0a03366d160205",
     "date": "2026-09-07"
   },
+  "entry:for": {
+    "hash": "c390c02a3bdbc238",
+    "date": "2026-09-08"
+  },
   "entry:local": {
     "hash": "b06423c47b33c3d7",
     "date": "2026-09-07"
@@ -192,8 +196,8 @@
     "date": "2026-09-07"
   },
   "entry:where": {
-    "hash": "50de014dd25e54ed",
-    "date": "2026-09-07"
+    "hash": "9e0fd5032859c575",
+    "date": "2026-09-08"
   },
   "entry:satisfies": {
     "hash": "09d764db31e3a0a7",
@@ -764,8 +768,8 @@
     "date": "2026-09-07"
   },
   "slide:bindings": {
-    "hash": "816b99c5ff223e7c",
-    "date": "2026-09-07"
+    "hash": "21c8b4cc619f1aa7",
+    "date": "2026-09-08"
   },
   "slide:structs": {
     "hash": "3cb8729d2dec63f9",
@@ -808,7 +812,7 @@
     "date": "2026-09-07"
   },
   "page:docs": {
-    "hash": "4d92aa84527c595f",
-    "date": "2026-09-07"
+    "hash": "64df9db7e0798c57",
+    "date": "2026-09-08"
   }
 }

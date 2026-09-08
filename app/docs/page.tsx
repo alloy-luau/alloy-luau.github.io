@@ -7,7 +7,19 @@ import CodePane from "@/components/CodePane";
 import Markdown, { inline } from "@/components/Markdown";
 import Nav from "@/components/Nav";
 import UpdatedPill from "@/components/UpdatedPill";
-import { contracts, lintGroups, referenceGroups, slides, stdItems, topic, updatedAll, updatedAt, version } from "@/lib/content";
+import {
+  contracts,
+  lintGroups,
+  plainText,
+  referenceGroups,
+  slides,
+  stdItems,
+  topic,
+  updatedAll,
+  updatedAt,
+  version,
+  type SearchDoc,
+} from "@/lib/content";
 
 // The book: one page, chaptered like the Cargo Book. The sidebar lists
 // every section; the column reads top to bottom.
@@ -154,11 +166,50 @@ const chapters: TocChapter[] = [
   },
 ];
 
+// Everything the search box reads: each section with its text, each
+// reference entry, and each lint, at the anchor it lives at.
+const index: SearchDoc[] = [
+  ...chapters.flatMap((c) => c.items.map((i) => ({ id: i.id, label: i.label, number: i.number ?? "", text: "" }))),
+  ...slides.map((s, i) => ({
+    id: s.id,
+    label: s.title.replace(/<[^>]+>/g, ""),
+    number: `3.${i + 1}`,
+    text: plainText([s.thesis, s.src, ...s.points].join(" ")),
+  })),
+  ...["strict", "exhaustive", "wire", "directives"].map((name, i) => ({
+    id: ["contracts", "exhaustive", "wire", "directives"][i],
+    label: ["The contracts", "Exhaustive match", "Wire types", "Directives"][i],
+    number: `4.${i + 1}`,
+    text: plainText(topic(name)),
+  })),
+  ...["build", "check", "lint", "flux", "fmt", "test", "config", "luaurc", "mount", "data", "ingots"].map((name) => {
+    const item = chapters.flatMap((c) => c.items).find((i) => i.id === name);
+
+    return { id: name, label: item?.label ?? name, number: item?.number ?? "", text: plainText(topic(name)) };
+  }),
+  ...referenceGroups.flatMap((g, i) =>
+    g.keys.map((e) => ({
+      id: entryId(e.key),
+      label: e.key.replace(/^derive:/, "@derive(") + (e.key.startsWith("derive:") ? ")" : ""),
+      number: `6.${i + 1}`,
+      text: plainText(e.markdown),
+    })),
+  ),
+  ...lintGroups.flatMap((g) =>
+    g.lints.map((l) => ({
+      id: `lints-${g.name}`,
+      label: l.name,
+      number: `6.${referenceGroups.length + 1}`,
+      text: plainText(`${l.summary} ${l.detail}`),
+    })),
+  ),
+].filter((d, i, all) => all.findIndex((o) => o.id === d.id && o.label === d.label) === i);
+
 export default function Docs() {
   return (
     <>
       <Nav version={version} current="docs" />
-      <BookShell chapters={chapters}>
+      <BookShell chapters={chapters} index={index}>
         <div className="mb-10">
           <div className="eyebrow">The Alloy book</div>
           <h1 className="display mb-3 mt-2 text-[36px] font-extrabold leading-[1.05] md:text-[48px]">

@@ -150,3 +150,18 @@ export function formatDate(iso: string): string {
 
   return `${months[m - 1]} ${d}, ${y}`;
 }
+
+/** One searchable piece of the book: the anchor it lives at, its label
+ * and number, and its plain text. */
+export type SearchDoc = { id: string; label: string; number: string; text: string };
+
+/** Markdown as plain words: fences, code marks, and table bars go. */
+export function plainText(markdown: string): string {
+  return markdown
+    .replace(/```[a-z]*\n?/g, " ")
+    .replace(/[`*_|#>]/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[a-z]+;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}

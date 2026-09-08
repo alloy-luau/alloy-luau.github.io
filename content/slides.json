@@ -64,6 +64,7 @@
       "emit": "do local _c1 = first_player() if _c1 then local player = _c1\n    print(player.Name)\nend end\nwhile true do local _c1 = table.remove(queue) if not (_c1) then break end local job = _c1\n    run(job)\nend",
       "points": [
         "<b><code>where</code></b> adds a filter: <code>if local p = f() where p.AccountAge &gt; 30 then</code>.",
+        "<b>A loop filters too:</b> <code>for _, { x, y } in points where x &gt; 0 do</code> skips an item the condition rejects, and the head destructures each one.",
         "<b>Several bindings</b> chain: <code>if local p = a; local c = p.Character then</code> runs the second only when the first is truthy.",
         "<b>Pattern forms</b> bind too: <code>if local Ok(v) = result then</code>, <code>while local Move(target) = next() do</code>.",
         "<b><code>if not local x = f() then return end</code></b> is the guard clause; <code>x</code> stays in scope after it."
