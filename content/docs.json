@@ -209,7 +209,7 @@
     {
       "key": "attribute",
       "group": "Keywords",
-      "markdown": "```alloy\nattribute name(params) on target, ...\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, interface, type."
+      "markdown": "```alloy\nattribute name(params) on target, ...\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, interface, type, local. The built-in ones: `@derive`, `@test`, `@cfg`, `@deprecated`, and Luau's `@native`, `@checked`, `@inline`, `@noinline`."
     },
     {
       "key": "on",
@@ -287,6 +287,16 @@
       "markdown": "```alloy\n$stringify(expr)\n```\nThe source text of `expr` as a string."
     },
     {
+      "key": "$set",
+      "group": "Intrinsics",
+      "markdown": "```alloy\n$set[1, 2, 3]\n```\nA `Set` of the values: `Set.from({ 1, 2, 3 })`. The parenthesis form, `$set(1, 2, 3)`, is the same."
+    },
+    {
+      "key": "$map",
+      "group": "Intrinsics",
+      "markdown": "```alloy\n$map[[\"a\", 1], [\"b\", 2]]\n```\nA `HashMap` of the pairs: `HashMap.from({ [\"a\"] = 1, [\"b\"] = 2 })`. Each pair is a two-item array; `$map([\"a\", 1])` is the same."
+    },
+    {
       "key": "$matches",
       "group": "Intrinsics",
       "markdown": "```alloy\n$matches(e, Pat(_))\n```\nA pattern test without a `match`: `e.tag == \"Pat\"`."
@@ -300,6 +310,11 @@
       "key": "derive:Eq",
       "group": "Derives",
       "markdown": "```alloy\n@derive(Eq)\n```\nGenerates `__eq`: two values are equal when every field is."
+    },
+    {
+      "key": "derive:PartialEq",
+      "group": "Derives",
+      "markdown": "```alloy\n@derive(PartialEq)\n```\nThe same `__eq` as `Eq`, under the name Rust uses. Luau has one equality, so the two derive the same method."
     },
     {
       "key": "derive:Debug",
@@ -320,6 +335,11 @@
       "key": "@derive",
       "group": "Attributes",
       "markdown": "```alloy\n@derive(Eq, Debug, Clone)\n```\nGenerates methods from the field list: `Eq` is `__eq`, `Ord` is `__lt` and `__le`, `Debug` is `debug` and `__tostring`, `Clone` is `clone`, `Serialize` is `to_table` and `from_table`. Any trait whose methods all have defaults derives too."
+    },
+    {
+      "key": "@cfg",
+      "group": "Attributes",
+      "markdown": "```alloy\n@cfg(server)\nfunction save(player: Player) end\n\n@cfg(client and not studio)\nconst hud = build_hud()\n```\nCode for one side. A function keeps its type and opens with the check: called where the condition fails, it raises. A local reads its value only where the condition holds, and stays typed as the value; elsewhere it is nil.\n\nThe conditions: `server`, `client`, `studio`, `edit`, `running`, and `test` (an `alloy test` run). Join them with `not`, `and`, `or`, or `any(...)` and `all(...)`. A shared module loads on both sides, so the runtime reads RunService when the code runs.\n\n**Applies to** `function` · `local`"
     },
     {
       "key": "@native",
@@ -439,7 +459,7 @@
     {
       "key": "Array",
       "group": "Std",
-      "markdown": "```alloy\nlocal xs = [ 1, 2, 3 ]\nlocal ys: Array<number> = xs:map(f)\n```\nThe array type of the std. An array literal carries its metatable, so methods work on it. `T[]` and `Array<T>` name the same type.\n\nMethods: `len`, `is_empty`, `push`, `pop`, `first`, `last`, `map`, `filter`, `find`, `find_index`, `contains`, `index_of`, `for_each`, `reduce`, `slice`, `concat`, `reverse`, `sort_by`, `join`.\n\nLuau rejects an alias that names itself with other arguments, so `map` returns the same shape under a second name, and the third `map` in one chain is `any`. Annotate the accumulator of `reduce` when its body uses it: `xs:reduce(function(acc: number, x) return acc + x end, 0)`."
+      "markdown": "```alloy\nlocal xs = [ 1, 2, 3 ]\nlocal ys: Array<number> = xs:map(f)\n```\nThe array type of the std. An array literal carries its metatable, so methods work on it. `T[]` and `Array<T>` name the same type. `[[1, 2], [3, 4]]` is a nested array: in Alloy `[[` opens one, and a long string keeps Luau's leveled form, `[=[ ... ]=]`. `$set[1, 2]` and `$map[[k, v]]` build a `Set` and a `HashMap` the same way.\n\nMethods: `len`, `is_empty`, `push`, `pop`, `first`, `last`, `map`, `filter`, `find`, `find_index`, `contains`, `index_of`, `for_each`, `reduce`, `slice`, `concat`, `reverse`, `sort_by`, `join`.\n\nLuau rejects an alias that names itself with other arguments, so `map` returns the same shape under a second name, and the third `map` in one chain is `any`. Annotate the accumulator of `reduce` when its body uses it: `xs:reduce(function(acc: number, x) return acc + x end, 0)`."
     },
     {
       "key": "Future",
@@ -574,7 +594,7 @@
     {
       "key": "topic:directives",
       "group": "Articles",
-      "markdown": "**Directives**\n\nA comment that starts with `--@alloy-` silences diagnostics: the compiler's, the lints, and the checker's type errors, which the language server drops on the silenced lines before the editor sees them. The editor lists the directives after `--`, `--@`, or `--!`, and on an empty line.\n\n```alloy\n--@alloy-nocheck        this file: nothing is reported\n--@alloy-ignore         the next line with code is silent\nlocal x = y.z --@alloy-ignore   at the end of a line: that line\n```\n\nUse one for a line the new solver gets wrong, and say why in the comment beside it. Luau's own `--!strict`, `--!nonstrict`, and `--!nocheck` pass through and set the checker's mode for the file.\n\nEvery diagnostic carries the book section it belongs to as its code, `Alloy(4.2)`; the number links to the section in the editor, and `alloy doc 4.2` prints it."
+      "markdown": "**Directives**\n\nA comment that starts with `--@alloy-` silences diagnostics: the compiler's, the lints, and the checker's type errors, which the language server drops on the silenced lines before the editor sees them. The editor lists the directives after `--`, `--@`, or `--!`, and on an empty line.\n\n```alloy\n--@alloy-nocheck        this file: nothing is reported\n--@alloy-ignore         the next line with code is silent\nlocal x = y.z --@alloy-ignore   at the end of a line: that line\n--@alloy-expect-error   the next line must hold an error; a clean line is the error\n```\n\nUse `ignore` for a line the new solver gets wrong, and say why in the comment beside it. Use `expect-error` where the error is the point, a test of a lint or a contract: it silences the line, and reports when the line comes clean, so a fix that makes the directive stale shows. Luau's own `--!strict`, `--!nonstrict`, and `--!nocheck` pass through and set the checker's mode for the file.\n\nEvery diagnostic carries the book section it belongs to as its code, `Alloy(4.2)`; the number links to the section in the editor, and `alloy doc 4.2` prints it."
     },
     {
       "key": "topic:ingots",
