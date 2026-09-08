@@ -49,7 +49,8 @@
       "src": "enum Msg as\n    Join(Player)\n    Chat(Player, string)\nend\nlocal who = match msg with\n    case Join(p) then p.Name\n    case Chat(p, text) then `{p.Name}: {text}`\nend",
       "emit": "local Msg = {} Msg.__index = Msg\n    function Msg.Join(_1) return setmetatable({ tag = \"Join\", _1 = _1 }, Msg) end\n    function Msg.Chat(_1, _2) return setmetatable({ tag = \"Chat\", _1 = _1, _2 = _2 }, Msg) end\nfunction Msg.is(v) return (type(v) == \"table\" and getmetatable(v) == Msg) end type Msg = { tag: \"Join\", _1: Player } | { tag: \"Chat\", _1: Player, _2: string }\nlocal who = (\n    if type(msg) == \"table\" and msg.tag == \"Join\" then msg._1.Name\n    else `{msg._1.Name}: {msg._2}`\n)",
       "points": [
-        "<b>Patterns nest:</b> or-patterns, struct patterns, table and array patterns, literals, guards with <code>where</code>, and <code>default</code>.",
+        "<b>Patterns nest:</b> or-patterns, struct patterns, table and array patterns, literals, guards with <code>and</code>, and <code>default</code>.",
+        "<b>A pattern binds outside a match:</b> <code>local Join(p) = msg</code> reads one variant's payload and raises on another; <code>local Join(p) = msg else return end</code> leaves instead, and <code>if local Join(p) = msg then</code> tests it.",
         "<b><code>match</code></b> is a statement or an expression; the expression form parenthesizes so it drops into any position.",
         "<b><code>impl Msg</code></b> adds methods to an enum the way it does to a struct.",
         "<b>Hover on a variant</b> shows <code>Msg.Chat(Player, string)</code> even inside a pattern, where the emit has only a string."
