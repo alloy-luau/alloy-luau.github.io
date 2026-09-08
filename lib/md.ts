@@ -1,5 +1,7 @@
 // Markdown as the tooltips draw it: fences, inline code, bold, tables,
 // and paragraphs, nothing the doc table does not use.
+import { modeOf, paint } from "@/lib/paint";
+
 function escape(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -29,7 +31,8 @@ export function mdToHtml(markdown: string): string {
       }
 
       i += 1;
-      out.push(`<pre class="md-code" data-lang="${escape(lang)}"><code>${escape(body.join("\n"))}</code></pre>`);
+      // A fence paints like a code pane, so a hover reads like the book.
+      out.push(`<pre class="md-code code" data-lang="${escape(lang)}"><code>${paint(body.join("\n"), modeOf(lang))}</code></pre>`);
 
       continue;
     }

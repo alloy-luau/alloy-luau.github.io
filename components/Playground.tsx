@@ -356,19 +356,36 @@ export default function Playground() {
       let check = checkPosRef.current;
       let checkByte = alloy.to_check(bytePos);
 
-      // A dangling `.` or `:` is not in the emit yet: the artifact gets
-      // one after the receiver, and the analyzer lists the members.
-      if (checkByte < 0 && (before === "." || before === ":")) {
+      // A dangling `.` or `:` is not in the emit yet, and a partial
+      // method name lowers to a bind: the artifact gets the punctuation
+      // after the receiver, and the analyzer lists the members.
+      const member = ctx.matchBefore(/[.:][A-Za-z_][A-Za-z0-9_]*$/);
+      const punct = before === "." || before === ":" ? before : member ? member.text[0] : null;
+      const punctByte = member ? positions.byteOf(member.from) + 1 : bytePos;
+
+      if (checkByte < 0 && punct) {
+        // With the partial word in place the whole statement is a
+        // bind, generated end to end; without it the receiver stays
+        // verbatim and maps back. The compile of the shorter text is
+        // a few milliseconds and the real text goes back after.
+        if (member && member.text.length > 1) {
+          const shorter = text.slice(0, member.from + 1) + text.slice(ctx.pos);
+          const compiled = JSON.parse(alloy.set_source(shorter)) as Compiled;
+          check = compiled.check ? new Positions(compiled.check) : check;
+        }
+
         // The byte before the punctuation: the receiver's last one.
-        const receiver = alloy.to_check(bytePos - 2);
+        const receiver = alloy.to_check(punctByte - 2);
 
         if (receiver >= 0) {
           const at = check.charOf(receiver + 1);
-          const patched = check.text.slice(0, at) + before + check.text.slice(at);
+          const patched = check.text.slice(0, at) + punct + check.text.slice(at);
           luauRef.current.ccall("alloy_set_module", null, ["string", "string"], ["main", patched]);
           check = new Positions(patched);
           checkByte = receiver + 2;
         }
+
+        if (member && member.text.length > 1) alloy.set_source(text);
       }
 
       // A byte the emit dropped: the nearest kept one, forward on the

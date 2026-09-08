@@ -28,6 +28,32 @@ const GLYPHS: Record<string, string> = {
 	box: "M8 1.8l5.5 3v6.4L8 14.2l-5.5-3V4.8zM2.6 4.9L8 7.9l5.4-3M8 7.9v6.3",
 };
 
+// The button icons, on the same grid: an open book, a play triangle,
+// and a tray with an arrow into it.
+const BUTTON_GLYPHS: Record<string, string> = {
+	book: "M8 4.5C6.8 3.4 5 3 2.5 3v9.5c2.5 0 4.3.4 5.5 1.5M8 4.5c1.2-1.1 3-1.5 5.5-1.5v9.5c-2.5 0-4.3.4-5.5 1.5M8 4.5V14",
+	play: "M5 3.2v9.6L12.5 8z",
+	download: "M8 2.5v8M4.8 7.3L8 10.5l3.2-3.2M2.5 11v1.5A1.5 1.5 0 004 14h8a1.5 1.5 0 001.5-1.5V11",
+};
+
+function ButtonGlyph({ name }: { name: keyof typeof BUTTON_GLYPHS }) {
+	return (
+		<svg
+			viewBox="0 0 16 16"
+			width="15"
+			height="15"
+			fill={name === "play" ? "currentColor" : "none"}
+			stroke="currentColor"
+			strokeWidth="1.6"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden="true"
+		>
+			<path d={BUTTON_GLYPHS[name]} />
+		</svg>
+	);
+}
+
 const CHIPS: { text: string; glyph: keyof typeof GLYPHS }[] = [
 	{ text: "emit never adds a line", glyph: "equal" },
 	{ text: "strict by default", glyph: "shield-check" },
@@ -158,14 +184,23 @@ export default function Hero() {
 				<motion.div className="flex flex-wrap gap-3" {...rise(0.9)}>
 					<Link
 						href="/docs/"
-						className="btn-primary rounded-full px-5 py-2.5 font-medium text-white no-underline shadow-[var(--shadow)] transition-transform hover:-translate-y-0.5"
+						className="btn-primary inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium text-white no-underline shadow-[var(--shadow)] transition-transform hover:-translate-y-0.5"
 					>
+						<ButtonGlyph name="book" />
 						Read the book
+					</Link>
+					<Link
+						href="/play/"
+						className="glass glass-live inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium text-ink no-underline transition-transform hover:-translate-y-0.5"
+					>
+						<ButtonGlyph name="play" />
+						Try it
 					</Link>
 					<a
 						href="#install"
-						className="glass glass-live rounded-full px-5 py-2.5 font-medium text-ink no-underline transition-transform hover:-translate-y-0.5"
+						className="glass glass-live inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium text-ink no-underline transition-transform hover:-translate-y-0.5"
 					>
+						<ButtonGlyph name="download" />
 						Install
 					</a>
 				</motion.div>
