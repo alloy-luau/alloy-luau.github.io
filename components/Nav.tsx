@@ -5,16 +5,17 @@ import Link from "next/link";
 import { useState } from "react";
 
 
-const LINKS: { href: string; label: string; key: "home" | "docs" }[] = [
+const LINKS: { href: string; label: string; key: "home" | "docs" | "play" }[] = [
   { href: "/", label: "Overview", key: "home" },
   { href: "/docs/", label: "Docs", key: "docs" },
+  { href: "/play/", label: "Playground", key: "play" },
 ];
 
 /** The top bar: the mark, the two pages, the version. A pill slides
  *  between the links as the pointer moves, and rests on the current
  *  page. */
-export default function Nav({ version, current }: { version: string; current: "home" | "docs" }) {
-  const [hover, setHover] = useState<"home" | "docs" | null>(null);
+export default function Nav({ version, current }: { version: string; current: "home" | "docs" | "play" }) {
+  const [hover, setHover] = useState<"home" | "docs" | "play" | null>(null);
   const reduced = useReducedMotion();
   const lit = hover ?? current;
 
