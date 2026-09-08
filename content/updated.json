@@ -508,8 +508,36 @@
     "date": "2026-09-07"
   },
   "entry:topic:directives": {
-    "hash": "102fb04221ff9089",
-    "date": "2026-09-07"
+    "hash": "448ef9f73758d7a2",
+    "date": "2026-09-08"
+  },
+  "entry:topic:alloy-ignore": {
+    "hash": "804ed987bd6f269a",
+    "date": "2026-09-08"
+  },
+  "entry:topic:alloy-ignore-start": {
+    "hash": "c1ed6de77d48c991",
+    "date": "2026-09-08"
+  },
+  "entry:topic:alloy-expect-error": {
+    "hash": "43db2885e0014861",
+    "date": "2026-09-08"
+  },
+  "entry:topic:alloy-nocheck": {
+    "hash": "f53a50cd254472a8",
+    "date": "2026-09-08"
+  },
+  "entry:topic:alloy-lint": {
+    "hash": "e469cf3e23295280",
+    "date": "2026-09-08"
+  },
+  "entry:topic:alloy-side": {
+    "hash": "8861e1b030675dca",
+    "date": "2026-09-08"
+  },
+  "entry:topic:alloy-preserve": {
+    "hash": "cfc3b624b7dee919",
+    "date": "2026-09-08"
   },
   "entry:topic:markup": {
     "hash": "637c3e2d9cfd832e",
@@ -658,6 +686,10 @@
   "lint:numeric_for_index": {
     "hash": "502f90f6f49943ac",
     "date": "2026-09-07"
+  },
+  "lint:missing_reason": {
+    "hash": "82972b48dc4986a3",
+    "date": "2026-09-08"
   },
   "lint:too_many_arguments": {
     "hash": "5a11e0df8a4fdf77",
