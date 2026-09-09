@@ -6,7 +6,7 @@ const KW = [
   "in", "while", "do", "repeat", "until", "return", "break", "continue",
   "and", "or", "not", "nil", "true", "false", "struct", "enum", "trait",
   "impl", "interface", "extends", "as", "match", "case", "default", "with",
-  "async", "await", "try", "new", "delete", "import", "export", "from",
+  "async", "await", "try", "new", "delete", "destroy", "after", "import", "export", "from",
   "type", "remote", "macro", "attribute", "on", "where", "is", "read",
   "write", "client", "server", "self", "declare",
 ];

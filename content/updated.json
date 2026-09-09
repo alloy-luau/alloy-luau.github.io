@@ -188,8 +188,16 @@
     "date": "2026-09-07"
   },
   "entry:delete": {
-    "hash": "e31e49eb5219cb3a",
-    "date": "2026-09-07"
+    "hash": "942cda634ae2e06e",
+    "date": "2026-09-09"
+  },
+  "entry:destroy": {
+    "hash": "fc288091511cabc8",
+    "date": "2026-09-09"
+  },
+  "entry:after": {
+    "hash": "be5f33241fa9364e",
+    "date": "2026-09-09"
   },
   "entry:attribute": {
     "hash": "7b6c741a9af03403",
@@ -665,6 +673,10 @@
   },
   "lint:export_impl": {
     "hash": "c16d2203c9702b5a",
+    "date": "2026-09-09"
+  },
+  "lint:prefer_destroy": {
+    "hash": "92268f22a6cec284",
     "date": "2026-09-09"
   },
   "lint:manual_safe_access": {
