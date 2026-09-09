@@ -154,7 +154,7 @@ end
 local function describe(msg: Msg): string
     return match msg with
         case Join(name) then \`{name} joined\`
-        case Leave(name, after) then \`{name} left after {after}s\`
+        case Leave(name, seconds) then \`{name} left after {seconds}s\`
     end
 end
 
