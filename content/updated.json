@@ -136,11 +136,15 @@
     "date": "2026-09-07"
   },
   "entry:import": {
-    "hash": "1be6745ffdcac92a",
+    "hash": "10d8279128817e4f",
     "date": "2026-09-09"
   },
   "entry:export": {
-    "hash": "7094a3218ba64d19",
+    "hash": "728d9b60cb10619b",
+    "date": "2026-09-09"
+  },
+  "entry:global": {
+    "hash": "878d6f0224a0c07d",
     "date": "2026-09-09"
   },
   "entry:from": {
@@ -504,8 +508,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:config": {
-    "hash": "9efb7b6ea6c834e0",
-    "date": "2026-09-08"
+    "hash": "b2e88e8c15e6998c",
+    "date": "2026-09-09"
   },
   "entry:topic:init": {
     "hash": "a21f59cd6067a23c",
@@ -516,8 +520,8 @@
     "date": "2026-09-08"
   },
   "entry:topic:directives": {
-    "hash": "448ef9f73758d7a2",
-    "date": "2026-09-08"
+    "hash": "df7613aa4d7b3d0c",
+    "date": "2026-09-09"
   },
   "entry:topic:alloy-ignore": {
     "hash": "804ed987bd6f269a",
@@ -539,9 +543,13 @@
     "hash": "e469cf3e23295280",
     "date": "2026-09-08"
   },
+  "entry:topic:alloy-file-side": {
+    "hash": "ebb4eb626a6c98b0",
+    "date": "2026-09-09"
+  },
   "entry:topic:alloy-side": {
-    "hash": "8861e1b030675dca",
-    "date": "2026-09-08"
+    "hash": "cb6647b7664a90e9",
+    "date": "2026-09-09"
   },
   "entry:topic:alloy-preserve": {
     "hash": "cfc3b624b7dee919",
@@ -556,7 +564,7 @@
     "date": "2026-09-09"
   },
   "entry:topic:mount": {
-    "hash": "83f6ea6d43a91cab",
+    "hash": "044b51e25ed4c5f6",
     "date": "2026-09-09"
   },
   "entry:topic:data": {
@@ -650,6 +658,10 @@
   "lint:needless_bool": {
     "hash": "e4d4319bdaef4dfe",
     "date": "2026-09-07"
+  },
+  "lint:export_impl": {
+    "hash": "c16d2203c9702b5a",
+    "date": "2026-09-09"
   },
   "lint:manual_safe_access": {
     "hash": "becf3cce7c5dc08f",
@@ -770,6 +782,10 @@
   "lint:deprecated_body_mover": {
     "hash": "2e5c8b7d15e3cdc2",
     "date": "2026-09-07"
+  },
+  "lint:shadowed_global": {
+    "hash": "30d93dfb69ba51c1",
+    "date": "2026-09-09"
   },
   "lint:explicit_any": {
     "hash": "11ffcf98de142142",

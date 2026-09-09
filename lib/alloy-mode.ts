@@ -6,7 +6,7 @@ import { tags as t } from "@lezer/highlight";
 
 const KEYWORDS = new Set([
   "and", "break", "do", "else", "elseif", "end", "for", "function", "if", "in", "local", "not", "or",
-  "repeat", "return", "then", "until", "while", "continue", "type", "export", "import", "from", "as",
+  "repeat", "return", "then", "until", "while", "continue", "type", "export", "global", "import", "from", "as",
   "async", "await", "try", "struct", "enum", "trait", "impl", "interface", "extends", "match", "case",
   "default", "where", "with", "new", "delete", "const", "macro", "attribute", "remote", "declare",
   "extern", "class", "open", "is", "satisfies", "band", "bor", "bxor", "bnot", "shl", "shr", "read",
