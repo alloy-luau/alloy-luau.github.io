@@ -647,6 +647,10 @@
     "hash": "611eec030434dc39",
     "date": "2026-09-07"
   },
+  "lint:deprecated_namespace": {
+    "hash": "79fbf74802c33515",
+    "date": "2026-09-09"
+  },
   "lint:and_or_ternary": {
     "hash": "a2104c73499a2179",
     "date": "2026-09-07"
@@ -830,6 +834,10 @@
   "lint:missing_doc": {
     "hash": "ff629841c641a9ed",
     "date": "2026-09-07"
+  },
+  "lint:import_order": {
+    "hash": "8ccf31acd4d8572b",
+    "date": "2026-09-09"
   },
   "lint:camel_case_name": {
     "hash": "f028595fd3b1a076",

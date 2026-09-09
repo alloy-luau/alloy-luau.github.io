@@ -1177,8 +1177,8 @@
         {
           "name": "reject",
           "kind": "static",
-          "signature": "Future.reject(error: any): Future<never>",
-          "doc": "A Future that has already failed with `error`. An `await` on it rethrows, and `try await` returns that `Err` from the function.",
+          "signature": "Future.reject(error: any): Future<any>",
+          "doc": "A Future that has already failed with `error`. An `await` on it rethrows, and `try await` returns that `Err` from the function. The payload reads `any`: a rejected Future never settles with one, so it stands where a `Future<T>` is asked for.",
           "example": "local bad = Future.reject(\"no disk\")\nbad:andThen(nil, function(e) print(e) end)"
         },
         {
@@ -2273,6 +2273,13 @@
       "detail": "A cycle of `import` lines: Luau's `require` of a module that is still loading is an error at runtime, and the first file to load decides which one fails. Move the shared part into a third module that both import. `alloy flux` reports it; a single-file lint cannot see it."
     },
     {
+      "name": "deprecated_namespace",
+      "group": "suspicious",
+      "default": "warn",
+      "summary": "a use of a namespace declared `@deprecated`",
+      "detail": "`@deprecated` on a `function` passes through to Luau, which reports a call to it. A namespace has no Luau form, so this lint reports the use instead. The message the attribute carries prints after the name. Inside the namespace the members read each other by their own names, and nothing fires."
+    },
+    {
       "name": "and_or_ternary",
       "group": "suspicious",
       "default": "warn",
@@ -2593,6 +2600,13 @@
       "default": "strict",
       "summary": "an exported declaration with no comment above it",
       "detail": "Pedantic. An `export` is the interface of the module. A comment line right above it, `--` or `---`, says what it is for; the language server shows it on hover."
+    },
+    {
+      "name": "import_order",
+      "group": "pedantic",
+      "default": "strict",
+      "summary": "an `import` under code that runs",
+      "detail": "Pedantic. The emit lifts every `require` to the top of the file, the way TypeScript hoists an import, so a module loads before the line above the import runs. The line reads as if the order were the other way. Move the imports to the top of the file."
     },
     {
       "name": "camel_case_name",
