@@ -583,6 +583,13 @@
       "members": []
     },
     {
+      "key": "@immediate",
+      "group": "Attributes",
+      "markdown": "```alloy\n@immediate\nremote ...\n```\nA fire goes out at once instead of joining the per-frame batch: for a remote whose latency matters more than its bandwidth.\n\n**Applies to** `remote`",
+      "signature": null,
+      "members": []
+    },
+    {
       "key": "@ratelimit",
       "group": "Attributes",
       "markdown": "```alloy\n@ratelimit(count, seconds)\n```\nA per-player token bucket on the server, for client-to-server remotes.",
