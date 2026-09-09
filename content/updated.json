@@ -136,15 +136,15 @@
     "date": "2026-09-07"
   },
   "entry:import": {
-    "hash": "10d8279128817e4f",
+    "hash": "bd73541f5fe50ae1",
     "date": "2026-09-09"
   },
   "entry:export": {
-    "hash": "728d9b60cb10619b",
+    "hash": "53cd79b0d623b765",
     "date": "2026-09-09"
   },
   "entry:global": {
-    "hash": "878d6f0224a0c07d",
+    "hash": "4de01dc04d2fdb1f",
     "date": "2026-09-09"
   },
   "entry:from": {
@@ -179,6 +179,10 @@
     "hash": "2ab2d66a2833b95b",
     "date": "2026-09-07"
   },
+  "entry:namespace": {
+    "hash": "299a048e8d2671a6",
+    "date": "2026-09-09"
+  },
   "entry:new": {
     "hash": "f8f82997da38b42e",
     "date": "2026-09-07"
@@ -188,8 +192,8 @@
     "date": "2026-09-07"
   },
   "entry:attribute": {
-    "hash": "f1c113979ab42d38",
-    "date": "2026-09-07"
+    "hash": "7b6c741a9af03403",
+    "date": "2026-09-09"
   },
   "entry:on": {
     "hash": "f4d1e8945619ba37",
