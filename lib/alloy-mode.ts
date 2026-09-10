@@ -94,6 +94,13 @@ const parser: StreamParser<State> = {
         return "keyword";
       }
 
+      // `self` is the receiver wherever it stands: a parameter list, a
+      // type, or the body. The editor gives it the keyword color, the
+      // way the VS Code grammar does.
+      if (word === "self") {
+        return "keyword";
+      }
+
       if (ATOMS.has(word)) {
         return "atom";
       }
