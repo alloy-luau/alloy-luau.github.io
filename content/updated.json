@@ -136,11 +136,11 @@
     "date": "2026-09-07"
   },
   "entry:import": {
-    "hash": "8dbe9e6e350b73cf",
+    "hash": "ca39a7dfaa802354",
     "date": "2026-09-10"
   },
   "entry:export": {
-    "hash": "8716822da8b44137",
+    "hash": "3687e1f4406bce52",
     "date": "2026-09-10"
   },
   "entry:global": {
@@ -520,16 +520,16 @@
     "date": "2026-09-07"
   },
   "entry:topic:config": {
-    "hash": "b2e88e8c15e6998c",
-    "date": "2026-09-09"
+    "hash": "c46bebaef2011982",
+    "date": "2026-09-10"
   },
   "entry:topic:init": {
     "hash": "a21f59cd6067a23c",
     "date": "2026-09-08"
   },
   "entry:topic:luaurc": {
-    "hash": "c75caa6571a14b92",
-    "date": "2026-09-08"
+    "hash": "f81a157ab8e09bef",
+    "date": "2026-09-10"
   },
   "entry:topic:directives": {
     "hash": "df7613aa4d7b3d0c",
@@ -576,8 +576,8 @@
     "date": "2026-09-09"
   },
   "entry:topic:mount": {
-    "hash": "044b51e25ed4c5f6",
-    "date": "2026-09-09"
+    "hash": "6d2c87bea2088e90",
+    "date": "2026-09-10"
   },
   "entry:topic:data": {
     "hash": "7b23e88386e007b9",
@@ -726,6 +726,10 @@
   "lint:raw_require": {
     "hash": "f495455759bc235b",
     "date": "2026-09-07"
+  },
+  "lint:game_alias": {
+    "hash": "1121b1c6984b8558",
+    "date": "2026-09-10"
   },
   "lint:manual_class": {
     "hash": "010adb7b6ce94364",
