@@ -136,16 +136,16 @@
     "date": "2026-09-07"
   },
   "entry:import": {
-    "hash": "bd73541f5fe50ae1",
-    "date": "2026-09-09"
+    "hash": "8dbe9e6e350b73cf",
+    "date": "2026-09-10"
   },
   "entry:export": {
-    "hash": "53cd79b0d623b765",
-    "date": "2026-09-09"
+    "hash": "8716822da8b44137",
+    "date": "2026-09-10"
   },
   "entry:global": {
-    "hash": "4de01dc04d2fdb1f",
-    "date": "2026-09-09"
+    "hash": "8fbdfa2ca38e255e",
+    "date": "2026-09-10"
   },
   "entry:from": {
     "hash": "4b0a03366d160205",
@@ -586,6 +586,10 @@
   "lint:optional_access": {
     "hash": "a60ddd2ef91350e2",
     "date": "2026-09-07"
+  },
+  "lint:needless_assert": {
+    "hash": "7dece5de7abf6ad2",
+    "date": "2026-09-10"
   },
   "lint:dropped_result": {
     "hash": "092e0032b8a0274b",
