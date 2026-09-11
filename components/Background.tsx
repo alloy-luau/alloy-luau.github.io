@@ -232,5 +232,5 @@ export default function Background({ className = "" }: { className?: string }) {
     };
   }, []);
 
-  return <canvas ref={ref} className={className} role="presentation" />;
+  return <canvas ref={ref} className={className} aria-hidden="true" tabIndex={-1} />;
 }

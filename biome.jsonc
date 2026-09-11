@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": ["**", "!out", "!.next", "!node_modules", "!content", "!shots", "!public", "!app/globals.css"]
+  },
+  // Biome lints here. The formatting stays as written.
+  "formatter": { "enabled": false },
+  // The imports are grouped by hand: the framework, then the site's own
+  // modules. The sorter regroups them, so it is off.
+  "assist": { "actions": { "source": { "organizeImports": "off" } } },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "complexity": {
+        // `paint()` walks a line with `(m = rest.match(...))`, and the
+        // rule reads that as a chain it can shorten.
+        "useOptionalChain": "off"
+      },
+      "correctness": {
+        // The effects in BookShell and Lava list the dependencies they
+        // want to re-run on, not every value they read.
+        "useExhaustiveDependencies": "off"
+      },
+      "performance": {
+        // The export is static, so `next/image` has no optimizer to
+        // call. The marks are fixed-size PNGs.
+        "noImgElement": "off"
+      },
+      "security": {
+        // Every string that reaches `dangerouslySetInnerHTML` comes out
+        // of our own painter or the compiler's doc table.
+        "noDangerouslySetInnerHtml": "off",
+        "noDangerouslySetInnerHtmlWithChildren": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useTemplate": "off"
+      },
+      "suspicious": {
+        // The lists that render with an index key are constants.
+        "noArrayIndexKey": "off",
+        // The tokenizer matches and advances in one expression.
+        "noAssignInExpressions": "off",
+        "noShadowRestrictedNames": "off"
+      }
+    }
+  },
+  "css": {
+    "linter": {
+      // globals.css orders its rules by layer, and the lens needs a few
+      // declarations to win.
+      "enabled": false
+    }
+  }
+}

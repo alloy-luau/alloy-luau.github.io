@@ -115,7 +115,7 @@ function paintLine(line: string, mode: Mode): string {
       continue;
     }
 
-    if ((m = rest.match(/^[(){}\[\],;:.]/))) {
+    if ((m = rest.match(/^[(){}[\],;:.]/))) {
       html += `<span class="p">${esc(m[0])}</span>`;
       j += m[0].length;
       continue;
