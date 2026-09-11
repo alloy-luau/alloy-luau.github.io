@@ -1,8 +1,8 @@
 # Alloy website
 
-Two pages: the landing page at `/` and the reference at `/docs`. Next.js
-with TypeScript, Tailwind, and Framer Motion. The build is a static
-export.
+Four routes: the landing page at `/`, the reference at `/docs`, the
+playground at `/play`, and the merged proposals at `/rfcs`. Next.js with
+TypeScript, Tailwind, and Framer Motion. The build is a static export.
 
 ```sh
 npm ci
@@ -14,12 +14,29 @@ The reference reads `content/docs.json`, which the compiler writes from
 its own documentation table, the same text the editor shows on hover:
 
 ```sh
-npm run content    # runs ../crates/scripts/docs-content.sh: alloy doc --json
+npm run content    # ../crates/scripts/docs-content.sh: alloy doc --json, then the RFCs
 ```
 
 Run it after a change to `alloy/src/docs.rs` or `lint.rs` in the `alloy` repository, checked out beside this one as `../crates`. The
 tour on both pages reads `content/slides.json`: each chapter's source and
 its emitted Luau.
+
+The `/rfcs` route reads `content/rfcs.json`, which `scripts/rfcs.mjs`
+writes from the RFC repository, checked out beside this one as
+`../rfcs`:
+
+```sh
+npm run content:rfcs   # ../rfcs/docs/*.md -> content/rfcs.json
+```
+
+Only a file that a commit added to `main` reaches the site, so a
+proposal that is still a pull request never appears. The merge date on
+each card is that commit's date. With no `../rfcs` checkout the script
+writes an empty list and the index renders its empty state, so a fresh
+CI clone still builds.
+
+`npm run lint` runs Biome over the sources. `npm run typecheck` runs
+`tsc --noEmit`.
 
 `npm run review` drives Chrome through puppeteer-core against the
 served site at `http://127.0.0.1:1750` and writes element screenshots,

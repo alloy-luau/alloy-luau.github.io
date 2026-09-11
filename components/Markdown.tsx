@@ -33,6 +33,8 @@ export function inline(text: string): ReactNode[] {
 
 type Block =
   | { kind: "fence"; lang: string; code: string }
+  | { kind: "head"; level: number; text: string }
+  | { kind: "list"; items: string[] }
   | { kind: "table"; text: string }
   | { kind: "rows"; rows: string[][] }
   | { kind: "para"; text: string };
@@ -57,6 +59,29 @@ function blocks(markdown: string): Block[] {
 
       i += 1;
       out.push({ kind: "fence", lang, code: code.join("\n") });
+      continue;
+    }
+
+    const head = line.match(/^(#{1,6})\s+(.+?)\s*$/);
+
+    if (head) {
+      out.push({ kind: "head", level: head[1].length, text: head[2] });
+      i += 1;
+      continue;
+    }
+
+    // A bullet list, with a wrapped item joined back onto its line.
+    if (/^[-*]\s+/.test(line)) {
+      const items: string[] = [];
+
+      while (i < lines.length && (/^[-*]\s+/.test(lines[i]) || (items.length > 0 && /^\s+\S/.test(lines[i])))) {
+        if (/^[-*]\s+/.test(lines[i])) items.push(lines[i].replace(/^[-*]\s+/, ""));
+        else items[items.length - 1] += ` ${lines[i].trim()}`;
+
+        i += 1;
+      }
+
+      out.push({ kind: "list", items });
       continue;
     }
 
@@ -102,7 +127,9 @@ function blocks(markdown: string): Block[] {
       lines[i].trim() !== "" &&
       !lines[i].startsWith("```") &&
       !lines[i].startsWith("  ") &&
-      !lines[i].startsWith("|")
+      !lines[i].startsWith("|") &&
+      !/^#{1,6}\s/.test(lines[i]) &&
+      !/^[-*]\s+/.test(lines[i])
     ) {
       para.push(lines[i]);
       i += 1;
@@ -114,7 +141,8 @@ function blocks(markdown: string): Block[] {
   return out;
 }
 
-/** The compiler's Markdown, rendered: fences, aligned tables, prose. */
+/** Markdown as this site draws it: fences, headings, bullet lists,
+ *  aligned tables, and prose. */
 export default function Markdown({ text, emitSecond = false }: { text: string; emitSecond?: boolean }) {
   const parts = blocks(text);
   let fences = 0;
@@ -135,6 +163,34 @@ export default function Markdown({ text, emitSecond = false }: { text: string; e
             <div className="fence" key={i}>
               <CodePane code={b.code} mode={mode} emit={isEmit} label={label} note={label ? "alloy.toml" : undefined} />
             </div>
+          );
+        }
+
+        if (b.kind === "head") {
+          // The page owns the h1, so a `#` heading in the source opens
+          // at h2.
+          const Tag = `h${Math.min(b.level + 1, 6)}` as "h2" | "h3" | "h4" | "h5" | "h6";
+
+          return (
+            <Tag className="md-head" key={i}>
+              {inline(b.text).map((n, j) => (
+                <Fragment key={j}>{n}</Fragment>
+              ))}
+            </Tag>
+          );
+        }
+
+        if (b.kind === "list") {
+          return (
+            <ul className="pointlist" key={i}>
+              {b.items.map((item, r) => (
+                <li key={r}>
+                  {inline(item).map((n, j) => (
+                    <Fragment key={j}>{n}</Fragment>
+                  ))}
+                </li>
+              ))}
+            </ul>
           );
         }
 
