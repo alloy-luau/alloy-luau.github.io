@@ -226,6 +226,33 @@ h3 code {
   border-radius: 8px;
 }
 
+/* A heading inside rendered Markdown: an RFC carries several. */
+.prose .md-head {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 26px 0 10px;
+  line-height: 1.2;
+}
+
+.prose h2.md-head {
+  font-size: 22px;
+}
+
+.prose h3.md-head {
+  font-size: 18px;
+}
+
+.prose h4.md-head,
+.prose h5.md-head,
+.prose h6.md-head {
+  font-size: 16px;
+}
+
+.prose .pointlist {
+  margin: 14px 0 18px;
+}
+
 .pointlist {
   margin: 14px 0 0;
   padding: 0;
@@ -323,6 +350,46 @@ h3 code {
   border-radius: 999px;
   background: var(--panel);
   color: var(--ink-2);
+}
+
+/* The area filters on the RFC index. A pressed button reads as the
+   chosen area, and the rest read as the other choices. */
+.rfc-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-inline-size: 0;
+}
+
+.chip.pick {
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 6px 14px;
+}
+
+.chip.pick small {
+  margin-left: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.65;
+}
+
+.chip.pick[aria-pressed="true"] {
+  background: rgba(155, 126, 240, 0.55);
+  border-color: rgba(214, 200, 255, 0.35);
+  color: #fff;
+}
+
+/* An RFC whose feature already ships. */
+.chip.shipped {
+  border-color: rgba(92, 198, 238, 0.45);
+  color: var(--alx);
+  font-size: 11.5px;
+  padding: 3px 9px;
 }
 
 /* The reference sections of a std type: an index of the members, then
@@ -500,6 +567,62 @@ kbd {
   box-shadow:
     0 0 0 1px rgba(155, 126, 240, 0.35),
     0 6px 18px -8px rgba(155, 126, 240, 0.8);
+  /* The bar measures the current link and moves the pill here. */
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s,
+    box-shadow 0.3s;
+}
+
+/* The first paint of a page: the pill lands under the current tab
+   instead of sliding in from the left. */
+.nav-pill[data-still] {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-pill {
+    transition:
+      background 0.3s,
+      box-shadow 0.3s;
+  }
+}
+
+/* Under the `sm` breakpoint the four links live in a panel that the
+   hamburger opens. */
+.nav-menu {
+  position: absolute;
+  top: 100%;
+  right: 12px;
+  left: 12px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--ground-2);
+  box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.9);
+}
+
+.nav-menu a {
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--ink-2);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.nav-menu a.on {
+  background: rgba(155, 126, 240, 0.55);
+  color: #fff;
+}
+
+.nav-burger {
+  color: var(--ink);
 }
 
 .btn-primary {
@@ -855,8 +978,8 @@ pre.code.emit .f {
   /* A tinted element: Apple maps a tint to a range of tones by the
      brightness underneath; on this dark ground the accent sits at
      mid strength inside the glass. */
-  /* The pill moves under a layout spring, so it carries no CSS
-     transition on transform: the two would fight. */
+  /* The transition lives on the unlayered `.nav-pill` rule above, which
+     wins over this one. */
   .nav-pill.glass {
     background: rgba(155, 126, 240, 0.62);
     border-color: rgba(214, 200, 255, 0.24);
@@ -871,7 +994,7 @@ pre.code.emit .f {
       box-shadow 0.3s;
   }
 
-  a:hover > .nav-pill.glass {
+  nav:hover > .nav-pill.glass {
     background: rgba(155, 126, 240, 0.72);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.3),
