@@ -2599,7 +2599,7 @@
       "group": "pedantic",
       "default": "strict",
       "summary": "a `print` call",
-      "detail": "Pedantic. A `print` left over from debugging writes to the output of every player. Remove it, or route it through a logger the project can turn off."
+      "detail": "Pedantic, and `strict` leaves it alone: `print` is ordinary in Luau, so a project that wants it gone writes `[lint.rules] print_debug = \"warn\"`. A `print` left over from debugging writes to the output of every player. Remove it, or route it through a logger the project can turn off."
     },
     {
       "name": "const_mutation",
