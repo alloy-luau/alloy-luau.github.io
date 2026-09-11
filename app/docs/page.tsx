@@ -26,6 +26,18 @@ import {
 // The book: one page, chaptered like the Cargo Book. The sidebar lists
 // every section; the column reads top to bottom.
 
+/// Whether a heading carries the day the book last changed.
+///
+/// Every section and subsection knows its own date, and stamping all of
+/// them put 94 pills on one page: the reader scrolls past a wall of
+/// dates and reads none. A date earns its pill when it says something
+/// the heading above it does not, so only the pieces that moved in the
+/// latest update carry one. The page keeps its own pill for the date
+/// itself.
+function marksTheLatest(date?: string): boolean {
+  return Boolean(date) && date === updatedAll;
+}
+
 function Section({
   id,
   number,
@@ -44,7 +56,7 @@ function Section({
       <h2 className="display mb-4 flex flex-wrap items-baseline gap-3 text-[26px] font-bold leading-[1.15] md:text-[32px]">
         <span className="font-mono text-[14px] font-normal text-muted">{number}</span>
         <span>{title}</span>
-        {updated ? (
+        {marksTheLatest(updated) ? (
           <span className="ml-auto self-center">
             <UpdatedPill date={updated} />
           </span>
@@ -124,7 +136,7 @@ function Sub({
         <span dangerouslySetInnerHTML={typeof title === "string" ? { __html: title } : undefined}>
           {typeof title === "string" ? undefined : title}
         </span>
-        {updated ? (
+        {marksTheLatest(updated) ? (
           <span className="ml-auto self-center">
             <UpdatedPill date={updated} />
           </span>
@@ -138,7 +150,11 @@ function Sub({
 // The day each chapter last changed: the page's own prose for the
 // hand-written ones, the table entries and tour chapters for the rest.
 const pageDate = updatedAt(["page:docs"]);
-const topicDate = (name: string) => updatedAt([`entry:topic:${name}`, "page:docs"]);
+// A topic's own day, not the page's. Reading the two together made
+// every topic look like it changed whenever this file did, which is
+// most days, so no date meant anything. A topic with no entry of its
+// own falls back to the page.
+const topicDate = (name: string) => updatedAt([`entry:topic:${name}`]) ?? pageDate;
 const slideDates = slides.map((s) => updatedAt([`slide:${s.id}`]));
 const lintDate = updatedAt(lintGroups.flatMap((g) => g.lints.map((l) => `lint:${l.name}`)));
 const referenceDates = referenceGroups.map((g) => updatedAt(g.keys.map((e) => `entry:${e.key}`)));
@@ -279,7 +295,7 @@ export default function Docs() {
         </div>
       </div>
 
-      <Section id="intro" updated={pageDate} number="1" title="Introduction">
+      <Section id="intro" number="1" title="Introduction">
         <div className="prose">
           <p>
             Alloy is a strict superset of Luau. Every Luau file is already an Alloy file. A file that uses no Alloy
@@ -300,8 +316,8 @@ export default function Docs() {
         </div>
       </Section>
 
-      <Section id="getting-started" updated={pageDate} number="2" title="Getting started">
-        <Sub id="install" updated={pageDate} number="2.1" title="Install">
+      <Section id="getting-started" number="2" title="Getting started">
+        <Sub id="install" number="2.1" title="Install">
           <div className="prose">
             <p>
               The build script compiles every crate and the VS Code extension. It then installs <code>alloy</code> and{" "}
@@ -318,7 +334,7 @@ export default function Docs() {
           </div>
         </Sub>
 
-        <Sub id="first-project" updated={pageDate} number="2.2" title="A first project">
+        <Sub id="first-project" number="2.2" title="A first project">
           <div className="prose">
             <p>
               <code>alloy init</code> writes <code>alloy.toml</code>. When the folder has no Luau configuration, it also
@@ -342,7 +358,7 @@ export default function Docs() {
           </div>
         </Sub>
 
-        <Sub id="editor" updated={pageDate} number="2.3" title="The editor">
+        <Sub id="editor" number="2.3" title="The editor">
           <div className="prose">
             <p>
               The language server is a proxy over luau-lsp. It compiles every open Alloy file into a mirror directory.
@@ -432,7 +448,7 @@ export default function Docs() {
         <Sub id="test" updated={topicDate("test")} number="5.6" title="alloy test">
           <Markdown text={topic("test")} />
         </Sub>
-        <Sub id="doc" updated={pageDate} number="5.7" title="alloy doc">
+        <Sub id="doc" number="5.7" title="alloy doc">
           <div className="prose">
             <p>
               Prints one entry of this book on the terminal: a keyword, an operator, an intrinsic, an attribute, a std
