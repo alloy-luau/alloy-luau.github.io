@@ -1,9 +1,20 @@
 "use client";
 
-import { LazyMotion, m, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  LazyMotion,
+  m,
+  useReducedMotion,
+} from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 type NavKey = "home" | "docs" | "play" | "rfcs";
 
@@ -40,6 +51,29 @@ const SPRING = {
  *  lands on the tab with no travel. The colour still changes. */
 const STILL = { duration: 0 } as const;
 
+/** The menu drops from under the button and the links arrive behind it.
+ *  A spring with no bounce reads as a panel settling rather than a box
+ *  appearing, and the stagger is small enough to feel like one motion. */
+const MENU = { type: "spring", visualDuration: 0.22, bounce: 0 } as const;
+const MENU_LINK = {
+  type: "spring",
+  visualDuration: 0.25,
+  bounce: 0.18,
+} as const;
+
+/** Closing is not the opening reversed. The stagger that reads as
+ *  arrival reads as a delay on the way out, so the menu leaves at once
+ *  and quickly: a reader who asked for it gone wants it gone. */
+const SHUT = { duration: 0.12, ease: "easeIn" } as const;
+
+/** The three bars of the button, as they sit and as they cross. The
+ *  middle one goes; the outer two meet in the centre and turn. */
+const BARS = [
+  { open: { y: 4, rotate: 45 }, shut: { y: 0, rotate: 0 } },
+  { open: { opacity: 0, scaleX: 0.2 }, shut: { opacity: 1, scaleX: 1 } },
+  { open: { y: -4, rotate: -45 }, shut: { y: 0, rotate: 0 } },
+] as const;
+
 /** The top bar: the mark, the four pages, the version. A pill sits under
  *  the current page and slides to the link the pointer is over.
  *
@@ -71,7 +105,11 @@ export default function Nav({ version }: { version: string }) {
 
     if (!bar || !el) return;
 
-    setBox((old) => (old && old.x === el.offsetLeft && old.w === el.offsetWidth ? old : { x: el.offsetLeft, w: el.offsetWidth }));
+    setBox((old) =>
+      old && old.x === el.offsetLeft && old.w === el.offsetWidth
+        ? old
+        : { x: el.offsetLeft, w: el.offsetWidth },
+    );
   }, [lit]);
 
   // Before the paint, so the pill is already in place the first time it
@@ -131,7 +169,11 @@ export default function Nav({ version }: { version: string }) {
     const onDown = (e: PointerEvent) => {
       const target = e.target as Node;
 
-      if (menuRef.current?.contains(target) || buttonRef.current?.contains(target)) return;
+      if (
+        menuRef.current?.contains(target) ||
+        buttonRef.current?.contains(target)
+      )
+        return;
 
       setOpen(false);
     };
@@ -147,24 +189,29 @@ export default function Nav({ version }: { version: string }) {
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-ground/80 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-[1240px] items-center gap-3 px-5">
-        <Link href="/" className="brand no-underline" aria-label="Alloy">
-          {/* The icon's two shapes, from aly-symbol.png: the A in ink
+      {/* One boundary for the whole bar: the pill, the button's three
+          bars, and the menu all animate, and each `m` component needs
+          the features this loads. */}
+      <LazyMotion features={FEATURES} strict>
+        <div className="mx-auto flex h-14 max-w-[1240px] items-center gap-3 px-5">
+          <Link href="/" className="brand no-underline" aria-label="Alloy">
+            {/* The icon's two shapes, from aly-symbol.png: the A in ink
               through a mask, the diamond as itself. Only the diamond
               flips on hover. */}
-          <span className="brandmark" aria-hidden="true">
-            <span className="brand-a" />
-            <img className="brand-diamond" src="/mark-diamond.png" alt="" />
-          </span>
-          <span className="display brand-rest text-[21px] font-extrabold tracking-[0.02em] text-ink">lloy</span>
-        </Link>
-        <span className="chip glass ml-1 hidden sm:inline">v{version}</span>
-        <nav
-          ref={barRef}
-          className="relative ml-auto hidden items-center gap-1 sm:flex"
-          onMouseLeave={() => setHover(null)}
-        >
-          <LazyMotion features={FEATURES} strict>
+            <span className="brandmark" aria-hidden="true">
+              <span className="brand-a" />
+              <img className="brand-diamond" src="/mark-diamond.png" alt="" />
+            </span>
+            <span className="display brand-rest text-[21px] font-extrabold tracking-[0.02em] text-ink">
+              lloy
+            </span>
+          </Link>
+          <span className="chip glass ml-1 hidden sm:inline">v{version}</span>
+          <nav
+            ref={barRef}
+            className="relative ml-auto hidden items-center gap-1 sm:flex"
+            onMouseLeave={() => setHover(null)}
+          >
             {box ? (
               <m.span
                 className="nav-pill glass glass-live pointer-events-none absolute top-0 left-0 h-full rounded-full"
@@ -173,76 +220,115 @@ export default function Nav({ version }: { version: string }) {
                 transition={reduced || !moves ? STILL : SPRING}
               />
             ) : null}
-          </LazyMotion>
-          {LINKS.map((l) => (
-            <Link
-              key={l.key}
-              href={l.href}
-              ref={(el) => {
-                if (el) linkRefs.current.set(l.key, el);
-                else linkRefs.current.delete(l.key);
-              }}
-              onMouseEnter={() => setHover(l.key)}
-              onFocus={() => setHover(l.key)}
-              aria-current={current === l.key ? "page" : undefined}
-              className={`nav-link relative rounded-full px-3.5 py-1.5 text-[13.5px] no-underline ${
-                lit === l.key ? "text-ink" : "text-ink-2"
-              }`}
+            {LINKS.map((l) => (
+              <Link
+                key={l.key}
+                href={l.href}
+                ref={(el) => {
+                  if (el) linkRefs.current.set(l.key, el);
+                  else linkRefs.current.delete(l.key);
+                }}
+                onMouseEnter={() => setHover(l.key)}
+                onFocus={() => setHover(l.key)}
+                aria-current={current === l.key ? "page" : undefined}
+                className={`nav-link relative rounded-full px-3.5 py-1.5 text-[13.5px] no-underline ${
+                  lit === l.key ? "text-ink" : "text-ink-2"
+                }`}
+              >
+                <span className="relative">{l.label}</span>
+              </Link>
+            ))}
+          </nav>
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            className="nav-burger glass ml-auto inline-flex h-9 w-9 items-center justify-center rounded-full sm:hidden"
+            aria-label={open ? "Close the menu" : "Open the menu"}
+            aria-expanded={open}
+            aria-controls="nav-menu"
+          >
+            <svg
+              viewBox="0 0 20 20"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              aria-hidden="true"
             >
-              <span className="relative">{l.label}</span>
-            </Link>
-          ))}
-        </nav>
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          className="nav-burger glass ml-auto inline-flex h-9 w-9 items-center justify-center rounded-full sm:hidden"
-          aria-label={open ? "Close the menu" : "Open the menu"}
-          aria-expanded={open}
-          aria-controls="nav-menu"
-        >
-          <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
-            {open ? (
-              <>
-                <path d="M5 5l10 10" />
-                <path d="M15 5L5 15" />
-              </>
-            ) : (
-              <>
-                <path d="M3.5 6h13" />
-                <path d="M3.5 10h13" />
-                <path d="M3.5 14h13" />
-              </>
-            )}
-          </svg>
-        </button>
-        <a
-          href="https://github.com/alloy-luau"
-          className="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-full text-ink-2 no-underline transition-colors hover:text-ink"
-          title="Alloy on GitHub"
-        >
-          <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" />
-          </svg>
-          <span className="sr-only">Alloy on GitHub</span>
-        </a>
-      </div>
-      {open ? (
-        <div ref={menuRef} id="nav-menu" className="nav-menu sm:hidden">
-          {LINKS.map((l) => (
-            <Link
-              key={l.key}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              aria-current={current === l.key ? "page" : undefined}
-              className={current === l.key ? "on" : ""}
+              {["M3.5 6h13", "M3.5 10h13", "M3.5 14h13"].map((d, i) => (
+                <m.path
+                  key={d}
+                  d={d}
+                  initial={false}
+                  animate={open ? BARS[i].open : BARS[i].shut}
+                  transition={reduced ? STILL : MENU}
+                  style={{
+                    transformOrigin: "10px 10px",
+                    transformBox: "view-box",
+                  }}
+                />
+              ))}
+            </svg>
+          </button>
+          <a
+            href="https://github.com/alloy-luau"
+            className="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-full text-ink-2 no-underline transition-colors hover:text-ink"
+            title="Alloy on GitHub"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              width="18"
+              height="18"
+              fill="currentColor"
+              aria-hidden="true"
             >
-              {l.label}
-            </Link>
-          ))}
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" />
+            </svg>
+            <span className="sr-only">Alloy on GitHub</span>
+          </a>
         </div>
-      ) : null}
+        <AnimatePresence initial={false}>
+          {open ? (
+            <m.div
+              key="nav-menu"
+              ref={menuRef}
+              id="nav-menu"
+              className="nav-menu sm:hidden"
+              initial={{ opacity: 0, y: -10, scaleY: 0.92 }}
+              animate={{ opacity: 1, y: 0, scaleY: 1 }}
+              exit={{ opacity: 0, y: -8, scaleY: 0.96, transition: reduced ? STILL : SHUT }}
+              transition={reduced ? STILL : MENU}
+              style={{ transformOrigin: "top center" }}
+            >
+              {LINKS.map((l, i) => (
+                <m.div
+                  key={l.key}
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4, transition: reduced ? STILL : SHUT }}
+                  transition={
+                    reduced
+                      ? STILL
+                      : { ...MENU_LINK, delay: reduced ? 0 : i * 0.035 }
+                  }
+                >
+                  <Link
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={current === l.key ? "page" : undefined}
+                    className={current === l.key ? "on" : ""}
+                  >
+                    {l.label}
+                  </Link>
+                </m.div>
+              ))}
+            </m.div>
+          ) : null}
+        </AnimatePresence>
+      </LazyMotion>
     </header>
   );
 }

@@ -594,7 +594,10 @@ kbd {
   box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.9);
 }
 
+/* The links sit inside a wrapper each, so the menu can bring them in one
+   after another. A block fills the wrapper the way a flex child did. */
 .nav-menu a {
+  display: block;
   padding: 10px 12px;
   border-radius: 10px;
   color: var(--ink-2);
