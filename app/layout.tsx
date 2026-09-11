@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 
 import GlassLens from "@/components/GlassLens";
 import LensFilter from "@/components/LensFilter";
+import Nav from "@/components/Nav";
+import { version } from "@/lib/content";
 
 import "./globals.css";
 
@@ -105,6 +107,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <LensFilter />
         <GlassLens />
+        {/* One bar for the whole site. It survives every navigation, so
+            the pill springs from the old tab to the new one. */}
+        <Nav version={version} />
         {children}
       </body>
     </html>

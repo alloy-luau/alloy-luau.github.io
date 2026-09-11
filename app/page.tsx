@@ -6,7 +6,6 @@ import Hero from "@/components/Hero";
 import Icon, { iconFor } from "@/components/Icon";
 import Lava from "@/components/Lava";
 import BrandMark from "@/components/BrandMark";
-import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
 import TiltCard from "@/components/TiltCard";
 import { commands, contracts, slides, version } from "@/lib/content";
@@ -16,8 +15,6 @@ const hero = slides.find((s) => s.id === "safe");
 export default function Home() {
   return (
     <>
-      <Nav version={version} current="home" />
-
       {/* Hero */}
       <section className="hero-ground relative overflow-hidden border-b border-line">
         <Background className="absolute inset-0 h-full w-full" />

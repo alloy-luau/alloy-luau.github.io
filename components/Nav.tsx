@@ -1,9 +1,13 @@
 "use client";
 
+import { LazyMotion, m, useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-export type NavKey = "home" | "docs" | "play" | "rfcs";
+type NavKey = "home" | "docs" | "play" | "rfcs";
+
+const FEATURES = () => import("./nav-motion").then((mod) => mod.default);
 
 const LINKS: { href: string; label: string; key: NavKey }[] = [
   { href: "/", label: "Overview", key: "home" },
@@ -12,20 +16,46 @@ const LINKS: { href: string; label: string; key: NavKey }[] = [
   { href: "/rfcs/", label: "RFCs", key: "rfcs" },
 ];
 
+/** The page the URL names. `/rfcs/<slug>/` is still the RFCs tab. */
+function keyFor(pathname: string): NavKey {
+  if (pathname.startsWith("/docs")) return "docs";
+  if (pathname.startsWith("/play")) return "play";
+  if (pathname.startsWith("/rfcs")) return "rfcs";
+
+  return "home";
+}
+
+/** `visualDuration` is the time the pill takes to reach the tab; `bounce`
+ *  is how far it carries past it. The rest thresholds end the run once the
+ *  pill is within three quarters of a pixel, which drops the tail a spring
+ *  otherwise draws one frame at a time. The width travels a few pixels at
+ *  most, so it gets a tighter threshold of its own. */
+const MOVE = { type: "spring", visualDuration: 0.15, bounce: 0.2 } as const;
+const SPRING = {
+  x: { ...MOVE, restDelta: 0.75, restSpeed: 30 },
+  width: { ...MOVE, restDelta: 0.2, restSpeed: 10 },
+} as const;
+
+/** The first paint, and a reader who asked for less motion: the pill
+ *  lands on the tab with no travel. The colour still changes. */
+const STILL = { duration: 0 } as const;
+
 /** The top bar: the mark, the four pages, the version. A pill sits under
  *  the current page and slides to the link the pointer is over.
  *
- *  The pill is one element that the bar measures and moves with a CSS
- *  transition. A layout animation cannot do this job here: every route
- *  change remounts the bar, so the animation would run against a tree
- *  that is already gone, and the pill would slide in from the left on
- *  each page load. The first paint carries `data-still`, so the pill
- *  appears where it belongs and moves only after that. */
-export default function Nav({ version, current }: { version: string; current: NavKey }) {
+ *  The bar lives in the root layout, so one instance survives every
+ *  navigation and the pill animates from the old tab to the new one. The
+ *  current tab comes from the URL rather than a prop, because the layout
+ *  renders once for all routes. */
+export default function Nav({ version }: { version: string }) {
+  const pathname = usePathname();
+  const current = keyFor(pathname);
+
   const [hover, setHover] = useState<NavKey | null>(null);
   const [box, setBox] = useState<{ x: number; w: number } | null>(null);
   const [moves, setMoves] = useState(false);
   const [open, setOpen] = useState(false);
+  const reduced = useReducedMotion();
 
   const barRef = useRef<HTMLElement>(null);
   const linkRefs = useRef(new Map<NavKey, HTMLAnchorElement>());
@@ -41,7 +71,7 @@ export default function Nav({ version, current }: { version: string; current: Na
 
     if (!bar || !el) return;
 
-    setBox({ x: el.offsetLeft, w: el.offsetWidth });
+    setBox((old) => (old && old.x === el.offsetLeft && old.w === el.offsetWidth ? old : { x: el.offsetLeft, w: el.offsetWidth }));
   }, [lit]);
 
   // Before the paint, so the pill is already in place the first time it
@@ -67,8 +97,8 @@ export default function Nav({ version, current }: { version: string; current: Na
     return () => observer.disconnect();
   }, [measure]);
 
-  // The transition turns on one frame after the first measurement, so a
-  // page load places the pill without a slide.
+  // The spring turns on one frame after the first measurement, so a cold
+  // load places the pill without a slide.
   useEffect(() => {
     if (box === null || moves) return;
 
@@ -76,6 +106,11 @@ export default function Nav({ version, current }: { version: string; current: Na
 
     return () => cancelAnimationFrame(frame);
   }, [box, moves]);
+
+  // The menu closes when the route changes under it.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) {
@@ -129,14 +164,16 @@ export default function Nav({ version, current }: { version: string; current: Na
           className="relative ml-auto hidden items-center gap-1 sm:flex"
           onMouseLeave={() => setHover(null)}
         >
-          {box ? (
-            <span
-              className="nav-pill glass glass-live pointer-events-none absolute top-0 left-0 h-full rounded-full"
-              data-still={moves ? undefined : "true"}
-              data-lit={lit}
-              style={{ width: `${box.w}px`, transform: `translateX(${box.x}px)` }}
-            />
-          ) : null}
+          <LazyMotion features={FEATURES} strict>
+            {box ? (
+              <m.span
+                className="nav-pill glass glass-live pointer-events-none absolute top-0 left-0 h-full rounded-full"
+                initial={false}
+                animate={{ x: box.x, width: box.w }}
+                transition={reduced || !moves ? STILL : SPRING}
+              />
+            ) : null}
+          </LazyMotion>
           {LINKS.map((l) => (
             <Link
               key={l.key}

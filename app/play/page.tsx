@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 
-import Nav from "@/components/Nav";
 import PlaygroundLoader from "@/components/PlaygroundLoader";
-import { version } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Playground",
@@ -11,10 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Play() {
-  return (
-    <>
-      <Nav version={version} current="play" />
-      <PlaygroundLoader />
-    </>
-  );
+  return <PlaygroundLoader />;
 }

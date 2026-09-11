@@ -562,31 +562,17 @@ kbd {
   transition: color 0.2s;
 }
 
+/* The pill's place and width come from framer-motion, which writes
+   `transform` and `width` on every frame. A CSS transition on either one
+   would fight the spring, so only the colour transitions here. */
 .nav-pill {
   background: linear-gradient(135deg, rgba(155, 126, 240, 0.35), rgba(92, 198, 238, 0.25));
   box-shadow:
     0 0 0 1px rgba(155, 126, 240, 0.35),
     0 6px 18px -8px rgba(155, 126, 240, 0.8);
-  /* The bar measures the current link and moves the pill here. */
   transition:
-    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
     background 0.3s,
     box-shadow 0.3s;
-}
-
-/* The first paint of a page: the pill lands under the current tab
-   instead of sliding in from the left. */
-.nav-pill[data-still] {
-  transition: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nav-pill {
-    transition:
-      background 0.3s,
-      box-shadow 0.3s;
-  }
 }
 
 /* Under the `sm` breakpoint the four links live in a panel that the
@@ -978,8 +964,6 @@ pre.code.emit .f {
   /* A tinted element: Apple maps a tint to a range of tones by the
      brightness underneath; on this dark ground the accent sits at
      mid strength inside the glass. */
-  /* The transition lives on the unlayered `.nav-pill` rule above, which
-     wins over this one. */
   .nav-pill.glass {
     background: rgba(155, 126, 240, 0.62);
     border-color: rgba(214, 200, 255, 0.24);

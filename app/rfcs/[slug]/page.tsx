@@ -4,9 +4,8 @@ import { notFound } from "next/navigation";
 
 import Lava from "@/components/Lava";
 import Markdown from "@/components/Markdown";
-import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
-import { areaLabel, formatDate, rfc, rfcBody, rfcPulls, rfcSource, rfcs, version } from "@/lib/content";
+import { areaLabel, formatDate, rfc, rfcBody, rfcPulls, rfcSource, rfcs } from "@/lib/content";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -39,8 +38,6 @@ export default async function RfcPage({ params }: Props) {
 
   return (
     <>
-      <Nav version={version} current="rfcs" />
-
       <section className="relative overflow-hidden border-b border-line">
         <Lava
           blobs={[

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import Lava from "@/components/Lava";
-import Nav from "@/components/Nav";
 import Reveal from "@/components/Reveal";
 import RfcIndex from "@/components/RfcIndex";
 import { rfcAreas, rfcPulls, rfcs, version } from "@/lib/content";
@@ -21,8 +20,6 @@ export const metadata: Metadata = {
 export default function Rfcs() {
   return (
     <>
-      <Nav version={version} current="rfcs" />
-
       <section className="relative overflow-hidden border-b border-line">
         <Lava
           blobs={[
