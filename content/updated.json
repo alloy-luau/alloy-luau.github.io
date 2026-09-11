@@ -572,8 +572,8 @@
     "date": "2026-09-08"
   },
   "entry:topic:ingots": {
-    "hash": "822fddfafa025561",
-    "date": "2026-09-09"
+    "hash": "2fac7f78c15c8d50",
+    "date": "2026-09-11"
   },
   "entry:topic:mount": {
     "hash": "6d2c87bea2088e90",
@@ -920,7 +920,7 @@
     "date": "2026-09-07"
   },
   "page:docs": {
-    "hash": "7c034eb96ccd50b5",
-    "date": "2026-09-08"
+    "hash": "32f3386f8a3041ac",
+    "date": "2026-09-11"
   }
 }
