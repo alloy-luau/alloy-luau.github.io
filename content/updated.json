@@ -92,8 +92,8 @@
     "date": "2026-09-07"
   },
   "entry:struct": {
-    "hash": "32eb625b26f2bc38",
-    "date": "2026-09-07"
+    "hash": "fc0324f676ef07a9",
+    "date": "2026-09-11"
   },
   "entry:impl": {
     "hash": "7bd241e496798aef",
@@ -164,16 +164,16 @@
     "date": "2026-09-08"
   },
   "entry:async": {
-    "hash": "5ade7d27e4aef07e",
-    "date": "2026-09-07"
+    "hash": "37f42602867f2cc1",
+    "date": "2026-09-11"
   },
   "entry:await": {
-    "hash": "bf2304965849ac46",
-    "date": "2026-09-08"
+    "hash": "d612abe8baaaa91f",
+    "date": "2026-09-11"
   },
   "entry:try": {
-    "hash": "5edfca12e4f7d706",
-    "date": "2026-09-08"
+    "hash": "60d27ea54e52c3f9",
+    "date": "2026-09-11"
   },
   "entry:macro": {
     "hash": "2ab2d66a2833b95b",
@@ -420,8 +420,8 @@
     "date": "2026-09-07"
   },
   "entry:Future": {
-    "hash": "42bd8314107276e5",
-    "date": "2026-09-08"
+    "hash": "34c6e9f934c9961d",
+    "date": "2026-09-11"
   },
   "entry:Result": {
     "hash": "b67a22d3b158a056",
@@ -486,6 +486,10 @@
   "entry:topic:strict": {
     "hash": "191dd827be723e0c",
     "date": "2026-09-08"
+  },
+  "entry:topic:results-and-futures": {
+    "hash": "53fc248deda942be",
+    "date": "2026-09-11"
   },
   "entry:topic:exhaustive": {
     "hash": "1135c4621eb3c6f1",
@@ -556,8 +560,8 @@
     "date": "2026-09-08"
   },
   "entry:topic:alloy-file-side": {
-    "hash": "ebb4eb626a6c98b0",
-    "date": "2026-09-09"
+    "hash": "1e95acdca7d21cdd",
+    "date": "2026-09-11"
   },
   "entry:topic:alloy-side": {
     "hash": "cb6647b7664a90e9",

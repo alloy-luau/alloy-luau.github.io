@@ -165,7 +165,7 @@
     {
       "key": "struct",
       "group": "Keywords",
-      "markdown": "```alloy\nstruct Name as\n    field: T\nend\n```\nA record with fields. `impl Name` adds methods. `Name { x = 1 }` is the raw constructor and `new Name(...)` calls `Name.new`. `@derive(Eq, Debug, Clone)` on the line before generates methods. A field or a method marked `private` belongs to the impl alone.\n\nEmits a table type plus a metatable with `__index` and a `__tostring`, so `print(v)` and `` `{v}` `` show `Name { x = 1, y = 2 }`. A `to_string` in the impl, an `impl Display`, replaces the default printer.",
+      "markdown": "```alloy\nstruct Name as\n    field: T\nend\n```\nA record with fields. `impl Name` adds methods. `new Name { x = 1 }` fills the fields and `new Name(...)` calls `Name.new`; a construction always takes `new`. `@derive(Eq, Debug, Clone)` on the line before generates methods. A field or a method marked `private` belongs to the impl alone.\n\nEmits a table type plus a metatable with `__index` and a `__tostring`, so `print(v)` and `` `{v}` `` show `Name { x = 1, y = 2 }`. A `to_string` in the impl, an `impl Display`, replaces the default printer.",
       "signature": null,
       "members": []
     },
@@ -291,21 +291,21 @@
     {
       "key": "async",
       "group": "Keywords",
-      "markdown": "```alloy\nasync function f() ... end\nasync do ... end\n```\nReturns a Future. The body runs on `task.spawn` under `xpcall`, and the Future memoizes the result. `async function f(): T` is `Future<T>`; without a return type, a body that returns a value infers `T`, and one that returns nothing is `Future<()>`.",
+      "markdown": "```alloy\nasync function f() ... end\nlocal job = async do ... end\nasync do ... end\n```\nReturns a Future. The body runs on `task.spawn` under `xpcall`, and the Future memoizes the result. `async function f(): T` is `Future<T>`; without a return type, a body that returns a value infers `T`, and one that returns nothing is `Future<()>`.\n\n`async do ... end` is an expression whose value is that Future, so a binding can `await` it later. It also stands alone as a statement, wherever a `do` block stands: the block runs for its effects and the Future is dropped.\n\nAn `async function` body and an `async do` block are the two async contexts an `await` needs; `alloy doc await` carries the rule.",
       "signature": null,
       "members": []
     },
     {
       "key": "await",
       "group": "Keywords",
-      "markdown": "```alloy\nawait expr\n```\nYields until the Future settles, then returns its value or rethrows its error. Accepts a Future or any value with `andThen`; the std spells the operand's type `Awaitable<T>`, which is `Future<T>`.\n\n`try await f()` turns a rejection into an Err. When `f` is an async function declared to return a `Result`, the Result it settles with is the value, not an Ok around it.",
+      "markdown": "```alloy\nawait expr\n```\nYields until the Future settles, then returns its value or rethrows its error. Accepts a Future or any value with `andThen`; the std spells the operand's type `Awaitable<T>`, which is `Future<T>`.\n\n`await` yields the running thread, so it needs a thread the runtime owns: the body of an `async function`, an `async do ... end` block, an `after` block, or the top level of a `*.server.aly` or `*.client.aly` script, which Roblox runs on a thread of its own. Anywhere else it reports. A module's top level yields inside `require`; a plain function yields into whatever called it, and a caller that is C code, such as a `table.sort` comparator, kills the thread on Roblox. A function boundary resets this: an ordinary `function` inside an `async function` is not an async context, though an `async function` expression is.\n\n`try await f()` turns a rejection into an Err and follows the same rule. When `f` is an async function declared to return a `Result`, the Result it settles with is the value, not an Ok around it.",
       "signature": null,
       "members": []
     },
     {
       "key": "try",
       "group": "Keywords",
-      "markdown": "```alloy\ntry expr\ntry do ... end\n```\nReturns early with the `Err`, inside a function that returns `Result`. At the module top level it returns the `Err` from the chunk, so the module yields that `Err`. `try do` is a block whose value is a Result.",
+      "markdown": "```alloy\ntry expr\ntry do ... end\n```\nReturns early with the `Err`, inside a function that returns `Result`. At the module top level it returns the `Err` from the chunk, so the module yields that `Err`.\n\n`try do ... end` is a block whose value is a Result: a plain value becomes `Ok`, a Result passes through as is, and a throw becomes `Err` carrying the traceback from the throw site. A `try` inside the block returns its `Err` from the block, not from the function around it. The value type flows, so `try do return 1 end` is a `Result<number, ...>`.",
       "signature": null,
       "members": []
     },
@@ -1164,7 +1164,7 @@
     {
       "key": "Future",
       "group": "Std",
-      "markdown": "```alloy\nasync function load(id: number): Profile\n    return await fetch(id)\nend\nlocal profiles = await Future.all([load(1), load(2)])\nlocal first = await Future.race([load(1), Future.delay(5)])\n```\nA memoized task, from the std: it runs once, settles once, and every `await` after that reads the same value. An `async function` returns one and its body runs on `task.spawn` under `xpcall`; `await` yields until it settles, then returns the value or rethrows; `try await` returns the `Err` from the enclosing function instead of rethrowing.\n\n`race` and `any` read the value type off each Future in the list, so a mixed list gives the union: `Future<number>` beside `Future<nil>` yields `Future<number?>`. An `async function` without a return type and without a `return` value is `Future<()>`.",
+      "markdown": "```alloy\nasync function load(id: number): Profile\n    return await fetch(id)\nend\nasync do\n    local profiles = await Future.all([load(1), load(2)])\n    local first = await Future.race([load(1), Future.delay(5)])\n    print(profiles, first)\nend\n```\nA memoized task, from the std: it runs once, settles once, and every `await` after that reads the same value. An `async function` returns one and its body runs on `task.spawn` under `xpcall`; `await` yields until it settles, then returns the value or rethrows; `try await` returns the `Err` from the enclosing function instead of rethrowing. Both need an async context: see `alloy doc await`.\n\n`race` and `any` read the value type off each Future in the list, so a mixed list gives the union: `Future<number>` beside `Future<nil>` yields `Future<number?>`. An `async function` without a return type and without a `return` value is `Future<()>`.",
       "signature": "Future<T>",
       "members": [
         {
@@ -1172,7 +1172,7 @@
           "kind": "static",
           "signature": "Future.resolve<T>(value: T): Future<T>",
           "doc": "A Future that has already settled with `value`. Every `await` on it returns at once.",
-          "example": "local ready = Future.resolve(42)\nprint(await ready)"
+          "example": "local ready = Future.resolve(42)\nasync do print(await ready) end"
         },
         {
           "name": "reject",
@@ -1186,49 +1186,49 @@
           "kind": "static",
           "signature": "Future.delay(seconds: number): Future<()>",
           "doc": "A Future that settles after the wait, with no value. It is the async form of `task.wait`.",
-          "example": "await Future.delay(0.5)\nprint(\"later\")"
+          "example": "async do\n    await Future.delay(0.5)\n    print(\"later\")\nend"
         },
         {
           "name": "all",
           "kind": "static",
           "signature": "Future.all<T>(futures: Future<T>[]): Future<T[]>",
           "doc": "One Future of every value, in the order of the list. The first failure fails the whole thing, and the rest keep running. Every Future in the list carries one type here; `race` and `any` are the ones that take a mixed list.",
-          "example": "local both = await Future.all([Future.resolve(1), Future.resolve(2)])\nprint(both:len())"
+          "example": "async do\n    local both = await Future.all([Future.resolve(1), Future.resolve(2)])\n    print(both:len())\nend"
         },
         {
           "name": "race",
           "kind": "static",
           "signature": "Future.race<T>(futures: Future<T>[]): Future<T>",
           "doc": "The first Future to settle, whether it succeeds or fails. Use it for a timeout beside real work. The futures in the list need not carry one type: the result is the union of their value types, so a value beside a `Future.delay` is optional.",
-          "example": "local first = await Future.race([Future.resolve(1), Future.resolve(2)])\nprint(first)"
+          "example": "async do\n    local first = await Future.race([Future.resolve(1), Future.resolve(2)])\n    print(first)\nend"
         },
         {
           "name": "any",
           "kind": "static",
           "signature": "Future.any<T>(futures: Future<T>[]): Future<T>",
           "doc": "The first Future to succeed. It fails only when every one of them fails. As with `race`, a list whose futures carry different types gives the union of them.",
-          "example": "local ok = await Future.any([Future.reject(\"a\"), Future.resolve(2)])\nprint(ok)"
+          "example": "async do\n    local ok = await Future.any([Future.reject(\"a\"), Future.resolve(2)])\n    print(ok)\nend"
         },
         {
           "name": "all_settled",
           "kind": "static",
           "signature": "Future.all_settled<T>(futures: Future<T>[]): Future<Result<T, any>[]>",
           "doc": "One Result per Future, in order. No failure fails it. The error side is `any`, since a rejection carries whatever it was rejected with.",
-          "example": "local rs = await Future.all_settled([Future.resolve(1), Future.reject(\"no\")])\nprint(rs:len())"
+          "example": "async do\n    local rs = await Future.all_settled([Future.resolve(1), Future.reject(\"no\")])\n    print(rs:len())\nend"
         },
         {
           "name": "andThen",
           "kind": "method",
           "signature": "Future:andThen(on_resolve: ((T) -> ...any)?, on_reject: ((any) -> ...any)?): Future<T>",
           "doc": "Runs a callback when the Future settles and returns the same Future, so calls chain. What the callback returns is dropped: the Future keeps its own value.",
-          "example": "local f = Future.resolve(1):andThen(function(n) print(n) end)\nprint(await f)"
+          "example": "local f = Future.resolve(1):andThen(function(n) print(n) end)\nasync do print(await f) end"
         },
         {
           "name": "and_then",
           "kind": "method",
           "signature": "Future:and_then(on_resolve: ((T) -> ...any)?, on_reject: ((any) -> ...any)?): Future<T>",
           "doc": "The same function under a snake_case name. `andThen` is the one camelCase name the std carries, so a file that keeps to one spelling writes this.",
-          "example": "local f = Future.resolve(1):and_then(function(n) print(n) end)\nprint(await f)"
+          "example": "local f = Future.resolve(1):and_then(function(n) print(n) end)\nasync do print(await f) end"
         },
         {
           "name": "cancel",
@@ -1991,6 +1991,13 @@
       "members": []
     },
     {
+      "key": "topic:results-and-futures",
+      "group": "Articles",
+      "markdown": "**Results and Futures**\n\n`Future<T>` and `Result<T, E>` answer different questions. A Future answers when: the value is not ready. A Result answers whether: the work can fail. Most Roblox work needs both answers.\n\n```\n              cannot fail    can fail\nno yield      T              Result<T, E>\nyields        Future<T>      async function f(): Result<T, E>\n```\n\nUse a Result alone when the failure is an expected outcome: a lookup that misses, input that does not validate, a trade the rules refuse. Nothing throws in these cases.\n\n```alloy\nlocal function equip(slot: number, tool: string): Result<Loadout, string>\n    if slot < 1 or slot > 9 then\n        return Err(`slot {slot} is outside 1 to 9`)\n    end\n    return Ok(new Loadout { slot = slot, tool = tool })\nend\n```\n\nUse a Future alone when the work yields and cannot fail: `task.wait`, `Future.delay`, your own animation steps.\n\nUse both when the work yields and can fail. This is most real Roblox work: DataStore, HttpService, MarketplaceService. Declare the async function to answer with a Result, then `try await` reads the value.\n\n```alloy\nasync function load_profile(id: number): Result<Profile, string>\n    local raw = try await store:get(id)\n    return Ok(parse(raw))\nend\n```\n\nReturn an `Err`. Do not throw and then catch your own throw. A throw loses the error type and costs a traceback.\n\n`Result.pcall` is for a foreign call that throws. Roblox APIs throw, so wrap one at the boundary and let Results flow inward. Do not spread `Result.pcall` through game logic.\n\nThrow with `error` or `assert` when the failure means the code is wrong. Ask if a correct caller with valid data reaches it. If no, throw. A Result that every caller unwraps is a throw with more steps.\n\nA Future in a signature makes every caller async, so do not answer with one for work that never yields. `alloy doc await` says where an `await` may stand.",
+      "signature": null,
+      "members": []
+    },
+    {
       "key": "topic:exhaustive",
       "group": "Articles",
       "markdown": "**Exhaustive match**\n\nA `match` with no `default` must cover every value. For an enum, that is every variant, each with payloads that cover; `Color.Red`, a bare unit variant, `Some(x)`, `_`, and `a or b` all count. When a variant has no arm, the compiler names it:\n\n```\nthis match is not exhaustive: `Msg` has no arm for `Leave`; add it or a `default` arm\n```\n\nA literal, a struct, or an array pattern set needs a `default`. A guarded arm proves nothing about coverage.\n\nThe other direction is a lint: a `default` under arms that already cover every variant never runs, and `unreachable_default` says so, because that default would hide the next variant added.",
@@ -2112,7 +2119,7 @@
     {
       "key": "topic:alloy-file-side",
       "group": "Articles",
-      "markdown": "**--@alloy-file-side**\n\nSays which side the whole file sits on: `client`, `server`, or `shared`. A `.client.aly` or `.server.aly` name says the same thing, and this directive says it in a file whose name does not.\n\n```alloy\n--@alloy-file-side server\nremote Buy from client(item: string)\n\nBuy.on(function(sender, item) end)   -- the server handles\n```\n\nThe side decides two things: which half of every `remote` the file sees, and which `global` names it reaches. A shared file sees both halves of a remote, the way a module that branches on `RunService` does, and reaches shared globals alone.\n\nThe side of a file, from the strongest word to the weakest: the name suffix, this directive, the `[contexts]` table of alloy.toml, then the DataModel service the file lands under. `ServerScriptService` and `ServerStorage` are the server; `StarterPlayer`, `StarterGui`, and `StarterPack` are the client; every other service replicates, `ReplicatedFirst` included, so a file there is shared.\n\nA directive that contradicts the file's name is a `DirectiveError`. `@cfg(server)` is a different thing: it is a check the emitted code runs, not a decision the compiler makes, so the side does not reach it.",
+      "markdown": "**--@alloy-file-side**\n\nSays which side the whole file sits on: `client`, `server`, or `shared`. A `.client.aly` or `.server.aly` name says the same thing, and this directive says it in a file whose name does not.\n\n```alloy\n--@alloy-file-side server\nremote Buy(item: string) from client\n\nBuy.on(function(sender, item) end)   -- the server handles\n```\n\nThe side decides two things: which half of every `remote` the file sees, and which `global` names it reaches. A shared file sees both halves of a remote, the way a module that branches on `RunService` does, and reaches shared globals alone.\n\nThe side of a file, from the strongest word to the weakest: the name suffix, this directive, the `[contexts]` table of alloy.toml, then the DataModel service the file lands under. `ServerScriptService` and `ServerStorage` are the server; `StarterPlayer`, `StarterGui`, and `StarterPack` are the client; every other service replicates, `ReplicatedFirst` included, so a file there is shared.\n\nA directive that contradicts the file's name is a `DirectiveError`. `@cfg(server)` is a different thing: it is a check the emitted code runs, not a decision the compiler makes, so the side does not reach it.",
       "signature": null,
       "members": []
     },

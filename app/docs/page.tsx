@@ -184,6 +184,7 @@ const chapters: TocChapter[] = [
       { id: "exhaustive", label: "Exhaustive match", number: "4.2" },
       { id: "wire", label: "Wire types", number: "4.3" },
       { id: "directives", label: "Directives", number: "4.4" },
+      { id: "results-and-futures", label: "Results and Futures", number: "4.5" },
     ],
   },
   {
@@ -222,9 +223,9 @@ const index: SearchDoc[] = [
     number: `3.${i + 1}`,
     text: plainText([s.thesis, s.src, ...s.points].join(" ")),
   })),
-  ...["strict", "exhaustive", "wire", "directives"].map((name, i) => ({
-    id: ["contracts", "exhaustive", "wire", "directives"][i],
-    label: ["The contracts", "Exhaustive match", "Wire types", "Directives"][i],
+  ...["strict", "exhaustive", "wire", "directives", "results-and-futures"].map((name, i) => ({
+    id: ["contracts", "exhaustive", "wire", "directives", "results-and-futures"][i],
+    label: ["The contracts", "Exhaustive match", "Wire types", "Directives", "Results and Futures"][i],
     number: `4.${i + 1}`,
     text: plainText(topic(name)),
   })),
@@ -378,7 +379,7 @@ export default function Docs() {
         ))}
       </Section>
 
-      <Section id="strict" number="4" title="Strict by default" updated={latest(["strict", "exhaustive", "wire", "directives"].map(topicDate))}>
+      <Section id="strict" number="4" title="Strict by default" updated={latest(["strict", "exhaustive", "wire", "directives", "results-and-futures"].map(topicDate))}>
         <Sub id="contracts" updated={topicDate("strict")} number="4.1" title="The contracts">
           <Markdown text={topic("strict")} />
           <div className="mt-6 grid gap-3 md:grid-cols-2">
@@ -401,6 +402,14 @@ export default function Docs() {
         </Sub>
         <Sub id="directives" updated={topicDate("directives")} number="4.4" title="Directives">
           <Markdown text={topic("directives")} />
+        </Sub>
+        <Sub
+          id="results-and-futures"
+          updated={topicDate("results-and-futures")}
+          number="4.5"
+          title="Results and Futures"
+        >
+          <Markdown text={topic("results-and-futures")} />
         </Sub>
       </Section>
 
