@@ -2,6 +2,7 @@
 // the book's own prose. Both pages read from here.
 
 import docsJson from "@/content/docs.json";
+import rfcsJson from "@/content/rfcs.json";
 import slidesJson from "@/content/slides.json";
 import updatedJson from "@/content/updated.json";
 
@@ -181,6 +182,53 @@ export function formatDate(iso: string): string {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   return `${months[m - 1]} ${d}, ${y}`;
+}
+
+/** One merged RFC, as scripts/rfcs.mjs writes it from the rfcs
+ *  repository. */
+export type Rfc = {
+  slug: string;
+  title: string;
+  /** The file name's prefix: `syntax`, `std`, `config`, `emit`, `editor`. */
+  area: string;
+  /** `Implemented` once the feature ships, `Accepted` until then. */
+  status: string;
+  summary: string;
+  /** The day the file landed on main, as `2026-09-10`. */
+  merged: string;
+  markdown: string;
+};
+
+export const rfcs: Rfc[] = rfcsJson.rfcs as Rfc[];
+
+/** Where a proposal lives while it is still open. */
+export const rfcPulls = "https://github.com/alloy-luau/rfcs/pulls";
+
+/** The file on GitHub, so a reader can follow its history. */
+export function rfcSource(slug: string): string {
+  return `https://github.com/alloy-luau/rfcs/blob/main/docs/${slug}.md`;
+}
+
+/** The areas the merged RFCs carry, in alphabetical order. */
+export const rfcAreas: string[] = [...new Set(rfcs.map((r) => r.area))].sort();
+
+/** `syntax` as `Syntax`, `std` as `Std`. */
+export function areaLabel(area: string): string {
+  return area.charAt(0).toUpperCase() + area.slice(1);
+}
+
+/** One RFC by slug, or undefined. */
+export function rfc(slug: string): Rfc | undefined {
+  return rfcs.find((r) => r.slug === slug);
+}
+
+/** The body a detail page renders: the title heading and the status line
+ *  already sit in the page header, so they come off the top. */
+export function rfcBody(markdown: string): string {
+  return markdown
+    .replace(/^#\s+.+\n/, "")
+    .replace(/^\*\*Status\*\*:.*\n/m, "")
+    .trim();
 }
 
 /** One searchable piece of the book: the anchor it lives at, its label
