@@ -92,8 +92,8 @@
     "date": "2026-09-07"
   },
   "entry:struct": {
-    "hash": "fc0324f676ef07a9",
-    "date": "2026-09-11"
+    "hash": "924ad42718fcdf72",
+    "date": "2026-09-13"
   },
   "entry:impl": {
     "hash": "7bd241e496798aef",
@@ -104,16 +104,24 @@
     "date": "2026-09-08"
   },
   "entry:interface": {
-    "hash": "60d072c6c1b02a07",
-    "date": "2026-09-07"
+    "hash": "aafda3d4d828e558",
+    "date": "2026-09-13"
   },
   "entry:enum": {
-    "hash": "091ecfca23607eef",
-    "date": "2026-09-07"
+    "hash": "528ff65d44a9c8b9",
+    "date": "2026-09-13"
   },
   "entry:match": {
-    "hash": "31c088d35869be39",
-    "date": "2026-09-07"
+    "hash": "97469e01e7930027",
+    "date": "2026-09-13"
+  },
+  "entry:requires": {
+    "hash": "b62c7f6b1fd99d85",
+    "date": "2026-09-13"
+  },
+  "entry:each": {
+    "hash": "6a40d71f26bff6bd",
+    "date": "2026-09-13"
   },
   "entry:with": {
     "hash": "b485edefbe67b8a2",
@@ -136,16 +144,16 @@
     "date": "2026-09-07"
   },
   "entry:import": {
-    "hash": "ca39a7dfaa802354",
-    "date": "2026-09-10"
+    "hash": "d3cfb1d430ec32e4",
+    "date": "2026-09-13"
   },
   "entry:export": {
-    "hash": "3687e1f4406bce52",
-    "date": "2026-09-10"
+    "hash": "486dfc0827df672f",
+    "date": "2026-09-13"
   },
   "entry:global": {
-    "hash": "8fbdfa2ca38e255e",
-    "date": "2026-09-10"
+    "hash": "3674f5ef22b15a34",
+    "date": "2026-09-13"
   },
   "entry:from": {
     "hash": "4b0a03366d160205",
@@ -160,48 +168,48 @@
     "date": "2026-09-08"
   },
   "entry:const": {
-    "hash": "805608f06a4c561f",
-    "date": "2026-09-08"
+    "hash": "a45e750bccff230b",
+    "date": "2026-09-13"
   },
   "entry:async": {
-    "hash": "ad8892d604dfce74",
-    "date": "2026-09-12"
+    "hash": "d31e78b9bf89896a",
+    "date": "2026-09-13"
   },
   "entry:await": {
-    "hash": "d612abe8baaaa91f",
-    "date": "2026-09-11"
+    "hash": "10b744f5cc3e5f8e",
+    "date": "2026-09-13"
   },
   "entry:try": {
-    "hash": "60d27ea54e52c3f9",
-    "date": "2026-09-11"
+    "hash": "754e081cf439e129",
+    "date": "2026-09-13"
   },
   "entry:macro": {
     "hash": "2ab2d66a2833b95b",
     "date": "2026-09-07"
   },
   "entry:namespace": {
-    "hash": "299a048e8d2671a6",
-    "date": "2026-09-09"
+    "hash": "f6d3e30e21e6190b",
+    "date": "2026-09-13"
   },
   "entry:new": {
-    "hash": "f8f82997da38b42e",
-    "date": "2026-09-07"
+    "hash": "2d871f521ea04135",
+    "date": "2026-09-13"
   },
   "entry:delete": {
-    "hash": "942cda634ae2e06e",
-    "date": "2026-09-09"
+    "hash": "b58b1cca76b92084",
+    "date": "2026-09-13"
   },
   "entry:destroy": {
-    "hash": "fc288091511cabc8",
-    "date": "2026-09-09"
+    "hash": "13287f3ca11bb251",
+    "date": "2026-09-13"
   },
   "entry:after": {
-    "hash": "be5f33241fa9364e",
-    "date": "2026-09-09"
+    "hash": "15bda1aa8be96223",
+    "date": "2026-09-13"
   },
   "entry:attribute": {
-    "hash": "7b6c741a9af03403",
-    "date": "2026-09-09"
+    "hash": "9a3ccd8fc54c64f7",
+    "date": "2026-09-13"
   },
   "entry:on": {
     "hash": "f4d1e8945619ba37",
@@ -216,8 +224,8 @@
     "date": "2026-09-08"
   },
   "entry:satisfies": {
-    "hash": "09d764db31e3a0a7",
-    "date": "2026-09-07"
+    "hash": "15604c2690716606",
+    "date": "2026-09-13"
   },
   "entry:private": {
     "hash": "3b7443a1356aa506",
@@ -524,8 +532,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:config": {
-    "hash": "c46bebaef2011982",
-    "date": "2026-09-10"
+    "hash": "508ebe98416235a5",
+    "date": "2026-09-13"
   },
   "entry:topic:init": {
     "hash": "a21f59cd6067a23c",
@@ -536,8 +544,8 @@
     "date": "2026-09-10"
   },
   "entry:topic:directives": {
-    "hash": "df7613aa4d7b3d0c",
-    "date": "2026-09-09"
+    "hash": "3cd3abadeca40cd9",
+    "date": "2026-09-13"
   },
   "entry:topic:alloy-ignore": {
     "hash": "804ed987bd6f269a",
@@ -559,29 +567,21 @@
     "hash": "e469cf3e23295280",
     "date": "2026-09-08"
   },
-  "entry:topic:alloy-file-side": {
-    "hash": "1e95acdca7d21cdd",
-    "date": "2026-09-11"
-  },
-  "entry:topic:alloy-side": {
-    "hash": "cb6647b7664a90e9",
-    "date": "2026-09-09"
-  },
   "entry:topic:alloy-preserve": {
     "hash": "cfc3b624b7dee919",
     "date": "2026-09-08"
   },
   "entry:topic:markup": {
-    "hash": "676200022f281fe7",
-    "date": "2026-09-08"
+    "hash": "8c527bb64d066e8c",
+    "date": "2026-09-13"
   },
   "entry:topic:ingots": {
     "hash": "8309ef7f29874659",
     "date": "2026-09-11"
   },
   "entry:topic:mount": {
-    "hash": "6d2c87bea2088e90",
-    "date": "2026-09-10"
+    "hash": "4ec8345a91d47a84",
+    "date": "2026-09-13"
   },
   "entry:topic:data": {
     "hash": "7b23e88386e007b9",
@@ -682,10 +682,6 @@
   "lint:needless_bool": {
     "hash": "e4d4319bdaef4dfe",
     "date": "2026-09-07"
-  },
-  "lint:export_impl": {
-    "hash": "c16d2203c9702b5a",
-    "date": "2026-09-09"
   },
   "lint:prefer_destroy": {
     "hash": "92268f22a6cec284",
@@ -814,10 +810,6 @@
   "lint:deprecated_body_mover": {
     "hash": "2e5c8b7d15e3cdc2",
     "date": "2026-09-07"
-  },
-  "lint:shadowed_global": {
-    "hash": "30d93dfb69ba51c1",
-    "date": "2026-09-09"
   },
   "lint:explicit_any": {
     "hash": "11ffcf98de142142",
