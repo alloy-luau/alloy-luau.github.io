@@ -100,8 +100,8 @@
     "date": "2026-09-08"
   },
   "entry:trait": {
-    "hash": "ed584d06de28b3b1",
-    "date": "2026-09-08"
+    "hash": "dde231f67eacf157",
+    "date": "2026-09-13"
   },
   "entry:interface": {
     "hash": "aafda3d4d828e558",
@@ -116,7 +116,7 @@
     "date": "2026-09-13"
   },
   "entry:match": {
-    "hash": "97469e01e7930027",
+    "hash": "79b56fd4acb83879",
     "date": "2026-09-13"
   },
   "entry:requires": {
