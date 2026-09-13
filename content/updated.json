@@ -107,6 +107,10 @@
     "hash": "aafda3d4d828e558",
     "date": "2026-09-13"
   },
+  "entry:type": {
+    "hash": "272d3b2852dea038",
+    "date": "2026-09-13"
+  },
   "entry:enum": {
     "hash": "528ff65d44a9c8b9",
     "date": "2026-09-13"
@@ -184,8 +188,8 @@
     "date": "2026-09-13"
   },
   "entry:macro": {
-    "hash": "2ab2d66a2833b95b",
-    "date": "2026-09-07"
+    "hash": "f30787d63f3bf338",
+    "date": "2026-09-13"
   },
   "entry:namespace": {
     "hash": "f6d3e30e21e6190b",
