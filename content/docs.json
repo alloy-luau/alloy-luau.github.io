@@ -197,7 +197,7 @@
       "key": "impl",
       "title": "impl",
       "group": "Keywords",
-      "markdown": "```alloy\nimpl Name as ... end\nimpl Trait for Name as ... end\n```\nMethods for a struct, an enum, or a foreign type such as `Vector3` or `string`. A foreign impl needs `export` and works project wide.\n\nEmits functions on the class table.",
+      "markdown": "```alloy\nimpl Name as ... end\nimpl Trait for Name as ... end\n```\nMethods for a struct, an enum, or a foreign type such as `Vector3` or `string`. A foreign impl needs `export` and works project wide. A unit enum is a string, so its methods are called on the enum: `Status.describe(s)`.\n\nEmits functions on the class table.",
       "signature": null,
       "members": []
     },
@@ -229,7 +229,7 @@
       "key": "enum",
       "title": "enum",
       "group": "Keywords",
-      "markdown": "```alloy\nenum Name<T> as\n    Unit\n    Payload(T)\nend\n```\nVariants with optional payloads. A unit enum is a string union at runtime; a payload enum is a tagged table. `match` takes it apart and `impl Name` adds methods. `<T>` takes parameters a payload may name, the way a struct does, and `impl Name<T>` names them in a method.\n\nThe word is also free as a name. `enum` before a name on the same line declares; `local enum = { Idle = 1 }` and `enum.Idle` read the Luau way.",
+      "markdown": "```alloy\nenum Name<T> as\n    Unit\n    Payload(T)\nend\n```\nVariants with optional payloads. A unit enum is a string union at runtime; a payload enum is a tagged table. `match` takes it apart and `impl Name` adds methods. A unit enum is a string, so its methods are called on the enum: `Status.describe(s)`. `<T>` takes parameters a payload may name, the way a struct does, and `impl Name<T>` names them in a method.\n\nThe word is also free as a name. `enum` before a name on the same line declares; `local enum = { Idle = 1 }` and `enum.Idle` read the Luau way.",
       "signature": null,
       "members": []
     },
@@ -2956,7 +2956,7 @@
       "key": "EnumError",
       "title": "EnumError",
       "group": "Errors",
-      "markdown": "`EnumError` is a report of section 3.4, Enums and match: https://alloy-luau.github.io/docs/#enums\n\n```alloy\nenum Name<T> as\n    Unit\n    Payload(T)\nend\n```\nVariants with optional payloads. A unit enum is a string union at runtime; a payload enum is a tagged table. `match` takes it apart and `impl Name` adds methods. `<T>` takes parameters a payload may name, the way a struct does, and `impl Name<T>` names them in a method.\n\nThe word is also free as a name. `enum` before a name on the same line declares; `local enum = { Idle = 1 }` and `enum.Idle` read the Luau way.",
+      "markdown": "`EnumError` is a report of section 3.4, Enums and match: https://alloy-luau.github.io/docs/#enums\n\n```alloy\nenum Name<T> as\n    Unit\n    Payload(T)\nend\n```\nVariants with optional payloads. A unit enum is a string union at runtime; a payload enum is a tagged table. `match` takes it apart and `impl Name` adds methods. A unit enum is a string, so its methods are called on the enum: `Status.describe(s)`. `<T>` takes parameters a payload may name, the way a struct does, and `impl Name<T>` names them in a method.\n\nThe word is also free as a name. `enum` before a name on the same line declares; `local enum = { Idle = 1 }` and `enum.Idle` read the Luau way.",
       "signature": null,
       "members": []
     },

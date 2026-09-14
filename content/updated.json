@@ -96,8 +96,8 @@
     "date": "2026-09-13"
   },
   "entry:impl": {
-    "hash": "7bd241e496798aef",
-    "date": "2026-09-08"
+    "hash": "202b7c591829cbd7",
+    "date": "2026-09-14"
   },
   "entry:trait": {
     "hash": "dde231f67eacf157",
@@ -112,7 +112,7 @@
     "date": "2026-09-13"
   },
   "entry:enum": {
-    "hash": "ce0c5824d1034882",
+    "hash": "1fafb3d61d67a9a7",
     "date": "2026-09-14"
   },
   "entry:match": {
@@ -908,7 +908,7 @@
     "date": "2026-09-14"
   },
   "entry:EnumError": {
-    "hash": "759f31085c3abafa",
+    "hash": "c6d732643ac99451",
     "date": "2026-09-14"
   },
   "entry:ExhaustiveMatch": {
