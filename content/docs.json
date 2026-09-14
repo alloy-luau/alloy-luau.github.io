@@ -229,7 +229,7 @@
       "key": "enum",
       "title": "enum",
       "group": "Keywords",
-      "markdown": "```alloy\nenum Name as\n    Unit\n    Payload(T)\nend\n```\nVariants with optional payloads. A unit enum is a string union at runtime; a payload enum is a tagged table. `match` takes it apart and `impl Name` adds methods.\n\nThe word is also free as a name. `enum` before a name on the same line declares; `local enum = { Idle = 1 }` and `enum.Idle` read the Luau way.",
+      "markdown": "```alloy\nenum Name as\n    Unit\n    Payload(number)\nend\n```\nVariants with optional payloads. A unit enum is a string union at runtime; a payload enum is a tagged table. `match` takes it apart and `impl Name` adds methods.\n\nThe word is also free as a name. `enum` before a name on the same line declares; `local enum = { Idle = 1 }` and `enum.Idle` read the Luau way.",
       "signature": null,
       "members": []
     },
@@ -2204,7 +2204,7 @@
       "key": "topic:build",
       "title": "topic:build",
       "group": "Articles",
-      "markdown": "**alloy build**\n\nCompiles every `.aly` and `.alx` under `[build] in` to Luau under `[build] out`, mirroring the tree, and writes the runtime as `alloy.luau` at the output root. A plain `.luau` or `.lua` beside the sources is copied as it is, so a `require(\"./other\")` finds it in the output. A file that did not change is not rewritten, so a Rojo sync stays quiet. `artifact = \"ship\"` writes the code Roblox runs; `\"check\"` writes what luau-lsp sees, with the types kept. `clean = true` removes an output whose source is gone.\n\n```\nalloy build                one project\nalloy build src/game.aly   one file, to stdout\nalloy build --check --map  the check artifact and its chunk map\n```",
+      "markdown": "**alloy build**\n\nCompiles every `.aly` and `.alx` under `[build] in` to Luau under `[build] out`, mirroring the tree, and writes the runtime as `alloy.luau` at the output root. A plain `.luau` or `.lua` beside the sources is copied as it is, so a `require(\"./other\")` finds it in the output. A file that did not change is not rewritten, so a Rojo sync stays quiet. A file that reports an error is not written; its last output stays. `artifact = \"ship\"` writes the code Roblox runs; `\"check\"` writes what luau-lsp sees, with the types kept. `clean = true` removes an output whose source is gone.\n\n```\nalloy build                one project\nalloy build src/game.aly   one file, to stdout\nalloy build --check --map  the check artifact and its chunk map\n```",
       "signature": null,
       "members": []
     },
