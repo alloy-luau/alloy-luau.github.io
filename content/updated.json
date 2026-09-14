@@ -188,8 +188,8 @@
     "date": "2026-09-14"
   },
   "entry:macro": {
-    "hash": "f30787d63f3bf338",
-    "date": "2026-09-13"
+    "hash": "c3994886a15ad52b",
+    "date": "2026-09-14"
   },
   "entry:namespace": {
     "hash": "f6d3e30e21e6190b",
@@ -532,7 +532,7 @@
     "date": "2026-09-07"
   },
   "entry:topic:build": {
-    "hash": "2a68c8ce7aeb8676",
+    "hash": "218ba0743b705536",
     "date": "2026-09-14"
   },
   "entry:topic:config": {
