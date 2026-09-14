@@ -595,6 +595,274 @@
     "hash": "7b23e88386e007b9",
     "date": "2026-09-07"
   },
+  "entry:optional_access": {
+    "hash": "f1e460a4349591b0",
+    "date": "2026-09-14"
+  },
+  "entry:needless_assert": {
+    "hash": "9d68149917877209",
+    "date": "2026-09-14"
+  },
+  "entry:dropped_result": {
+    "hash": "429f50912dc995b9",
+    "date": "2026-09-14"
+  },
+  "entry:static_call": {
+    "hash": "5ddca57b610bef11",
+    "date": "2026-09-14"
+  },
+  "entry:argument_count": {
+    "hash": "9790e4ba1fd0596e",
+    "date": "2026-09-14"
+  },
+  "entry:unreachable_default": {
+    "hash": "4b68b6751717ada4",
+    "date": "2026-09-14"
+  },
+  "entry:empty_default": {
+    "hash": "d7c92fd3c51723c0",
+    "date": "2026-09-14"
+  },
+  "entry:unused_import": {
+    "hash": "1cd5b7cb68742159",
+    "date": "2026-09-14"
+  },
+  "entry:self_assignment": {
+    "hash": "8ad3b48dc48eb396",
+    "date": "2026-09-14"
+  },
+  "entry:unreachable_code": {
+    "hash": "f1d3594117a17e72",
+    "date": "2026-09-14"
+  },
+  "entry:constant_condition": {
+    "hash": "9d2b5deea843b6f0",
+    "date": "2026-09-14"
+  },
+  "entry:duplicate_key": {
+    "hash": "693c94bbfa0bb4da",
+    "date": "2026-09-14"
+  },
+  "entry:misplaced_not": {
+    "hash": "0d20d5aa154e4987",
+    "date": "2026-09-14"
+  },
+  "entry:identical_branches": {
+    "hash": "8e99b79ce7c5933c",
+    "date": "2026-09-14"
+  },
+  "entry:private_access": {
+    "hash": "d48edb32e89b0154",
+    "date": "2026-09-14"
+  },
+  "entry:duplicate_function": {
+    "hash": "8ee56d0332576ed7",
+    "date": "2026-09-14"
+  },
+  "entry:circular_import": {
+    "hash": "4cbe50e3c9dff3ba",
+    "date": "2026-09-14"
+  },
+  "entry:deprecated_namespace": {
+    "hash": "d0ab0a73f5898677",
+    "date": "2026-09-14"
+  },
+  "entry:and_or_ternary": {
+    "hash": "c89870687d140a9c",
+    "date": "2026-09-14"
+  },
+  "entry:unused_variable": {
+    "hash": "d92a169a594fad63",
+    "date": "2026-09-14"
+  },
+  "entry:unused_function": {
+    "hash": "ae77553bfd902480",
+    "date": "2026-09-14"
+  },
+  "entry:empty_block": {
+    "hash": "6c1e94fd38d8def1",
+    "date": "2026-09-14"
+  },
+  "entry:bool_comparison": {
+    "hash": "b1686987c8572e0a",
+    "date": "2026-09-14"
+  },
+  "entry:needless_bool": {
+    "hash": "f4bd559950196112",
+    "date": "2026-09-14"
+  },
+  "entry:prefer_destroy": {
+    "hash": "5c7952fae66230b8",
+    "date": "2026-09-14"
+  },
+  "entry:manual_safe_access": {
+    "hash": "7df011d6059def50",
+    "date": "2026-09-14"
+  },
+  "entry:manual_coalesce": {
+    "hash": "fc071efd23ff0db0",
+    "date": "2026-09-14"
+  },
+  "entry:nil_check_call": {
+    "hash": "a7e92ca40b777b1d",
+    "date": "2026-09-14"
+  },
+  "entry:manual_type_test": {
+    "hash": "c9ede6f99194d6dc",
+    "date": "2026-09-14"
+  },
+  "entry:legacy_iterator": {
+    "hash": "f69184c8e836114d",
+    "date": "2026-09-14"
+  },
+  "entry:manual_floor_div": {
+    "hash": "b12d9367fa086a25",
+    "date": "2026-09-14"
+  },
+  "entry:manual_push": {
+    "hash": "e11a28705591051f",
+    "date": "2026-09-14"
+  },
+  "entry:concat_interpolation": {
+    "hash": "27b11026312424da",
+    "date": "2026-09-14"
+  },
+  "entry:raw_pcall": {
+    "hash": "cef55a854fbfc361",
+    "date": "2026-09-14"
+  },
+  "entry:raw_require": {
+    "hash": "3a53455f5f4c9f71",
+    "date": "2026-09-14"
+  },
+  "entry:game_alias": {
+    "hash": "84fee5ffbe3c2bc7",
+    "date": "2026-09-14"
+  },
+  "entry:manual_class": {
+    "hash": "430ab1e2390fb535",
+    "date": "2026-09-14"
+  },
+  "entry:manual_ternary_return": {
+    "hash": "724dfc7e4acc38b2",
+    "date": "2026-09-14"
+  },
+  "entry:redundant_return": {
+    "hash": "9efda9a99ac47bda",
+    "date": "2026-09-14"
+  },
+  "entry:local_then_return": {
+    "hash": "1003efc1808cfe28",
+    "date": "2026-09-14"
+  },
+  "entry:numeric_for_index": {
+    "hash": "eaf4773a3a05a44e",
+    "date": "2026-09-14"
+  },
+  "entry:missing_reason": {
+    "hash": "5fde40440af92e9a",
+    "date": "2026-09-14"
+  },
+  "entry:too_many_arguments": {
+    "hash": "7adc385e6046adfe",
+    "date": "2026-09-14"
+  },
+  "entry:too_many_lines": {
+    "hash": "b098087c1cd2e355",
+    "date": "2026-09-14"
+  },
+  "entry:deep_nesting": {
+    "hash": "ea6fafa0a8363e6f",
+    "date": "2026-09-14"
+  },
+  "entry:cognitive_complexity": {
+    "hash": "66135dde6ed38129",
+    "date": "2026-09-14"
+  },
+  "entry:collapsible_if": {
+    "hash": "a36283cb0485a012",
+    "date": "2026-09-14"
+  },
+  "entry:collapsible_else_if": {
+    "hash": "e753c748bf745c93",
+    "date": "2026-09-14"
+  },
+  "entry:concat_in_loop": {
+    "hash": "628d0b2941718d40",
+    "date": "2026-09-14"
+  },
+  "entry:service_in_loop": {
+    "hash": "7d379bfda51a7c81",
+    "date": "2026-09-14"
+  },
+  "entry:table_insert_position": {
+    "hash": "a4e258db260057c5",
+    "date": "2026-09-14"
+  },
+  "entry:deprecated_global": {
+    "hash": "a0a53add9275cd27",
+    "date": "2026-09-14"
+  },
+  "entry:manual_child_lookup": {
+    "hash": "c16b9590aa5fffe6",
+    "date": "2026-09-14"
+  },
+  "entry:deprecated_method": {
+    "hash": "729235b3354fc29a",
+    "date": "2026-09-14"
+  },
+  "entry:instance_new_parent": {
+    "hash": "23144e1df7b49a7c",
+    "date": "2026-09-14"
+  },
+  "entry:deprecated_body_mover": {
+    "hash": "94248eca6cb27b84",
+    "date": "2026-09-14"
+  },
+  "entry:explicit_any": {
+    "hash": "6c271823f30a5cf0",
+    "date": "2026-09-14"
+  },
+  "entry:implicit_any": {
+    "hash": "73a31483ad0cd460",
+    "date": "2026-09-14"
+  },
+  "entry:missing_return_type": {
+    "hash": "3fc9b6583babed24",
+    "date": "2026-09-14"
+  },
+  "entry:todo_comment": {
+    "hash": "9bf0a904fcb22c2e",
+    "date": "2026-09-14"
+  },
+  "entry:print_debug": {
+    "hash": "767976658653c7fa",
+    "date": "2026-09-14"
+  },
+  "entry:const_mutation": {
+    "hash": "7882a300bfa1675c",
+    "date": "2026-09-14"
+  },
+  "entry:missing_doc": {
+    "hash": "11f525d4fde26f9e",
+    "date": "2026-09-14"
+  },
+  "entry:import_order": {
+    "hash": "f6b69f2307535449",
+    "date": "2026-09-14"
+  },
+  "entry:camel_case_name": {
+    "hash": "b88afa6a8af3ff08",
+    "date": "2026-09-14"
+  },
+  "entry:type_case": {
+    "hash": "0645785766469ceb",
+    "date": "2026-09-14"
+  },
+  "entry:pascal_case_function": {
+    "hash": "c131c03c91369926",
+    "date": "2026-09-14"
+  },
   "lint:optional_access": {
     "hash": "a60ddd2ef91350e2",
     "date": "2026-09-07"
