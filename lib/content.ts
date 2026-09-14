@@ -96,6 +96,7 @@ export const referenceGroups: { title: string; slug: string; keys: Entry[] }[] =
   "Intrinsics",
   "Attributes",
   "Derives",
+  "Errors",
   "Std",
 ].map((title) => ({
   title: title === "Std" ? "Standard library" : title,
