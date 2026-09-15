@@ -220,8 +220,8 @@
     "date": "2026-09-07"
   },
   "entry:remote": {
-    "hash": "60e2095d619a575f",
-    "date": "2026-09-07"
+    "hash": "957e7bf967deab96",
+    "date": "2026-09-15"
   },
   "entry:where": {
     "hash": "9e0fd5032859c575",
@@ -447,6 +447,14 @@
     "hash": "a52bcae78b88b980",
     "date": "2026-09-07"
   },
+  "entry:R15Character": {
+    "hash": "be9a0ca267c7c59f",
+    "date": "2026-09-15"
+  },
+  "entry:R6Character": {
+    "hash": "063fb9299aa3fec8",
+    "date": "2026-09-15"
+  },
   "entry:Queue": {
     "hash": "dd3d26f3c2e0e086",
     "date": "2026-09-08"
@@ -536,8 +544,8 @@
     "date": "2026-09-14"
   },
   "entry:topic:config": {
-    "hash": "508ebe98416235a5",
-    "date": "2026-09-13"
+    "hash": "5e5ae93986118ce3",
+    "date": "2026-09-15"
   },
   "entry:topic:init": {
     "hash": "a21f59cd6067a23c",
