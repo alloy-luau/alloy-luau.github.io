@@ -116,8 +116,8 @@
     "date": "2026-09-14"
   },
   "entry:match": {
-    "hash": "79b56fd4acb83879",
-    "date": "2026-09-13"
+    "hash": "6791fc10e9d57bbf",
+    "date": "2026-09-16"
   },
   "entry:requires": {
     "hash": "b62c7f6b1fd99d85",
@@ -516,8 +516,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:wire": {
-    "hash": "8e3b0f950e8e93ad",
-    "date": "2026-09-07"
+    "hash": "b63c41d3c94228e0",
+    "date": "2026-09-16"
   },
   "entry:topic:lint": {
     "hash": "566525c22e0a0a67",
@@ -976,8 +976,8 @@
     "date": "2026-09-14"
   },
   "entry:WireType": {
-    "hash": "c3cd77d295608398",
-    "date": "2026-09-14"
+    "hash": "869bf0654c6651bf",
+    "date": "2026-09-16"
   },
   "lint:optional_access": {
     "hash": "a60ddd2ef91350e2",
@@ -1308,7 +1308,7 @@
     "date": "2026-09-07"
   },
   "page:docs": {
-    "hash": "2be7af88a773a15a",
-    "date": "2026-09-11"
+    "hash": "acb8772bd4074dc7",
+    "date": "2026-09-16"
   }
 }
