@@ -1,35 +1,8 @@
-import { Fragment, type ReactNode } from "react";
+import { Fragment } from "react";
 
 import CodePane from "@/components/CodePane";
+import { inline } from "@/lib/inline";
 import { modeOf } from "@/lib/paint";
-
-/** Inline `code` and **bold** inside one line. */
-export function inline(text: string): ReactNode[] {
-  const out: ReactNode[] = [];
-  const re = /(`[^`]+`|\*\*[^*]+\*\*)/g;
-  let last = 0;
-  let k = 0;
-
-  for (const m of text.matchAll(re)) {
-    const i = m.index ?? 0;
-
-    if (i > last) out.push(text.slice(last, i));
-
-    const t = m[0];
-
-    if (t.startsWith("`")) {
-      out.push(<code key={k++}>{t.slice(1, -1)}</code>);
-    } else {
-      out.push(<b key={k++}>{t.slice(2, -2)}</b>);
-    }
-
-    last = i + t.length;
-  }
-
-  if (last < text.length) out.push(text.slice(last));
-
-  return out;
-}
 
 type Block =
   | { kind: "fence"; lang: string; code: string }

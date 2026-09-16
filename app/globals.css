@@ -748,7 +748,8 @@ kbd {
 }
 
 /* Tokens beyond the four: operators warm, punctuation dim, calls blue,
-   types lilac. The palette is a wheel around the accent. */
+   types lilac, attributes pink. The palette is a wheel around the
+   accent. */
 pre.code .o {
   color: #f0a58f;
 }
@@ -763,6 +764,12 @@ pre.code .f {
 
 pre.code .t {
   color: #d9c8ff;
+}
+
+/* An attribute and its sigil: `@derive`, `@u8`, the name of an
+   `attribute` block. */
+pre.code .a {
+  color: #e8a0d4;
 }
 
 pre.code.emit .o {

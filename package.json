@@ -10,7 +10,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
-    "content": "sh ../crates/scripts/docs-content.sh && node scripts/rfcs.mjs",
+    "content": "sh ../crates/scripts/docs-content.sh && node scripts/rfcs.mjs && node scripts/grammars.mjs",
+    "content:grammars": "node scripts/grammars.mjs",
     "content:rfcs": "node scripts/rfcs.mjs",
     "review": "node review.mjs shots",
     "review:lens": "node review-lens.mjs shots",
@@ -40,6 +41,8 @@
     "@types/react-dom": "^19.2.0",
     "puppeteer-core": "^25.10.0",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "vscode-oniguruma": "2.0.1",
+    "vscode-textmate": "9.3.2"
   }
 }

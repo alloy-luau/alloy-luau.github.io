@@ -1,4 +1,5 @@
-import { paint, type Mode } from "@/lib/paint";
+import type { Mode } from "@/lib/paint";
+import { paintBlock } from "@/lib/tm";
 
 type Props = {
   code: string;
@@ -31,8 +32,9 @@ function iconFor(mode: Mode, note?: string): { src: string; alt: string } | null
   return { src: "/icons/text.svg", alt: "" };
 }
 
-/** One code block, painted, with an optional caption bar. */
-export default function CodePane({
+/** One code block, painted, with an optional caption bar. The
+ *  grammar runs here, on the server, so no page ships a tokenizer. */
+export default async function CodePane({
   code,
   mode = "alloy",
   label,
@@ -41,6 +43,8 @@ export default function CodePane({
   numbers = false,
   className = "",
 }: Props) {
+  const html = await paintBlock(code, mode, numbers);
+
   return (
     <div className={`overflow-hidden rounded-[10px] border border-line ${className}`}>
       {label ? (
@@ -62,7 +66,7 @@ export default function CodePane({
       ) : null}
       <pre
         className={`code ${emit ? "emit" : ""}`}
-        dangerouslySetInnerHTML={{ __html: paint(code, mode, numbers) }}
+        dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
   );

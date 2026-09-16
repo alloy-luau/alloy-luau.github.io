@@ -5,10 +5,11 @@ import { notFound } from "next/navigation";
 import { Fragment } from "react";
 
 import Lava from "@/components/Lava";
-import Markdown, { inline } from "@/components/Markdown";
+import Markdown from "@/components/Markdown";
 import { StatusChip } from "@/components/RfcIndex";
 import Reveal from "@/components/Reveal";
 import { areaLabel, formatDate, rfc, rfcBody, rfcPulls, rfcSource, rfcs } from "@/lib/content";
+import { inline } from "@/lib/inline";
 
 type Props = { params: Promise<{ slug: string }> };
 

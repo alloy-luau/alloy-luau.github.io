@@ -1,5 +1,11 @@
-// A small highlighter for the code blocks: comments, strings, numbers,
-// sigils, keywords. The classes match the deck and `globals.css`.
+// A small highlighter: comments, strings, numbers, sigils, keywords.
+// The classes match `globals.css`.
+//
+// The static pages paint Alloy, ALX, and Luau with the TextMate
+// grammars in `lib/tm.ts`, so this painter serves TOML, JSON, shell,
+// and plain text there. It keeps the language modes for the one caller
+// that runs in the browser: `lib/md.ts` draws the playground's hover
+// cards, and a tokenizer is too much wasm for a tooltip.
 
 import { KEYWORDS } from "@/lib/keywords";
 

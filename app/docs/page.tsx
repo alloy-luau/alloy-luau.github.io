@@ -4,8 +4,9 @@ import BookShell, { type TocChapter } from "@/components/BookShell";
 import type { Metadata } from "next";
 
 import CodePane from "@/components/CodePane";
-import Markdown, { inline } from "@/components/Markdown";
+import Markdown from "@/components/Markdown";
 import UpdatedPill from "@/components/UpdatedPill";
+import { inline } from "@/lib/inline";
 import {
   contracts,
   lintGroups,

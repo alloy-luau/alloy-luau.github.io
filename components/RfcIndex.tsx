@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { Fragment, useState } from "react";
 
-import { inline } from "@/components/Markdown";
 import Reveal from "@/components/Reveal";
 import { areaLabel, formatDate, rfcPulls, rfcSource, type Rfc } from "@/lib/content";
+import { inline } from "@/lib/inline";
 
 /** The status of a proposal as a chip: shipped, accepted and not built
  *  yet, or noted for a later design pass. */
