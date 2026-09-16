@@ -1,15 +1,10 @@
 // A small highlighter for the code blocks: comments, strings, numbers,
 // sigils, keywords. The classes match the deck and `globals.css`.
 
-const KW = [
-  "local", "const", "function", "end", "if", "then", "else", "elseif", "for",
-  "in", "while", "do", "repeat", "until", "return", "break", "continue",
-  "and", "or", "not", "nil", "true", "false", "struct", "enum", "trait",
-  "impl", "interface", "extends", "as", "match", "case", "default", "with",
-  "async", "await", "try", "new", "delete", "destroy", "after", "import", "export", "from",
-  "type", "remote", "macro", "attribute", "on", "where", "is", "read",
-  "write", "client", "server", "self", "declare",
-];
+import { KEYWORDS } from "@/lib/keywords";
+
+// The painter also colours the side of a remote and `self`.
+const KW = [...KEYWORDS, "nil", "true", "false", "client", "server", "self"];
 
 export type Mode = "alloy" | "luau" | "alx" | "toml" | "json" | "sh" | "text";
 

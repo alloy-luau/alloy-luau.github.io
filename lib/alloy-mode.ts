@@ -4,15 +4,7 @@ import { HighlightStyle, StreamLanguage, type StreamParser } from "@codemirror/l
 import { EditorView } from "@codemirror/view";
 import { tags as t } from "@lezer/highlight";
 
-const KEYWORDS = new Set([
-  "and", "break", "do", "else", "elseif", "end", "for", "function", "if", "in", "local", "not", "or",
-  "repeat", "return", "then", "until", "while", "continue", "type", "export", "global", "import", "from", "as",
-  "async", "await", "try", "struct", "enum", "trait", "impl", "interface", "extends", "match", "case",
-  "default", "where", "with", "new", "delete", "destroy", "after", "const", "macro", "namespace", "attribute",
-  "remote", "declare",
-  "extern", "class", "open", "is", "satisfies", "band", "bor", "bxor", "bnot", "shl", "shr", "read",
-  "write", "private", "public", "on",
-]);
+import { KEYWORDS } from "@/lib/keywords";
 const ATOMS = new Set(["true", "false", "nil"]);
 
 type Block = { style: string; closer: string } | null;
