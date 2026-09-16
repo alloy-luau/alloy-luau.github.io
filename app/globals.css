@@ -385,11 +385,40 @@ h3 code {
 }
 
 /* An RFC whose feature already ships. */
+.chip.shipped,
+.chip.accepted,
+.chip.later {
+  font-size: 11.5px;
+  padding: 3px 9px;
+}
+
 .chip.shipped {
   border-color: rgba(92, 198, 238, 0.45);
   color: var(--alx);
-  font-size: 11.5px;
-  padding: 3px 9px;
+}
+
+.chip.accepted {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: var(--ink-2);
+}
+
+.chip.later {
+  border-style: dashed;
+  color: var(--muted);
+}
+
+/* The whole RFC card opens the proposal: the read link stretches over
+   the card, and the GitHub link sits above it so it stays clickable. */
+.card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.card-aside {
+  position: relative;
+  z-index: 2;
 }
 
 /* The reference sections of a std type: an index of the members, then

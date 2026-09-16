@@ -7,6 +7,18 @@ import { inline } from "@/components/Markdown";
 import Reveal from "@/components/Reveal";
 import { areaLabel, formatDate, rfcPulls, rfcSource, type Rfc } from "@/lib/content";
 
+/** The status of a proposal as a chip: shipped, accepted and not built
+ *  yet, or noted for a later design pass. */
+export function StatusChip({ status }: { status: string }) {
+  const tone = status === "Implemented" ? "shipped" : status === "Accepted" ? "accepted" : "later";
+
+  return (
+    <span className={`chip ${tone}`} data-status={status}>
+      {status}
+    </span>
+  );
+}
+
 /** The merged RFCs as cards, with a row of area filters above them. The
  *  filter runs here, in the browser: the page itself is static. */
 export default function RfcIndex({ rfcs, areas }: { rfcs: Rfc[]; areas: string[] }) {
@@ -65,12 +77,12 @@ export default function RfcIndex({ rfcs, areas }: { rfcs: Rfc[]; areas: string[]
                 <time className="font-mono text-[12px] text-muted" dateTime={r.merged}>
                   Merged {formatDate(r.merged)}
                 </time>
-                {r.status === "Implemented" ? <span className="chip shipped">Implemented</span> : null}
+                <StatusChip status={r.status} />
               </div>
               <h2 className="display m-0 mb-2 text-[19px] font-bold leading-[1.25]">
-                <Link href={`/rfcs/${r.slug}/`} className="no-underline">
-                  {r.title}
-                </Link>
+                {inline(r.title).map((n, j) => (
+                  <Fragment key={j}>{n}</Fragment>
+                ))}
               </h2>
               <p className="m-0 text-[14.5px] text-ink-2">
                 {inline(r.summary).map((n, j) => (
@@ -78,8 +90,10 @@ export default function RfcIndex({ rfcs, areas }: { rfcs: Rfc[]; areas: string[]
                 ))}
               </p>
               <div className="mt-auto flex items-center gap-4 pt-4 text-[13.5px]">
-                <Link href={`/rfcs/${r.slug}/`}>Read the RFC →</Link>
-                <a href={rfcSource(r.slug)} className="text-muted">
+                <Link href={`/rfcs/${r.slug}/`} className="card-link">
+                  Read the RFC →
+                </Link>
+                <a href={rfcSource(r.slug)} className="card-aside text-muted">
                   The file on GitHub
                 </a>
               </div>

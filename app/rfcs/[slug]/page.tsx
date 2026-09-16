@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Fragment } from "react";
+
 import Lava from "@/components/Lava";
-import Markdown from "@/components/Markdown";
+import Markdown, { inline } from "@/components/Markdown";
+import { StatusChip } from "@/components/RfcIndex";
 import Reveal from "@/components/Reveal";
 import { areaLabel, formatDate, rfc, rfcBody, rfcPulls, rfcSource, rfcs } from "@/lib/content";
 
@@ -22,11 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!found) return { title: "RFC" };
 
+  const title = found.title.replace(/`/g, "");
+
   return {
-    title: found.title,
+    title,
     description: found.summary,
     alternates: { canonical: `/rfcs/${slug}/` },
-    openGraph: { title: `${found.title} · Alloy RFC`, description: found.summary, url: `/rfcs/${slug}/` },
+    openGraph: { title: `${title} · Alloy RFC`, description: found.summary, url: `/rfcs/${slug}/` },
   };
 }
 
@@ -52,13 +57,17 @@ export default async function RfcPage({ params }: Props) {
                 ← Every RFC
               </Link>
             </p>
-            <h1 className="display mt-3 mb-4 text-[30px] font-extrabold leading-[1.1] md:text-[38px]">{found.title}</h1>
+            <h1 className="display mt-3 mb-4 text-[30px] font-extrabold leading-[1.1] md:text-[38px]">
+              {inline(found.title).map((n, j) => (
+                <Fragment key={j}>{n}</Fragment>
+              ))}
+            </h1>
             <div className="flex flex-wrap items-center gap-2">
               <span className="chip">{areaLabel(found.area)}</span>
               <time className="font-mono text-[12.5px] text-muted" dateTime={found.merged}>
                 Merged {formatDate(found.merged)}
               </time>
-              {found.status === "Implemented" ? <span className="chip shipped">Implemented</span> : null}
+              <StatusChip status={found.status} />
               <a href={rfcSource(found.slug)} className="ml-auto text-[13.5px]">
                 The file on GitHub →
               </a>
