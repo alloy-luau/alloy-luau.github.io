@@ -17,4 +17,8 @@ export const ALLOY_KEYWORDS = [
   "write",
 ];
 
-export const KEYWORDS = new Set([...LUAU_KEYWORDS, ...ALLOY_KEYWORDS]);
+// Words the compiler does not list as keywords, and the grammar still
+// colours: the side of a remote and the receiver of a method.
+export const CONTEXTUAL = ["client", "server", "self"];
+
+export const KEYWORDS = new Set([...LUAU_KEYWORDS, ...ALLOY_KEYWORDS, ...CONTEXTUAL]);

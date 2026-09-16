@@ -9,8 +9,7 @@
 
 import { KEYWORDS } from "@/lib/keywords";
 
-// The painter also colours the side of a remote and `self`.
-const KW = [...KEYWORDS, "nil", "true", "false", "client", "server", "self"];
+const KW = [...KEYWORDS, "nil", "true", "false"];
 
 export type Mode = "alloy" | "luau" | "alx" | "toml" | "json" | "sh" | "text";
 
