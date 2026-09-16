@@ -5,6 +5,7 @@
   "description": "The Alloy website: a landing page and the language reference.",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "test -f content/rfcs.json || node scripts/rfcs.mjs",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",

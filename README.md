@@ -33,7 +33,19 @@ Only a file that a commit added to `main` reaches the site, so a
 proposal that is still a pull request never appears. The merge date on
 each card is that commit's date. With no `../rfcs` checkout the script
 writes an empty list and the index renders its empty state, so a fresh
-CI clone still builds.
+clone still builds.
+
+`content/rfcs.json` is a build artifact, not a file in git, so the site
+cannot drift from the RFC repository. `npm run build` writes it first
+when it is absent. Both workflows check out `alloy-luau/rfcs` into
+`rfcs-src` with `fetch-depth: 0`, because the merge dates come from the
+git history, and run the script with `RFCS_DIR` on that path. A
+`RFCS_DIR` that holds no `docs` folder stops the build. The site rebuilds
+on a push here, on a nightly schedule at 04:20 UTC, and on the
+`rfcs-updated` dispatch that the RFC repository sends when a proposal
+lands on its `main`. That dispatch needs a `SITE_DISPATCH_TOKEN` secret
+in the RFC repository; without it the nightly build still picks the
+change up.
 
 `npm run lint` runs Biome over the sources. `npm run typecheck` runs
 `tsc --noEmit`.

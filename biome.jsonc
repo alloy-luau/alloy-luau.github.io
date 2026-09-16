@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "includes": ["**", "!out", "!.next", "!node_modules", "!content", "!shots", "!public", "!app/globals.css"]
+    "includes": ["**", "!out", "!.next", "!node_modules", "!content", "!shots", "!public", "!rfcs-src", "!app/globals.css"]
   },
   // Biome lints here. The formatting stays as written.
   "formatter": { "enabled": false },

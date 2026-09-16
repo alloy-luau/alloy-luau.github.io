@@ -4,3 +4,5 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 shots/
+content/rfcs.json
+rfcs-src/

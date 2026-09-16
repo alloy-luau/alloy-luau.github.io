@@ -1,9 +1,20 @@
 # Builds the static export and publishes it to GitHub Pages.
+#
+# The /rfcs pages read the RFC repository, not a file in this one, so a
+# deploy always renders what alloy-luau/rfcs holds now. Three things
+# start a deploy: a push here, the nightly schedule, and the
+# `rfcs-updated` dispatch that the RFC repository sends on its own push.
 name: Pages
 
 on:
   push:
     branches: [main]
+  # 04:20 UTC, after the day's RFC merges and before the European morning.
+  schedule:
+    - cron: "20 4 * * *"
+  # alloy-luau/rfcs sends this from .github/workflows/notify-site.yml.
+  repository_dispatch:
+    types: [rfcs-updated]
   workflow_dispatch:
 
 permissions:
@@ -20,11 +31,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # The merge date of each RFC comes from the commit that added the
+      # file, so the script needs the whole history.
+      - uses: actions/checkout@v4
+        with:
+          repository: alloy-luau/rfcs
+          path: rfcs-src
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
       - run: npm ci
+      # This writes content/rfcs.json. It fails when the checkout is
+      # missing, so a broken clone stops the deploy.
+      - run: node scripts/rfcs.mjs
+        env:
+          RFCS_DIR: ${{ github.workspace }}/rfcs-src
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -10,7 +10,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const source = process.env.RFCS_DIR ?? join(root, "..", "rfcs");
+const asked = process.env.RFCS_DIR;
+const source = asked ?? join(root, "..", "rfcs");
 const folder = join(source, "docs");
 const out = join(root, "content", "rfcs.json");
 
@@ -76,7 +77,15 @@ function write(rfcs) {
   writeFileSync(out, `${JSON.stringify({ rfcs }, null, 2)}\n`);
 }
 
+// CI names the checkout in RFCS_DIR. A name that points at nothing is a
+// broken clone, and the site must not deploy without the RFCs, so stop.
+// A local tree with no sibling checkout gets the empty list instead.
 if (!existsSync(folder)) {
+  if (asked) {
+    console.error(`RFCS_DIR=${asked} holds no docs folder at ${folder}`);
+    process.exit(1);
+  }
+
   write([]);
   console.log(`no rfcs checkout at ${folder}; wrote an empty list`);
   process.exit(0);

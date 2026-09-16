@@ -9,11 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # content/rfcs.json is not in git. The RFC checkout writes it, and
+      # the merge dates need the whole history.
+      - uses: actions/checkout@v4
+        with:
+          repository: alloy-luau/rfcs
+          path: rfcs-src
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: node scripts/rfcs.mjs
+        env:
+          RFCS_DIR: ${{ github.workspace }}/rfcs-src
       - run: npm run lint
       - run: npx tsc --noEmit
       - run: npm run build
