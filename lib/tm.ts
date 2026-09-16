@@ -41,6 +41,9 @@ const CLASSES: [string, string][] = [
   ["punctuation.section.embedded", "g"],
   ["entity.other.attribute-name", "a"],
   ["punctuation.definition.attribute", "a"],
+  ["variable.other.enummember", "v"],
+  ["variable.parameter", "v"],
+  ["variable.other.property.alx", "v"],
   ["punctuation", "p"],
 ];
 

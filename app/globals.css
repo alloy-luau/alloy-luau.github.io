@@ -772,6 +772,11 @@ pre.code .a {
   color: #e8a0d4;
 }
 
+/* A parameter, an enum member, and a prop of a markup tag. */
+pre.code .v {
+  color: #b8d4c8;
+}
+
 pre.code.emit .o {
   color: #e8a08c;
 }
