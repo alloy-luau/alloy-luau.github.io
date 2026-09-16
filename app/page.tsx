@@ -11,6 +11,8 @@ import TiltCard from "@/components/TiltCard";
 import { commands, contracts, slides, version } from "@/lib/content";
 
 const hero = slides.find((s) => s.id === "safe");
+// The chapter list runs down one column, then the next.
+const chapterSplit = Math.ceil(slides.length / 2);
 
 export default function Home() {
   return (
@@ -138,37 +140,58 @@ export default function Home() {
         <div className="relative mx-auto max-w-[1240px] px-5 py-16">
           <Reveal>
             <div className="eyebrow">The language</div>
-            <h2 className="display mb-8 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">
+            <h2 className="display mb-6 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">
               Fourteen chapters, each with its emit beside it.
             </h2>
           </Reveal>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {slides.map((s, i) => (
-              <Reveal key={s.id} delay={(i % 3) * 0.05} className="h-full">
-                <TiltCard className="h-full" max={7}>
-                <Link
-                  href={`/docs/#${s.id}`}
-                  className="card group flex h-full flex-col p-5 no-underline"
-                >
-                  <div className="mb-3 flex items-center gap-2.5">
-                    <span className="icon-seat">
-                      <Icon name={iconFor(s.eyebrow)} size={18} />
-                    </span>
-                    <span className="eyebrow">{s.eyebrow}</span>
-                  </div>
-                  <h3
-                    className="display mb-2 text-[17px] font-bold text-ink [&_code]:rounded [&_code]:bg-accent-soft [&_code]:px-1.5 [&_code]:font-mono [&_code]:text-[0.8em] [&_code]:text-accent-ink"
-                    dangerouslySetInnerHTML={{ __html: s.title }}
-                  />
-                  <p className="m-0 text-[14px] text-ink-2">{s.thesis}</p>
-                  <span className="mt-auto pt-4 text-[13px] text-accent-ink opacity-0 transition-opacity group-hover:opacity-100">
-                    Read →
-                  </span>
-                </Link>
-                </TiltCard>
-              </Reveal>
-            ))}
-          </div>
+          {/* One panel, two stacked lists. The book numbers each chapter
+              3.1 to 3.14, so the row carries the same number, and each
+              column runs in order. */}
+          <Reveal delay={0.06}>
+            <div className="card overflow-hidden">
+              <div className="grid lg:grid-cols-2">
+                {[slides.slice(0, chapterSplit), slides.slice(chapterSplit)].map((column, side) => (
+                  <ul
+                    key={column[0].id}
+                    className={`m-0 list-none divide-y divide-line p-0 ${side ? "border-t border-line lg:border-t-0 lg:border-l" : ""}`}
+                  >
+                    {column.map((s, j) => (
+                      <li key={s.id} className="m-0">
+                        <Link
+                          href={`/docs/#${s.id}`}
+                          className="group relative flex gap-3 px-4 py-2.5 no-underline transition-colors focus-visible:[outline-offset:-2px] before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-linear-to-b before:from-accent before:to-alx before:opacity-0 before:transition-opacity hover:bg-accent-soft/50 hover:before:opacity-100"
+                        >
+                          <span className="mt-1 flex w-13 shrink-0 self-start items-center gap-1.5 font-mono text-[12px] text-muted transition-colors group-hover:text-accent-ink">
+                            <Icon name={iconFor(s.eyebrow)} size={14} />
+                            3.{side * chapterSplit + j + 1}
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <h3
+                              className="display m-0 text-[15px] font-bold leading-snug text-ink [&_code]:rounded [&_code]:bg-accent-soft [&_code]:px-1.5 [&_code]:font-mono [&_code]:text-[0.82em] [&_code]:text-accent-ink"
+                              dangerouslySetInnerHTML={{ __html: s.title }}
+                            />
+                            <p className="m-0 mt-0.5 text-[13px] leading-normal text-ink-2">
+                              <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted transition-colors group-hover:text-accent-ink">
+                                {s.eyebrow}
+                              </span>
+                              <span className="px-1.5 text-muted">·</span>
+                              {s.thesis}
+                            </p>
+                          </span>
+                          <span
+                            aria-hidden="true"
+                            className="self-center text-[14px] text-accent-ink opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100"
+                          >
+                            →
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
