@@ -60,8 +60,8 @@
     "date": "2026-09-07"
   },
   "entry:is": {
-    "hash": "e4f9dba30330c097",
-    "date": "2026-09-07"
+    "hash": "a16622348bbb0f2c",
+    "date": "2026-09-18"
   },
   "entry:in": {
     "hash": "cc21e16d3d7130af",
@@ -188,12 +188,12 @@
     "date": "2026-09-14"
   },
   "entry:macro": {
-    "hash": "c3994886a15ad52b",
-    "date": "2026-09-14"
+    "hash": "2abb556f47b89dfe",
+    "date": "2026-09-18"
   },
   "entry:namespace": {
-    "hash": "0428192b297a80e5",
-    "date": "2026-09-16"
+    "hash": "1c80eff6f4dda32e",
+    "date": "2026-09-18"
   },
   "entry:new": {
     "hash": "2d871f521ea04135",
@@ -212,8 +212,8 @@
     "date": "2026-09-13"
   },
   "entry:attribute": {
-    "hash": "327c0c9629ae5418",
-    "date": "2026-09-16"
+    "hash": "64292b7a9886a9da",
+    "date": "2026-09-18"
   },
   "entry:on": {
     "hash": "f4d1e8945619ba37",
@@ -504,8 +504,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:strict": {
-    "hash": "191dd827be723e0c",
-    "date": "2026-09-08"
+    "hash": "38aa58eb83f4d25b",
+    "date": "2026-09-18"
   },
   "entry:topic:results-and-futures": {
     "hash": "53fc248deda942be",
@@ -872,20 +872,20 @@
     "date": "2026-09-14"
   },
   "entry:AlloyError": {
-    "hash": "298110c81ffcfb92",
-    "date": "2026-09-14"
+    "hash": "320246e6b384a13f",
+    "date": "2026-09-18"
   },
   "entry:AsyncError": {
     "hash": "6c9f06438027edb0",
     "date": "2026-09-14"
   },
   "entry:AttributeContract": {
-    "hash": "68a8bb723a556e9e",
-    "date": "2026-09-16"
+    "hash": "520788b6466465bc",
+    "date": "2026-09-18"
   },
   "entry:AttributeError": {
-    "hash": "d752f9b31aecd2fa",
-    "date": "2026-09-16"
+    "hash": "ff817765c24236f8",
+    "date": "2026-09-18"
   },
   "entry:BoundError": {
     "hash": "41ca26b0d5c601e7",
@@ -932,12 +932,12 @@
     "date": "2026-09-14"
   },
   "entry:InternalError": {
-    "hash": "3d4918271b708ff9",
-    "date": "2026-09-14"
+    "hash": "768f2cbe8897eed7",
+    "date": "2026-09-18"
   },
   "entry:MacroError": {
-    "hash": "c0592f766d32085b",
-    "date": "2026-09-14"
+    "hash": "c70f91efd336c86f",
+    "date": "2026-09-18"
   },
   "entry:MarkupError": {
     "hash": "f0f020efe19b03f6",
@@ -948,8 +948,8 @@
     "date": "2026-09-14"
   },
   "entry:ResultError": {
-    "hash": "1d40bf35dd240738",
-    "date": "2026-09-14"
+    "hash": "7e10c9cbecfcc45e",
+    "date": "2026-09-18"
   },
   "entry:StructError": {
     "hash": "1997233ad66ca8cd",
