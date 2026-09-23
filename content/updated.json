@@ -96,12 +96,12 @@
     "date": "2026-09-13"
   },
   "entry:impl": {
-    "hash": "202b7c591829cbd7",
-    "date": "2026-09-14"
+    "hash": "4b521c09325d01bf",
+    "date": "2026-09-23"
   },
   "entry:trait": {
-    "hash": "dde231f67eacf157",
-    "date": "2026-09-13"
+    "hash": "7b75dbae12015d4b",
+    "date": "2026-09-23"
   },
   "entry:interface": {
     "hash": "aafda3d4d828e558",
@@ -188,12 +188,12 @@
     "date": "2026-09-14"
   },
   "entry:macro": {
-    "hash": "2abb556f47b89dfe",
-    "date": "2026-09-18"
+    "hash": "9d587dc2b28aae5c",
+    "date": "2026-09-23"
   },
   "entry:namespace": {
-    "hash": "1c80eff6f4dda32e",
-    "date": "2026-09-18"
+    "hash": "f0acf87780b6b357",
+    "date": "2026-09-23"
   },
   "entry:new": {
     "hash": "2d871f521ea04135",
@@ -212,16 +212,16 @@
     "date": "2026-09-13"
   },
   "entry:attribute": {
-    "hash": "64292b7a9886a9da",
-    "date": "2026-09-18"
+    "hash": "3b44841e37b9da15",
+    "date": "2026-09-23"
   },
   "entry:on": {
     "hash": "f4d1e8945619ba37",
     "date": "2026-09-07"
   },
   "entry:remote": {
-    "hash": "957e7bf967deab96",
-    "date": "2026-09-15"
+    "hash": "76a5462a642eeaf7",
+    "date": "2026-09-23"
   },
   "entry:where": {
     "hash": "9e0fd5032859c575",
@@ -336,8 +336,8 @@
     "date": "2026-09-07"
   },
   "entry:@deprecated": {
-    "hash": "db8b0307d30b4e1f",
-    "date": "2026-09-15"
+    "hash": "479d30c121e108f9",
+    "date": "2026-09-23"
   },
   "entry:@inline": {
     "hash": "dce06d101f70a799",
@@ -724,8 +724,8 @@
     "date": "2026-09-14"
   },
   "entry:legacy_iterator": {
-    "hash": "f69184c8e836114d",
-    "date": "2026-09-14"
+    "hash": "550ae8b3c49186bd",
+    "date": "2026-09-23"
   },
   "entry:manual_floor_div": {
     "hash": "b12d9367fa086a25",
@@ -888,12 +888,12 @@
     "date": "2026-09-14"
   },
   "entry:AttributeContract": {
-    "hash": "520788b6466465bc",
-    "date": "2026-09-18"
+    "hash": "87dc5cb4c8b08a59",
+    "date": "2026-09-23"
   },
   "entry:AttributeError": {
-    "hash": "ff817765c24236f8",
-    "date": "2026-09-18"
+    "hash": "bdf0fb497faef4a5",
+    "date": "2026-09-23"
   },
   "entry:BoundError": {
     "hash": "41ca26b0d5c601e7",
@@ -944,8 +944,8 @@
     "date": "2026-09-18"
   },
   "entry:MacroError": {
-    "hash": "c70f91efd336c86f",
-    "date": "2026-09-18"
+    "hash": "874fead2b5008e88",
+    "date": "2026-09-23"
   },
   "entry:MarkupError": {
     "hash": "f0f020efe19b03f6",
@@ -1104,8 +1104,8 @@
     "date": "2026-09-07"
   },
   "lint:legacy_iterator": {
-    "hash": "881f7debd2b2f6cb",
-    "date": "2026-09-07"
+    "hash": "381ae776518ca685",
+    "date": "2026-09-23"
   },
   "lint:manual_floor_div": {
     "hash": "bf2537ded08a6ffe",
