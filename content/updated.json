@@ -600,8 +600,8 @@
     "date": "2026-09-13"
   },
   "entry:topic:ingots": {
-    "hash": "8309ef7f29874659",
-    "date": "2026-09-11"
+    "hash": "9d8c78f5fdbc62e2",
+    "date": "2026-09-24"
   },
   "entry:topic:mount": {
     "hash": "dd9ffce9541adf46",
@@ -940,8 +940,8 @@
     "date": "2026-09-14"
   },
   "entry:IngotError": {
-    "hash": "700c1d472d61e693",
-    "date": "2026-09-14"
+    "hash": "d91500b44bb29086",
+    "date": "2026-09-24"
   },
   "entry:InternalError": {
     "hash": "768f2cbe8897eed7",
