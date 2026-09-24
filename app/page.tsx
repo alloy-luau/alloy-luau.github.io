@@ -37,7 +37,7 @@ export default function Home() {
               { size: 260, x: "40%", y: "85%", color: "#7a58e0", opacity: 0.4, depth: 0.8, duration: 23 },
             ]}
           />
-          <div className="relative mx-auto max-w-[1240px] px-5 py-16">
+          <div className="relative mx-auto max-w-310 px-5 py-16">
             <Reveal>
               <div className="eyebrow">{hero.eyebrow}</div>
               <h2
@@ -72,7 +72,7 @@ export default function Home() {
             { size: 320, x: "85%", y: "70%", color: "var(--warm)", opacity: 0.1, depth: 0.7, duration: 21 },
           ]}
         />
-        <div className="relative mx-auto max-w-[1240px] px-5 py-16">
+        <div className="relative mx-auto max-w-310 px-5 py-16">
           <Reveal>
             <div className="eyebrow">Strict by default</div>
             <h2 className="display mb-3 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">
@@ -137,7 +137,7 @@ export default function Home() {
             { size: 360, x: "45%", y: "45%", color: "var(--accent)", opacity: 0.2, depth: 0.35, duration: 17 },
           ]}
         />
-        <div className="relative mx-auto max-w-[1240px] px-5 py-16">
+        <div className="relative mx-auto max-w-310 px-5 py-16">
           <Reveal>
             <div className="eyebrow">The language</div>
             <h2 className="display mb-6 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">
@@ -159,7 +159,7 @@ export default function Home() {
                       <li key={s.id} className="m-0">
                         <Link
                           href={`/docs/#${s.id}`}
-                          className="group relative flex gap-3 px-4 py-2.5 no-underline transition-colors focus-visible:[outline-offset:-2px] before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-linear-to-b before:from-accent before:to-alx before:opacity-0 before:transition-opacity hover:bg-accent-soft/50 hover:before:opacity-100"
+                          className="group relative flex gap-3 px-4 py-2.5 no-underline transition-colors focus-visible:-outline-offset-2 before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-linear-to-b before:from-accent before:to-alx before:opacity-0 before:transition-opacity hover:bg-accent-soft/50 hover:before:opacity-100"
                         >
                           <span className="mt-1 flex w-13 shrink-0 self-start items-center gap-1.5 font-mono text-[12px] text-muted transition-colors group-hover:text-accent-ink">
                             <Icon name={iconFor(s.eyebrow)} size={14} />
@@ -203,7 +203,7 @@ export default function Home() {
             { size: 300, x: "5%", y: "20%", color: "var(--alx)", opacity: 0.16, depth: 0.7, duration: 20 },
           ]}
         />
-        <div className="relative mx-auto grid max-w-[1240px] gap-10 px-5 py-16 lg:grid-cols-2">
+        <div className="relative mx-auto grid max-w-310 gap-10 px-5 py-16 lg:grid-cols-2">
           <Reveal className="flex h-full flex-col">
             <div className="eyebrow">Tooling</div>
             <h2 className="display mb-3 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">One binary, one server, one extension.</h2>
@@ -246,7 +246,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-3 px-5 py-8 text-[13px] text-muted">
+      <footer className="mx-auto flex max-w-310 flex-wrap items-center gap-3 px-5 py-8 text-[13px] text-muted">
         <BrandMark size={18} />
         <span>Alloy {version}</span>
         <span>·</span>
