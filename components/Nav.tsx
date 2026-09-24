@@ -193,7 +193,7 @@ export default function Nav({ version }: { version: string }) {
           bars, and the menu all animate, and each `m` component needs
           the features this loads. */}
       <LazyMotion features={FEATURES} strict>
-        <div className="mx-auto flex h-14 max-w-[1240px] items-center gap-3 px-5">
+        <div className="mx-auto flex h-14 max-w-310 items-center gap-3 px-5">
           <Link href="/" className="brand no-underline" aria-label="Alloy">
             {/* The icon's two shapes, from aly-symbol.png: the A in ink
               through a mask, the diamond as itself. Only the diamond
