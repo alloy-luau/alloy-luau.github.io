@@ -332,8 +332,8 @@
     "date": "2026-09-25"
   },
   "entry:@derive": {
-    "hash": "6bbfe7b10e52b56d",
-    "date": "2026-09-24"
+    "hash": "df5a01ec7ee18187",
+    "date": "2026-09-25"
   },
   "entry:@cfg": {
     "hash": "3ec57e3f63adf5e6",
@@ -344,11 +344,11 @@
     "date": "2026-09-24"
   },
   "entry:@rename_all": {
-    "hash": "dc3c8423e060d542",
+    "hash": "a01d713ae0cc1b5f",
     "date": "2026-09-25"
   },
   "entry:@deny_unknown_fields": {
-    "hash": "7f98ce2128464e38",
+    "hash": "1ad6851ba28aaad5",
     "date": "2026-09-25"
   },
   "entry:@wire": {
@@ -568,11 +568,11 @@
     "date": "2026-09-08"
   },
   "entry:topic:test": {
-    "hash": "19d3f2b48eac9b10",
-    "date": "2026-09-24"
+    "hash": "c07cac298b16fb71",
+    "date": "2026-09-25"
   },
   "entry:topic:fmt": {
-    "hash": "e660682e36da3152",
+    "hash": "5353412ed4ffda35",
     "date": "2026-09-25"
   },
   "entry:topic:check": {
@@ -628,7 +628,7 @@
     "date": "2026-09-08"
   },
   "entry:topic:naming-conventions": {
-    "hash": "476d62ab58779d49",
+    "hash": "8d72d6393dbbb839",
     "date": "2026-09-25"
   },
   "entry:topic:alloy-preserve": {
@@ -636,8 +636,8 @@
     "date": "2026-09-08"
   },
   "entry:topic:markup": {
-    "hash": "4f948d28b9a1f526",
-    "date": "2026-09-24"
+    "hash": "29ad8163c45d719a",
+    "date": "2026-09-25"
   },
   "entry:alx.static_conditional_child": {
     "hash": "7956ec7dfebdbf76",
@@ -727,6 +727,10 @@
     "hash": "d0ab0a73f5898677",
     "date": "2026-09-14"
   },
+  "entry:deprecated_call": {
+    "hash": "0bba934ef448db02",
+    "date": "2026-09-25"
+  },
   "entry:and_or_ternary": {
     "hash": "c89870687d140a9c",
     "date": "2026-09-14"
@@ -780,7 +784,7 @@
     "date": "2026-09-24"
   },
   "entry:prefer_const": {
-    "hash": "7c2e124ec3cfc305",
+    "hash": "9047c91fcb923b3b",
     "date": "2026-09-25"
   },
   "entry:redundant_as": {
@@ -1004,8 +1008,8 @@
     "date": "2026-09-24"
   },
   "entry:MarkupError": {
-    "hash": "4c3a63a39600c8bb",
-    "date": "2026-09-24"
+    "hash": "b2f909b84c73fbeb",
+    "date": "2026-09-25"
   },
   "entry:ReservedWord": {
     "hash": "7c68d15ef4fedce7",
@@ -1115,6 +1119,10 @@
     "hash": "79fbf74802c33515",
     "date": "2026-09-09"
   },
+  "lint:deprecated_call": {
+    "hash": "1a45cef8409fa04f",
+    "date": "2026-09-25"
+  },
   "lint:and_or_ternary": {
     "hash": "a2104c73499a2179",
     "date": "2026-09-07"
@@ -1168,7 +1176,7 @@
     "date": "2026-09-24"
   },
   "lint:prefer_const": {
-    "hash": "020b76ae9be88601",
+    "hash": "f306653dc937ea34",
     "date": "2026-09-25"
   },
   "lint:redundant_as": {
