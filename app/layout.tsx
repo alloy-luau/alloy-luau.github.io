@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import GlassLens from "@/components/GlassLens";
 import LensFilter from "@/components/LensFilter";
 import Nav from "@/components/Nav";
-import { version } from "@/lib/content";
+import { SITE, version } from "@/lib/content";
 
 import "./globals.css";
 
@@ -18,7 +18,6 @@ const plex = IBM_Plex_Sans({
 });
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-jetbrains" });
 
-const SITE = "https://alloy-luau.github.io";
 const TITLE = "Alloy · A strict superset of Luau";
 const DESCRIPTION =
   "Alloy adds structs, enums, traits, pattern matching, safe access, async, typed remotes, and a strict checker to Luau, and compiles every file to plain Luau on the same lines. One binary, one language server, one VS Code extension.";

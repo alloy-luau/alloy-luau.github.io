@@ -187,7 +187,7 @@ export default function Hero() {
 						className="btn-primary inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium text-white no-underline shadow-[var(--shadow)] transition-transform hover:-translate-y-0.5"
 					>
 						<ButtonGlyph name="book" />
-						Read the book
+						Read the docs
 					</Link>
 					<Link
 						href="/play/"

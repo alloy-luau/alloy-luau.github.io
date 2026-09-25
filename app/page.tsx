@@ -9,6 +9,7 @@ import BrandMark from "@/components/BrandMark";
 import Reveal from "@/components/Reveal";
 import TiltCard from "@/components/TiltCard";
 import { commands, contracts, slides, version } from "@/lib/content";
+import { docHref } from "@/lib/docs";
 
 const hero = slides.find((s) => s.id === "safe");
 // The chapter list runs down one column, then the next.
@@ -119,8 +120,8 @@ export default function Home() {
                     they also reject an implicit <code className="rounded border border-line bg-ground px-1.5 font-mono text-[0.88em]">any</code>.
                   </p>
                 </div>
-                <Link href="/docs/#lints" className="mt-4 text-[14px]">
-                  Every lint, in the book →
+                <Link href={docHref("lints")} className="mt-4 text-[14px]">
+                  Every lint, in the reference →
                 </Link>
               </article>
             </Reveal>
@@ -158,7 +159,7 @@ export default function Home() {
                     {column.map((s, j) => (
                       <li key={s.id} className="m-0">
                         <Link
-                          href={`/docs/#${s.id}`}
+                          href={docHref(s.id)}
                           className="group relative flex gap-3 px-4 py-2.5 no-underline transition-colors focus-visible:-outline-offset-2 before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-linear-to-b before:from-accent before:to-alx before:opacity-0 before:transition-opacity hover:bg-accent-soft/50 hover:before:opacity-100"
                         >
                           <span className="mt-1 flex w-13 shrink-0 self-start items-center gap-1.5 font-mono text-[12px] text-muted transition-colors group-hover:text-accent-ink">
@@ -250,7 +251,7 @@ export default function Home() {
         <BrandMark size={18} />
         <span>Alloy {version}</span>
         <span>·</span>
-        <Link href="/docs/">The book</Link>
+        <Link href="/docs/">The docs</Link>
         <span className="ml-auto font-mono text-[12px]">every emit is real compiler output</span>
       </footer>
     </>

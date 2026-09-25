@@ -2,10 +2,11 @@
 // it lives apart from `components/Markdown.tsx` and its painter.
 import type { ReactNode } from "react";
 
-/** Inline `code` and **bold** inside one line. */
+/** Inline `code` and **bold** inside one line. A span that holds a
+ *  backtick opens with two, as in Markdown: `` `{v}` ``. */
 export function inline(text: string): ReactNode[] {
   const out: ReactNode[] = [];
-  const re = /(`[^`]+`|\*\*[^*]+\*\*)/g;
+  const re = /(``.+?``|`[^`]+`|\*\*[^*]+\*\*)/g;
   let last = 0;
   let k = 0;
 
@@ -16,7 +17,9 @@ export function inline(text: string): ReactNode[] {
 
     const t = m[0];
 
-    if (t.startsWith("`")) {
+    if (t.startsWith("``")) {
+      out.push(<code key={k++}>{t.slice(2, -2).trim()}</code>);
+    } else if (t.startsWith("`")) {
       out.push(<code key={k++}>{t.slice(1, -1)}</code>);
     } else {
       out.push(<b key={k++}>{t.slice(2, -2)}</b>);

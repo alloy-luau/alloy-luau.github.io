@@ -1,5 +1,5 @@
 // The site's content: the compiler's doc table, the tour chapters, and
-// the book's own prose. Both pages read from here.
+// the RFCs. lib/docs.ts lays the docs out as pages over it.
 
 import docsJson from "@/content/docs.json";
 import rfcsJson from "@/content/rfcs.json";
@@ -28,6 +28,9 @@ export type Slide = {
   cls?: string;
 };
 
+/** Where the site lives: the metadata base and the sitemap's host. */
+export const SITE = "https://alloy-luau.github.io";
+
 export const version: string = docsJson.version;
 export const entries: Entry[] = docsJson.entries as Entry[];
 
@@ -54,7 +57,25 @@ export function memberLabel(entry: Entry, m: Member): string {
 
   return m.signature.startsWith(`${entry.key}.`) ? `${entry.key}.${m.name}` : m.name;
 }
-export const lints: LintDoc[] = docsJson.lints;
+const listed: LintDoc[] = docsJson.lints;
+
+/** A lint the table lists only as an entry, as the markup lints of
+ *  `.alx` files are. Its first line names the group and the default. */
+const unlisted: LintDoc[] = entries
+  .filter((e) => e.group === "Lints" && !listed.some((l) => l.name === e.key))
+  .map((e) => {
+    const [head = "", summary = "", ...rest] = e.markdown.split("\n\n");
+
+    return {
+      name: e.key,
+      group: head.match(/^Group: (\w+)/)?.[1] ?? "correctness",
+      default: head.match(/Default: (\w+)/)?.[1] ?? "warn",
+      summary: summary.replace(/\.$/, ""),
+      detail: rest.join("\n\n"),
+    };
+  });
+
+export const lints: LintDoc[] = [...listed, ...unlisted];
 
 /** The lint groups in book order, with what each holds. */
 const GROUP_SUMMARIES: [string, string][] = [
@@ -66,9 +87,18 @@ const GROUP_SUMMARIES: [string, string][] = [
   ["roblox", "A Roblox API that is deprecated or misused."],
   ["pedantic", "Strict rules, off until `[lint] strict = true`."],
   ["naming", "The case of names, off until `[lint] warn = [\"naming\"]`."],
+  ["alx", "Markup in `.alx` files that does not do what it reads as."],
 ];
 
-export const lintGroups: { name: string; summary: string; lints: LintDoc[] }[] = GROUP_SUMMARIES.map(
+// A group the table adds later still gets a section, with no summary.
+const groupNames: [string, string][] = [
+  ...GROUP_SUMMARIES,
+  ...[...new Set(lints.map((l) => l.group))]
+    .filter((g) => !GROUP_SUMMARIES.some(([name]) => name === g))
+    .map((g): [string, string] => [g, ""]),
+];
+
+export const lintGroups: { name: string; summary: string; lints: LintDoc[] }[] = groupNames.map(
   ([name, summary]) => ({
     name,
     summary,
@@ -118,19 +148,19 @@ export const contracts: { title: string; body: string; code: string; icon: strin
     icon: "struct",
     title: "Struct construction",
     body: "The fields form sets every field without a default and names no field the struct lacks.",
-    code: "struct P as\n    x: number\n    y: number = 0\nend\nlocal a = new P { y = 1 }\n-- `new P { ... }` leaves `x` unset",
+    code: "struct P\n    x: number\n    y: number = 0\nend\nlocal a = new P { y = 1 }\n-- `new P { ... }` leaves `x` unset",
   },
   {
     icon: "trait",
     title: "Trait contract",
     body: "An impl writes every method the trait declares without a body, with the trait's arity.",
-    code: "trait Shape as\n    function area(self): number\nend\nimpl Shape for Sq as\nend\n-- `impl Shape for Sq` does not write `area`",
+    code: "trait Shape\n    function area(self): number\nend\nimpl Shape for Sq\nend\n-- `impl Shape for Sq` does not write `area`",
   },
   {
     icon: "sealed",
     title: "Sealed structs",
     body: "A struct is open: a typo in a field name makes a new key in silence. @sealed makes it an error, at runtime and at check time. A `read` field is the one that cannot be written.",
-    code: "@sealed\nstruct Config as\n    volume: number\nend\nlocal c = new Config { volume = 1 }\nc.volume = 2  -- fine: declared\nc.volme = 2   -- error: Config has no field volme",
+    code: "@sealed\nstruct Config\n    volume: number\nend\nlocal c = new Config { volume = 1 }\nc.volume = 2  -- fine: declared\nc.volme = 2   -- error: Config has no field volme",
   },
   {
     icon: "wire",
@@ -151,6 +181,7 @@ export const commands: [string, string][] = [
   ["alloy test --run", "a lest spec per source with a @test, then lest; --watch, --coverage"],
   ["alloy doc strict", "an article; `alloy doc` lists every topic"],
   ["alloy init", "alloy.toml, .luaurc, and .config.luau"],
+  ["alloy migrate", "alloy.toml rewritten as .config.aly, with its keys and comments"],
   ["rojo serve .alloy/build.project.json", "the compiled tree, from the [mount] table"],
   ["alloy self install", "alloy and alloy-lsp into ~/.alloy/bin; self update fetches a release"],
 ];
@@ -232,9 +263,9 @@ export function rfcBody(markdown: string): string {
     .trim();
 }
 
-/** One searchable piece of the book: the anchor it lives at, its label
- * and number, and its plain text. */
-export type SearchDoc = { id: string; label: string; number: string; text: string };
+/** One searchable piece of the docs: the page or anchor it lives at,
+ * its label, the part of the docs that holds it, and its plain text. */
+export type SearchDoc = { href: string; label: string; section: string; text: string };
 
 /** Markdown as plain words: fences, code marks, and table bars go. */
 export function plainText(markdown: string): string {

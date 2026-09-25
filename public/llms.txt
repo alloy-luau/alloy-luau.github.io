@@ -6,8 +6,12 @@ The compiler is `alloy` (Rust); the language server is `alloy-lsp`, a proxy over
 
 ## Pages
 
-- [Overview](https://alloy-luau.github.io/): what Alloy is, the strictness contracts, the chapter list, install.
-- [The book](https://alloy-luau.github.io/docs/): every construct with its emitted Luau beside it, the lints, the toolchain.
+- [Overview](https://alloy-luau.github.io/): what Alloy is, the strictness contracts, the language chapters, install.
+- [Docs](https://alloy-luau.github.io/docs/): the docs home, with a list of every page. One page per subject.
+- [Language](https://alloy-luau.github.io/docs/language/): every construct with its emitted Luau beside it, and the strictness rules.
+- [Tooling](https://alloy-luau.github.io/docs/tooling/) and [Configuration](https://alloy-luau.github.io/docs/configuration/): the commands, alloy.toml, mounts, and the file directives.
+- [Reference](https://alloy-luau.github.io/docs/reference/): one page per keyword, std type, error kind, and lint; one page each for the operators, intrinsics, attributes, and derives.
+- [Sitemap](https://alloy-luau.github.io/sitemap.xml): the URL of every page.
 
 ## Repositories
 
@@ -21,3 +25,4 @@ The compiler is `alloy` (Rust); the language server is `alloy-lsp`, a proxy over
 - `alloy build` compiles the project; `alloy build -W` watches.
 - `alloy check` compiles without writing and reports errors and lints.
 - `alloy lint`, `alloy fmt`, `alloy doc <topic>`, `alloy init`.
+- `alloy migrate` rewrites alloy.toml as .config.aly.

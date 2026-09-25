@@ -135,18 +135,18 @@ const EXAMPLES = slides
 
 const DEFAULT_SOURCE = `-- Alloy in the browser: the compiler, the type checker, completion,
 -- and hover all run here. Edit anything; the Luau appears beside it.
-struct Vec2 as
+struct Vec2
     x: number
     y: number
 end
 
-impl Vec2 as
+impl Vec2
     function length(self): number
         return math.sqrt(self.x * self.x + self.y * self.y)
     end
 end
 
-enum Msg as
+enum Msg
     Join(string)
     Leave(string, number)
 end
