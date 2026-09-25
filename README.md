@@ -1,6 +1,6 @@
 # Alloy website
 
-Four routes: the landing page at `/`, the reference at `/docs`, the
+Four routes: the landing page at `/`, the docs at `/docs`, the
 playground at `/play`, and the merged proposals at `/rfcs`. Next.js with
 TypeScript, Tailwind, and Framer Motion. The build is a static export.
 
@@ -20,6 +20,19 @@ npm run content    # ../crates/scripts/docs-content.sh: alloy doc --json, then t
 Run it after a change to `alloy/src/docs.rs` or `lint.rs` in the `alloy` repository, checked out beside this one as `../crates`. The
 tour on both pages reads `content/slides.json`: each chapter's source and
 its emitted Luau.
+
+The docs have one page per subject, in six groups: Getting started,
+Language, Tooling, Configuration, Reference, and Guides. `lib/docs.ts`
+holds the outline. The routes, the sidebar, the search index at
+`/docs/search.json`, and the previous and next links all read it. Each
+`topic:` article in `content/docs.json` gets a page. An article that
+`lib/docs.ts` does not name goes under Guides, so a new article needs no
+change here. The hand-written pages are in `components/DocsProse.tsx`.
+
+The docs were one page once, and a diagnostic still links to
+`/docs/#<anchor>`. The docs home reads the anchor and sends the reader
+to the page that holds it now. A static export has no server redirect,
+so this runs in the browser.
 
 The `/rfcs` route reads `content/rfcs.json`, which `scripts/rfcs.mjs`
 writes from the RFC repository, checked out beside this one as

@@ -119,6 +119,21 @@ function blocks(markdown: string): Block[] {
 export default function Markdown({ text, emitSecond = false }: { text: string; emitSecond?: boolean }) {
   const parts = blocks(text);
   let fences = 0;
+  // Each heading gets an id from its words, so a link and the "On this
+  // page" list can point at it. A repeat takes a number.
+  const seen = new Map<string, number>();
+  const idOf = (heading: string) => {
+    const base =
+      heading
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "") || "section";
+    const n = (seen.get(base) ?? 0) + 1;
+
+    seen.set(base, n);
+
+    return n === 1 ? base : `${base}-${n}`;
+  };
 
   return (
     <div className="prose">
@@ -145,7 +160,7 @@ export default function Markdown({ text, emitSecond = false }: { text: string; e
           const Tag = `h${Math.min(b.level + 1, 6)}` as "h2" | "h3" | "h4" | "h5" | "h6";
 
           return (
-            <Tag className="md-head" key={i}>
+            <Tag className="md-head" id={idOf(b.text)} key={i}>
               {inline(b.text).map((n, j) => (
                 <Fragment key={j}>{n}</Fragment>
               ))}

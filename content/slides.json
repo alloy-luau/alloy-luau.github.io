@@ -46,7 +46,7 @@
       "eyebrow": "Data",
       "title": "Enums carry payloads; <code>match</code> compiles to an if-chain",
       "thesis": "A payload enum is a tagged table with a constructor per variant and a union type the analyzer can narrow. A unit enum is a string literal union, so it serializes for free.",
-      "src": "enum Msg as\n    Join(Player)\n    Chat(Player, string)\nend\nlocal who = match msg with\n    case Join(p) then p.Name\n    case Chat(p, text) then `{p.Name}: {text}`\nend",
+      "src": "enum Msg\n    Join(Player)\n    Chat(Player, string)\nend\nlocal who = match msg with\n    case Join(p) then p.Name\n    case Chat(p, text) then `{p.Name}: {text}`\nend",
       "emit": "local Msg = {} Msg.__index = Msg\n    function Msg.Join(_1) return setmetatable({ tag = \"Join\", _1 = _1 }, Msg) end\n    function Msg.Chat(_1, _2) return setmetatable({ tag = \"Chat\", _1 = _1, _2 = _2 }, Msg) end\nfunction Msg.is(v) return (type(v) == \"table\" and getmetatable(v) == Msg) end type Msg = { tag: \"Join\", _1: Player } | { tag: \"Chat\", _1: Player, _2: string }\nlocal who = (\n    if type(msg) == \"table\" and msg.tag == \"Join\" then msg._1.Name\n    else `{msg._1.Name}: {msg._2}`\n)",
       "points": [
         "<b>Patterns nest:</b> or-patterns, struct patterns, table and array patterns, literals, guards with <code>and</code>, and <code>default</code>.",
@@ -76,7 +76,7 @@
       "eyebrow": "Types",
       "title": "Structs, traits, and impls emit the metatable pattern",
       "thesis": "An Alloy struct is a plain table that vanilla Luau can use. Fields carry defaults and read or write marks. impl adds methods. A trait is a type of signatures plus default bodies.",
-      "src": "struct Vec2 as\n    x: number\n    y: number = 0\nend\nimpl Vec2 as\n    function len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = new Vec2 { x = 3, y = 4 }",
+      "src": "struct Vec2\n    x: number\n    y: number = 0\nend\nimpl Vec2\n    function len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = new Vec2 { x = 3, y = 4 }",
       "emit": "local Vec2 = {} Vec2.__index = Vec2 setmetatable(Vec2, { __call = function(_, f) if f.y == nil then f.y = 0 end return setmetatable(f, Vec2) end }) function Vec2.new(f) return Vec2(f) end\n\n\n type Vec2 = typeof(setmetatable({} :: { x: number, y: number? }, Vec2))\ndo\n    function Vec2.len(self): number\n        return math.sqrt(self.x ^ 2 + self.y ^ 2)\n    end\nend\nlocal v = Vec2({ x = 3, y = 4 })",
       "points": [
         "<b><code>new</code> is the only way in.</b> <code>new Vec2 { ... }</code> is the fields form; a struct whose impl writes <code>new</code> or <code>New</code> takes <code>new Vec2(...)</code> instead. Bare <code>Vec2 { }</code> and <code>Vec2(1, 2)</code> are diagnostics.",
@@ -90,7 +90,7 @@
       "eyebrow": "Types",
       "title": "Interfaces, mapped types, and type functions",
       "thesis": "interface is sugar over type with extends. Partial, Readonly, and Sink are language-level types. Type functions that the real solver runs build them, and a file may replace any of them with its own.",
-      "src": "interface Entity extends Named, Positioned as\n    read id: number\n    write sink: (string) -> ()\nend\nlocal function patch(e: Entity, changes: Partial<Entity>): Entity\n    return { ...e, ...changes }\nend",
+      "src": "interface Entity extends Named, Positioned\n    read id: number\n    write sink: (string) -> ()\nend\nlocal function patch(e: Entity, changes: Partial<Entity>): Entity\n    return { ...e, ...changes }\nend",
       "emit": "type Entity = Named & Positioned & {\n    read id: number,\n    write sink: (string) -> (),\n}\nlocal function patch(e: Entity, changes: __alloy.Partial<Entity>): Entity\n    return __alloy.spread(e, changes)\nend",
       "points": [
         "<b><code>T[]</code>, <code>read T[]</code>, <code>write T[]</code></b> name <code>Array&lt;T&gt;</code>, <code>ReadArray&lt;T&gt;</code>, and <code>WriteArray&lt;T&gt;</code>.",
@@ -144,7 +144,7 @@
       "eyebrow": "Metadata",
       "title": "Attributes with checked placement",
       "thesis": "Built-in attributes drive codegen. Declared ones are metadata with typed arguments, and Attributes reads them at runtime. Completion after @ lists only what fits the position.",
-      "src": "attribute icon(asset: string) on struct, enum, variant\nattribute range(min: number, max: number) on field\n\n@icon(\"rbxassetid://100\")\n@derive(Serialize)\nstruct Item as\n    @range(0, 99)\n    count: number\nend",
+      "src": "attribute icon(asset: string) on struct, enum, variant\nattribute range(min: number, max: number) on field\n\n@icon(\"rbxassetid://100\")\n@derive(Serialize)\nstruct Item\n    @range(0, 99)\n    count: number\nend",
       "emit": "\n\nlocal Item = {} Item.__index = Item setmetatable(Item, { __call = function(_, f)  return setmetatable(f, Item) end }) function Item.new(f) return Item(f) end\n\n\n\n type Item = typeof(setmetatable({} :: { count: number }, Item)) __alloy.attrs(Item, { own = { icon = { \"rbxassetid://100\" } }, fields = { count = { range = { 0, 99 } } } })\n",
       "points": [
         "<b>Placement is checked:</b> a wire width on a plain function parameter, or any attribute on a local, is a diagnostic and leaves the emit.",

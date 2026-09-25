@@ -1,5 +1,5 @@
 // Stamps each piece of content with the day it last changed. The hash
-// of every entry, lint, tour chapter, and the book page's own prose is
+// of every entry, lint, tour chapter, and the docs' hand-written prose is
 // kept in content/updated.json beside its date; a piece whose hash
 // moved gets today's date, and the rest keep theirs. `npm run content`
 // runs it after the compiler's table is regenerated.
@@ -12,7 +12,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const path = join(root, "content", "updated.json");
 const docs = JSON.parse(readFileSync(join(root, "content", "docs.json"), "utf8"));
 const slides = JSON.parse(readFileSync(join(root, "content", "slides.json"), "utf8"));
-const page = readFileSync(join(root, "app", "docs", "page.tsx"), "utf8");
+const page = readFileSync(join(root, "components", "DocsProse.tsx"), "utf8");
 
 let previous = {};
 try {
@@ -38,7 +38,7 @@ for (const e of docs.entries) stamp(`entry:${e.key}`, e.markdown);
 for (const l of docs.lints) stamp(`lint:${l.name}`, JSON.stringify(l));
 for (const s of slides.slides) stamp(`slide:${s.id}`, JSON.stringify(s));
 stamp("cards", JSON.stringify(slides.stdItems));
-// The hand-written chapters of the page: everything outside the data.
+// The hand-written pages of the docs: everything outside the data.
 stamp("page:docs", page);
 
 writeFileSync(path, JSON.stringify(next, null, 2) + "\n");
