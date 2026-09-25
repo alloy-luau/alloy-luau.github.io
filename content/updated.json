@@ -40,8 +40,8 @@
     "date": "2026-09-25"
   },
   "entry:=>": {
-    "hash": "df88c43fabbb56aa",
-    "date": "2026-09-20"
+    "hash": "5c3b56e7d0e7951a",
+    "date": "2026-09-25"
   },
   "entry:[": {
     "hash": "d4b27a6aba67b939",
@@ -120,7 +120,7 @@
     "date": "2026-09-24"
   },
   "entry:match": {
-    "hash": "9ca2390267774ef0",
+    "hash": "66813911d37dec7e",
     "date": "2026-09-25"
   },
   "entry:requires": {
@@ -332,7 +332,7 @@
     "date": "2026-09-25"
   },
   "entry:@derive": {
-    "hash": "df5a01ec7ee18187",
+    "hash": "227c5174182bd662",
     "date": "2026-09-25"
   },
   "entry:@cfg": {
@@ -580,8 +580,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:build": {
-    "hash": "8e8df944f58dffb1",
-    "date": "2026-09-14"
+    "hash": "19ff783e3b1e3a8f",
+    "date": "2026-09-25"
   },
   "entry:topic:config": {
     "hash": "f993387d4404c350",
@@ -628,7 +628,7 @@
     "date": "2026-09-08"
   },
   "entry:topic:naming-conventions": {
-    "hash": "8d72d6393dbbb839",
+    "hash": "b0589ea9c6e8aacf",
     "date": "2026-09-25"
   },
   "entry:topic:alloy-preserve": {
@@ -636,7 +636,7 @@
     "date": "2026-09-08"
   },
   "entry:topic:markup": {
-    "hash": "29ad8163c45d719a",
+    "hash": "c835dab058ca40e5",
     "date": "2026-09-25"
   },
   "entry:alx.static_conditional_child": {
@@ -648,8 +648,8 @@
     "date": "2026-09-24"
   },
   "entry:topic:mount": {
-    "hash": "2384f2b5498dbb0f",
-    "date": "2026-09-24"
+    "hash": "a5bc7c2ae0579f3f",
+    "date": "2026-09-25"
   },
   "entry:topic:data": {
     "hash": "7b23e88386e007b9",
@@ -672,8 +672,8 @@
     "date": "2026-09-14"
   },
   "entry:argument_count": {
-    "hash": "9790e4ba1fd0596e",
-    "date": "2026-09-14"
+    "hash": "5ca28fa6c1effdfc",
+    "date": "2026-09-25"
   },
   "entry:unreachable_default": {
     "hash": "4b68b6751717ada4",
@@ -719,6 +719,10 @@
     "hash": "8ee56d0332576ed7",
     "date": "2026-09-14"
   },
+  "entry:identity_compare": {
+    "hash": "1dcd3c63812d2414",
+    "date": "2026-09-25"
+  },
   "entry:circular_import": {
     "hash": "4cbe50e3c9dff3ba",
     "date": "2026-09-14"
@@ -728,7 +732,7 @@
     "date": "2026-09-14"
   },
   "entry:deprecated_call": {
-    "hash": "0bba934ef448db02",
+    "hash": "4fba462e407524e9",
     "date": "2026-09-25"
   },
   "entry:and_or_ternary": {
@@ -784,7 +788,7 @@
     "date": "2026-09-24"
   },
   "entry:prefer_const": {
-    "hash": "9047c91fcb923b3b",
+    "hash": "a3b5fa351fdec8d2",
     "date": "2026-09-25"
   },
   "entry:redundant_as": {
@@ -836,8 +840,8 @@
     "date": "2026-09-14"
   },
   "entry:local_then_return": {
-    "hash": "1003efc1808cfe28",
-    "date": "2026-09-14"
+    "hash": "e5603e4fcadaf274",
+    "date": "2026-09-25"
   },
   "entry:numeric_for_index": {
     "hash": "eaf4773a3a05a44e",
@@ -936,7 +940,7 @@
     "date": "2026-09-20"
   },
   "entry:naming_convention": {
-    "hash": "cb2dc9d83077acad",
+    "hash": "2a3ca6d501a7fdd0",
     "date": "2026-09-25"
   },
   "entry:AlloyError": {
@@ -1008,7 +1012,7 @@
     "date": "2026-09-24"
   },
   "entry:MarkupError": {
-    "hash": "b2f909b84c73fbeb",
+    "hash": "b38fb96ea60133e6",
     "date": "2026-09-25"
   },
   "entry:ReservedWord": {
@@ -1064,8 +1068,8 @@
     "date": "2026-09-08"
   },
   "lint:argument_count": {
-    "hash": "bb14a3ee1ca1e6ba",
-    "date": "2026-09-08"
+    "hash": "e71429a4f03ecb95",
+    "date": "2026-09-25"
   },
   "lint:unreachable_default": {
     "hash": "5bdefbf9dfbeb223",
@@ -1111,6 +1115,10 @@
     "hash": "6653317d0e101592",
     "date": "2026-09-08"
   },
+  "lint:identity_compare": {
+    "hash": "2b9d4995e1ab82c1",
+    "date": "2026-09-25"
+  },
   "lint:circular_import": {
     "hash": "611eec030434dc39",
     "date": "2026-09-07"
@@ -1120,7 +1128,7 @@
     "date": "2026-09-09"
   },
   "lint:deprecated_call": {
-    "hash": "1a45cef8409fa04f",
+    "hash": "227ae454bf1a098f",
     "date": "2026-09-25"
   },
   "lint:and_or_ternary": {
@@ -1176,7 +1184,7 @@
     "date": "2026-09-24"
   },
   "lint:prefer_const": {
-    "hash": "f306653dc937ea34",
+    "hash": "9476373324ac35a7",
     "date": "2026-09-25"
   },
   "lint:redundant_as": {
@@ -1228,8 +1236,8 @@
     "date": "2026-09-07"
   },
   "lint:local_then_return": {
-    "hash": "fad116a7c045240c",
-    "date": "2026-09-07"
+    "hash": "aa51f5fd1ce42da5",
+    "date": "2026-09-25"
   },
   "lint:numeric_for_index": {
     "hash": "502f90f6f49943ac",
@@ -1328,7 +1336,7 @@
     "date": "2026-09-20"
   },
   "lint:naming_convention": {
-    "hash": "0c8815fb5ba8efe9",
+    "hash": "c8a5fd03ffd642cd",
     "date": "2026-09-25"
   },
   "slide:safe": {
