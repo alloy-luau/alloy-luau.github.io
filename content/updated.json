@@ -152,8 +152,8 @@
     "date": "2026-09-24"
   },
   "entry:import": {
-    "hash": "1dcaa61fc369bb23",
-    "date": "2026-09-24"
+    "hash": "8c82880a347c9d53",
+    "date": "2026-09-25"
   },
   "entry:export": {
     "hash": "c1504a64b4ac09a4",
@@ -344,12 +344,12 @@
     "date": "2026-09-24"
   },
   "entry:@rename_all": {
-    "hash": "444dc688011983bb",
-    "date": "2026-09-24"
+    "hash": "dc3c8423e060d542",
+    "date": "2026-09-25"
   },
   "entry:@deny_unknown_fields": {
-    "hash": "555f28e59e331e17",
-    "date": "2026-09-24"
+    "hash": "7f98ce2128464e38",
+    "date": "2026-09-25"
   },
   "entry:@wire": {
     "hash": "d800f310dd469283",
@@ -368,8 +368,8 @@
     "date": "2026-09-07"
   },
   "entry:@deprecated": {
-    "hash": "823a87371a586baf",
-    "date": "2026-09-24"
+    "hash": "84dfed6ed416fbbe",
+    "date": "2026-09-25"
   },
   "entry:@inline": {
     "hash": "dce06d101f70a799",
@@ -380,12 +380,12 @@
     "date": "2026-09-07"
   },
   "entry:@rename": {
-    "hash": "e59df743ee7634e6",
-    "date": "2026-09-24"
+    "hash": "bd2780a4cafb0ce0",
+    "date": "2026-09-25"
   },
   "entry:@skip": {
-    "hash": "2fc763fe3e76f02c",
-    "date": "2026-09-07"
+    "hash": "cda47b2f7f412b88",
+    "date": "2026-09-25"
   },
   "entry:@test": {
     "hash": "8a43a8aadbdd69c5",
@@ -560,8 +560,8 @@
     "date": "2026-09-24"
   },
   "entry:topic:lint": {
-    "hash": "566525c22e0a0a67",
-    "date": "2026-09-08"
+    "hash": "9a1f92b921537434",
+    "date": "2026-09-25"
   },
   "entry:topic:flux": {
     "hash": "c779f40c22de445d",
@@ -572,8 +572,8 @@
     "date": "2026-09-24"
   },
   "entry:topic:fmt": {
-    "hash": "894091d39609e343",
-    "date": "2026-09-20"
+    "hash": "e660682e36da3152",
+    "date": "2026-09-25"
   },
   "entry:topic:check": {
     "hash": "9c6da179ee54c951",
@@ -626,6 +626,10 @@
   "entry:topic:alloy-lint": {
     "hash": "e469cf3e23295280",
     "date": "2026-09-08"
+  },
+  "entry:topic:naming-conventions": {
+    "hash": "476d62ab58779d49",
+    "date": "2026-09-25"
   },
   "entry:topic:alloy-preserve": {
     "hash": "cfc3b624b7dee919",
@@ -775,6 +779,14 @@
     "hash": "ac6508747628a420",
     "date": "2026-09-24"
   },
+  "entry:prefer_const": {
+    "hash": "7c2e124ec3cfc305",
+    "date": "2026-09-25"
+  },
+  "entry:redundant_as": {
+    "hash": "7813f64b662fe3f8",
+    "date": "2026-09-25"
+  },
   "entry:match_guard_and": {
     "hash": "888c6a3d44086631",
     "date": "2026-09-24"
@@ -919,21 +931,9 @@
     "hash": "58cbc809f0c8cf8a",
     "date": "2026-09-20"
   },
-  "entry:import_order": {
-    "hash": "f6b69f2307535449",
-    "date": "2026-09-14"
-  },
-  "entry:camel_case_name": {
-    "hash": "b88afa6a8af3ff08",
-    "date": "2026-09-14"
-  },
-  "entry:type_case": {
-    "hash": "0645785766469ceb",
-    "date": "2026-09-14"
-  },
-  "entry:pascal_case_function": {
-    "hash": "c131c03c91369926",
-    "date": "2026-09-14"
+  "entry:naming_convention": {
+    "hash": "cb2dc9d83077acad",
+    "date": "2026-09-25"
   },
   "entry:AlloyError": {
     "hash": "320246e6b384a13f",
@@ -988,8 +988,8 @@
     "date": "2026-09-24"
   },
   "entry:ImportError": {
-    "hash": "ae0f29f84a98e800",
-    "date": "2026-09-24"
+    "hash": "0e1bf62180c0b45e",
+    "date": "2026-09-25"
   },
   "entry:IngotError": {
     "hash": "b31a62426ed4b0d0",
@@ -1036,8 +1036,8 @@
     "date": "2026-09-14"
   },
   "entry:UnknownModule": {
-    "hash": "69db88f740068679",
-    "date": "2026-09-24"
+    "hash": "56f73e340acbfe5e",
+    "date": "2026-09-25"
   },
   "entry:WireType": {
     "hash": "e36700214dcc2fd9",
@@ -1166,6 +1166,14 @@
   "lint:pattern_shadows_local": {
     "hash": "720911a5f85b7d22",
     "date": "2026-09-24"
+  },
+  "lint:prefer_const": {
+    "hash": "020b76ae9be88601",
+    "date": "2026-09-25"
+  },
+  "lint:redundant_as": {
+    "hash": "0101c5a3a690c215",
+    "date": "2026-09-25"
   },
   "lint:match_guard_and": {
     "hash": "3add508769650396",
@@ -1311,21 +1319,9 @@
     "hash": "3babb24393735e62",
     "date": "2026-09-20"
   },
-  "lint:import_order": {
-    "hash": "8ccf31acd4d8572b",
-    "date": "2026-09-09"
-  },
-  "lint:camel_case_name": {
-    "hash": "f028595fd3b1a076",
-    "date": "2026-09-07"
-  },
-  "lint:type_case": {
-    "hash": "23cb4d16ac1dfc56",
-    "date": "2026-09-07"
-  },
-  "lint:pascal_case_function": {
-    "hash": "20fe8eb66696581b",
-    "date": "2026-09-07"
+  "lint:naming_convention": {
+    "hash": "0c8815fb5ba8efe9",
+    "date": "2026-09-25"
   },
   "slide:safe": {
     "hash": "a1db029bb2ec6d2e",
