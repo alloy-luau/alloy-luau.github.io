@@ -1,131 +1,131 @@
 {
   "entry:?": {
-    "hash": "e7fe3412f3b558f0",
-    "date": "2026-09-07"
+    "hash": "3a46f2bf6693e8af",
+    "date": "2026-09-26"
   },
   "entry::": {
-    "hash": "faa784abba435e24",
-    "date": "2026-09-07"
+    "hash": "a1c4eaa58bc21c59",
+    "date": "2026-09-26"
   },
   "entry:??=": {
-    "hash": "66631dff94d971f2",
-    "date": "2026-09-07"
+    "hash": "66d388c826c9c63f",
+    "date": "2026-09-26"
   },
   "entry:~": {
     "hash": "0aeb3e16fea7d829",
     "date": "2026-09-24"
   },
   "entry:??": {
-    "hash": "3de1267e83e11011",
-    "date": "2026-09-07"
+    "hash": "a913a264b725a691",
+    "date": "2026-09-26"
   },
   "entry:?.": {
-    "hash": "f6d7a6ea93966e73",
-    "date": "2026-09-24"
+    "hash": "19e6e73f8731c2fe",
+    "date": "2026-09-26"
   },
   "entry:?[": {
-    "hash": "c5efea1f65f45262",
-    "date": "2026-09-07"
+    "hash": "2a87a09b5561836a",
+    "date": "2026-09-26"
   },
   "entry:?:": {
-    "hash": "0d06db3d45186dc4",
-    "date": "2026-09-07"
+    "hash": "0f6bc54578724389",
+    "date": "2026-09-26"
   },
   "entry:?(": {
-    "hash": "b89a99b11ff98b2f",
-    "date": "2026-09-07"
+    "hash": "e0bf94fd7cf3ef1b",
+    "date": "2026-09-26"
   },
   "entry:->": {
-    "hash": "09254ae0f53c8b0b",
-    "date": "2026-09-25"
+    "hash": "f467d962e5c62d69",
+    "date": "2026-09-26"
   },
   "entry:=>": {
-    "hash": "df88c43fabbb56aa",
-    "date": "2026-09-20"
+    "hash": "26d7fccf9f9d225c",
+    "date": "2026-09-26"
   },
   "entry:[": {
     "hash": "d4b27a6aba67b939",
     "date": "2026-09-24"
   },
   "entry:<<": {
-    "hash": "f5bc1030b778a577",
-    "date": "2026-09-07"
+    "hash": "882520550466de89",
+    "date": "2026-09-26"
   },
   "entry:<T: Bound>": {
-    "hash": "ce8f4e0ea46caaef",
-    "date": "2026-09-25"
+    "hash": "3d4ab8a81583d837",
+    "date": "2026-09-26"
   },
   "entry:!": {
-    "hash": "735d4b9b28f301c2",
-    "date": "2026-09-07"
+    "hash": "3a9f0f4be4b1c60c",
+    "date": "2026-09-26"
   },
   "entry:...": {
-    "hash": "915177b9267790b3",
-    "date": "2026-09-07"
+    "hash": "fd0da4761e00c61d",
+    "date": "2026-09-26"
   },
   "entry:is": {
-    "hash": "a16622348bbb0f2c",
-    "date": "2026-09-18"
+    "hash": "7a7e1a0d6abf9903",
+    "date": "2026-09-26"
   },
   "entry:in": {
-    "hash": "704a601b57c6693b",
-    "date": "2026-09-24"
+    "hash": "32be279dab33d46f",
+    "date": "2026-09-26"
   },
   "entry:bor": {
-    "hash": "4d1b7d013b8d3628",
-    "date": "2026-09-07"
+    "hash": "49d9d8171778733e",
+    "date": "2026-09-26"
   },
   "entry:band": {
-    "hash": "d896929d13969836",
-    "date": "2026-09-07"
+    "hash": "01f54ebd6ee999ee",
+    "date": "2026-09-26"
   },
   "entry:bxor": {
-    "hash": "46a9e8133a1eea70",
-    "date": "2026-09-07"
+    "hash": "1693417b49dd7a7f",
+    "date": "2026-09-26"
   },
   "entry:bnot": {
-    "hash": "342724a0a39991aa",
-    "date": "2026-09-07"
+    "hash": "5dab2eaf12e4c492",
+    "date": "2026-09-26"
   },
   "entry:shl": {
-    "hash": "ee23d8a689b59e17",
-    "date": "2026-09-07"
+    "hash": "c856304d8c2888dd",
+    "date": "2026-09-26"
   },
   "entry:shr": {
-    "hash": "fd46eca1926dd205",
-    "date": "2026-09-07"
+    "hash": "b372d73f3126b583",
+    "date": "2026-09-26"
   },
   "entry:struct": {
-    "hash": "ed98b32e8fceed84",
-    "date": "2026-09-24"
+    "hash": "b5998fab33a3faf7",
+    "date": "2026-09-26"
   },
   "entry:impl": {
-    "hash": "2715275aa70cb92e",
-    "date": "2026-09-24"
+    "hash": "c9023ee8a6416c0e",
+    "date": "2026-09-26"
   },
   "entry:trait": {
-    "hash": "bd1132edfe97173d",
-    "date": "2026-09-24"
+    "hash": "efd61913aeded6d8",
+    "date": "2026-09-26"
   },
   "entry:interface": {
-    "hash": "40ea67b512853be5",
-    "date": "2026-09-24"
+    "hash": "60bbb8f33cc9e117",
+    "date": "2026-09-26"
   },
   "entry:type": {
-    "hash": "272d3b2852dea038",
-    "date": "2026-09-13"
+    "hash": "0db99c4483018220",
+    "date": "2026-09-26"
   },
   "entry:enum": {
     "hash": "e93464922433a301",
     "date": "2026-09-24"
   },
   "entry:match": {
-    "hash": "9ca2390267774ef0",
-    "date": "2026-09-25"
+    "hash": "ba73f5b31f87f641",
+    "date": "2026-09-26"
   },
   "entry:requires": {
-    "hash": "b62c7f6b1fd99d85",
-    "date": "2026-09-13"
+    "hash": "a092f8f29ecebed5",
+    "date": "2026-09-26"
   },
   "entry:each": {
     "hash": "e02974d1656f535f",
@@ -136,8 +136,8 @@
     "date": "2026-09-07"
   },
   "entry:case": {
-    "hash": "355a09b443d340b7",
-    "date": "2026-09-07"
+    "hash": "8557ebf3af40506f",
+    "date": "2026-09-26"
   },
   "entry:default": {
     "hash": "f3992878e0f49b95",
@@ -148,112 +148,112 @@
     "date": "2026-09-24"
   },
   "entry:extends": {
-    "hash": "5bca8f63dbf735a0",
-    "date": "2026-09-24"
+    "hash": "07f7189be577f315",
+    "date": "2026-09-26"
   },
   "entry:import": {
-    "hash": "8c82880a347c9d53",
-    "date": "2026-09-25"
+    "hash": "1256c7f6b8e3fcdc",
+    "date": "2026-09-26"
   },
   "entry:export": {
-    "hash": "c1504a64b4ac09a4",
-    "date": "2026-09-24"
+    "hash": "f8e29613e7ddbb9a",
+    "date": "2026-09-26"
   },
   "entry:global": {
-    "hash": "3674f5ef22b15a34",
-    "date": "2026-09-13"
+    "hash": "a2abaa54baef3cb1",
+    "date": "2026-09-26"
   },
   "entry:from": {
     "hash": "4b0a03366d160205",
     "date": "2026-09-07"
   },
   "entry:for": {
-    "hash": "c390c02a3bdbc238",
-    "date": "2026-09-08"
+    "hash": "f855baeb5904bc69",
+    "date": "2026-09-26"
   },
   "entry:local": {
-    "hash": "2d5060d20b75f121",
-    "date": "2026-09-24"
+    "hash": "89674bdd514c0d1d",
+    "date": "2026-09-26"
   },
   "entry:const": {
-    "hash": "8e02ad04ae31b55d",
-    "date": "2026-09-24"
+    "hash": "aa1fbe50de3e2e10",
+    "date": "2026-09-26"
   },
   "entry:async": {
-    "hash": "0e3cf8c7a89a9d32",
-    "date": "2026-09-25"
+    "hash": "02f7801d6a346f05",
+    "date": "2026-09-26"
   },
   "entry:await": {
-    "hash": "ed120f1b1bd62336",
-    "date": "2026-09-25"
+    "hash": "75eba9e4a1166b67",
+    "date": "2026-09-26"
   },
   "entry:try": {
-    "hash": "840f26ab579a9c0b",
-    "date": "2026-09-25"
+    "hash": "08360c5c246116eb",
+    "date": "2026-09-26"
   },
   "entry:macro": {
-    "hash": "c3cae94dde1fc380",
-    "date": "2026-09-24"
+    "hash": "6d3186da012402d6",
+    "date": "2026-09-26"
   },
   "entry:namespace": {
-    "hash": "24fb48a03af768c6",
-    "date": "2026-09-24"
+    "hash": "9489d53a3575660f",
+    "date": "2026-09-26"
   },
   "entry:new": {
-    "hash": "2d871f521ea04135",
-    "date": "2026-09-13"
+    "hash": "58b5f88f66e71a35",
+    "date": "2026-09-26"
   },
   "entry:delete": {
-    "hash": "b58b1cca76b92084",
-    "date": "2026-09-13"
+    "hash": "194a395fb5fa09d0",
+    "date": "2026-09-26"
   },
   "entry:destroy": {
-    "hash": "13287f3ca11bb251",
-    "date": "2026-09-13"
+    "hash": "75ff0fa2281afcb2",
+    "date": "2026-09-26"
   },
   "entry:after": {
-    "hash": "15bda1aa8be96223",
-    "date": "2026-09-13"
+    "hash": "7db56f9e189e840f",
+    "date": "2026-09-26"
   },
   "entry:attribute": {
-    "hash": "b68cde5dd898490f",
-    "date": "2026-09-24"
+    "hash": "0d6296725956f7f8",
+    "date": "2026-09-26"
   },
   "entry:on": {
     "hash": "f4d1e8945619ba37",
     "date": "2026-09-07"
   },
   "entry:remote": {
-    "hash": "30e85d03b704dfcb",
-    "date": "2026-09-25"
+    "hash": "d760edcec7215acc",
+    "date": "2026-09-26"
   },
   "entry:where": {
-    "hash": "05a24aab6b89b958",
-    "date": "2026-09-24"
+    "hash": "98b14eeab955765e",
+    "date": "2026-09-26"
   },
   "entry:satisfies": {
-    "hash": "15604c2690716606",
-    "date": "2026-09-13"
+    "hash": "d3a7a4581c17e5ff",
+    "date": "2026-09-26"
   },
   "entry:private": {
     "hash": "0245dc74c333f745",
     "date": "2026-09-24"
   },
   "entry:public": {
-    "hash": "c2a847009f9daad6",
-    "date": "2026-09-24"
+    "hash": "d84ed5954e4f5786",
+    "date": "2026-09-26"
   },
   "entry:read": {
-    "hash": "0fd6dad218f938fc",
-    "date": "2026-09-07"
+    "hash": "b18ff386a36b0f17",
+    "date": "2026-09-26"
   },
   "entry:write": {
-    "hash": "d8978770c2abcf71",
-    "date": "2026-09-07"
+    "hash": "f7b125c49484acd8",
+    "date": "2026-09-26"
   },
   "entry:$dbg": {
-    "hash": "de57f06cc752f751",
-    "date": "2026-09-07"
+    "hash": "5fd01775d0145746",
+    "date": "2026-09-26"
   },
   "entry:$todo": {
     "hash": "e5e98f4d62bde1ed",
@@ -264,24 +264,24 @@
     "date": "2026-09-07"
   },
   "entry:$assert": {
-    "hash": "64bce4e9b490bb3d",
-    "date": "2026-09-07"
+    "hash": "762080866454bc1d",
+    "date": "2026-09-26"
   },
   "entry:$assert_eq": {
-    "hash": "c2427be23f13b53b",
-    "date": "2026-09-07"
+    "hash": "9f0b64d0f9cc28df",
+    "date": "2026-09-26"
   },
   "entry:$expect": {
-    "hash": "4abeef993124e08b",
-    "date": "2026-09-20"
+    "hash": "7a032270db0f43d4",
+    "date": "2026-09-26"
   },
   "entry:$nameof": {
-    "hash": "aac0563be8cb4edf",
-    "date": "2026-09-07"
+    "hash": "58618e34872d33c0",
+    "date": "2026-09-26"
   },
   "entry:$stringify": {
-    "hash": "e7eafc26dc8ee2c6",
-    "date": "2026-09-07"
+    "hash": "1f0018c904b4b5ee",
+    "date": "2026-09-26"
   },
   "entry:$set": {
     "hash": "8e6c2ddb027ed074",
@@ -292,63 +292,63 @@
     "date": "2026-09-07"
   },
   "entry:$matches": {
-    "hash": "39e36168a91d6a6d",
-    "date": "2026-09-07"
+    "hash": "0aea2196765cc2e8",
+    "date": "2026-09-26"
   },
   "entry:$bnot": {
-    "hash": "9942219f0fe52c42",
-    "date": "2026-09-07"
+    "hash": "c59719df7cd1293a",
+    "date": "2026-09-26"
   },
   "entry:derive:Eq": {
-    "hash": "ca3cf564e655df52",
-    "date": "2026-09-25"
+    "hash": "ec32708e4976954c",
+    "date": "2026-09-26"
   },
   "entry:derive:PartialEq": {
-    "hash": "dcecb1eae09a5285",
-    "date": "2026-09-07"
+    "hash": "510d88cd607860e5",
+    "date": "2026-09-26"
   },
   "entry:derive:Ord": {
-    "hash": "ce97b5cf97402050",
-    "date": "2026-09-07"
+    "hash": "02f98bceaf66f2f9",
+    "date": "2026-09-26"
   },
   "entry:derive:Debug": {
-    "hash": "5e715f7b43ca6689",
-    "date": "2026-09-07"
+    "hash": "6554909d137e8aa0",
+    "date": "2026-09-26"
   },
   "entry:derive:Clone": {
-    "hash": "4f9840655492d2ce",
-    "date": "2026-09-25"
+    "hash": "ac7666d1d893ce25",
+    "date": "2026-09-26"
   },
   "entry:derive:Default": {
     "hash": "eb938784056cdd75",
     "date": "2026-09-25"
   },
   "entry:derive:Serialize": {
-    "hash": "3a107d46c28b6def",
-    "date": "2026-09-25"
+    "hash": "8abd6b4ced54cb0c",
+    "date": "2026-09-26"
   },
   "entry:derive:Deserialize": {
-    "hash": "742d440672bcfa9a",
-    "date": "2026-09-25"
+    "hash": "a0536fab3b5377b0",
+    "date": "2026-09-26"
   },
   "entry:@derive": {
-    "hash": "6bbfe7b10e52b56d",
-    "date": "2026-09-24"
+    "hash": "ca7a02eba59b8a29",
+    "date": "2026-09-26"
   },
   "entry:@cfg": {
-    "hash": "3ec57e3f63adf5e6",
-    "date": "2026-09-20"
+    "hash": "5c1332d5f95f06a5",
+    "date": "2026-09-26"
   },
   "entry:@alias": {
-    "hash": "5e8f65424b27a1ba",
-    "date": "2026-09-24"
+    "hash": "8a73e876746d72e2",
+    "date": "2026-09-26"
   },
   "entry:@rename_all": {
-    "hash": "dc3c8423e060d542",
+    "hash": "a01d713ae0cc1b5f",
     "date": "2026-09-25"
   },
   "entry:@deny_unknown_fields": {
-    "hash": "7f98ce2128464e38",
+    "hash": "1ad6851ba28aaad5",
     "date": "2026-09-25"
   },
   "entry:@wire": {
@@ -368,8 +368,8 @@
     "date": "2026-09-07"
   },
   "entry:@deprecated": {
-    "hash": "84dfed6ed416fbbe",
-    "date": "2026-09-25"
+    "hash": "1668d06ec8e3fce7",
+    "date": "2026-09-26"
   },
   "entry:@inline": {
     "hash": "dce06d101f70a799",
@@ -380,36 +380,36 @@
     "date": "2026-09-07"
   },
   "entry:@rename": {
-    "hash": "bd2780a4cafb0ce0",
-    "date": "2026-09-25"
+    "hash": "24bf52cad336f885",
+    "date": "2026-09-26"
   },
   "entry:@skip": {
-    "hash": "cda47b2f7f412b88",
-    "date": "2026-09-25"
+    "hash": "2af109359604c5e6",
+    "date": "2026-09-26"
   },
   "entry:@test": {
-    "hash": "8a43a8aadbdd69c5",
-    "date": "2026-09-24"
+    "hash": "40a60efe8721b1b4",
+    "date": "2026-09-26"
   },
   "entry:@unreliable": {
-    "hash": "64be334918f4f6aa",
-    "date": "2026-09-07"
+    "hash": "a6ecedc203e933ee",
+    "date": "2026-09-26"
   },
   "entry:@immediate": {
-    "hash": "fd31d3ea426ba1a1",
-    "date": "2026-09-09"
+    "hash": "046503767f9097b8",
+    "date": "2026-09-26"
   },
   "entry:@ratelimit": {
-    "hash": "d9b98a7fefcb590a",
-    "date": "2026-09-15"
+    "hash": "90dbcf99a81d6a2d",
+    "date": "2026-09-26"
   },
   "entry:@timeout": {
-    "hash": "4d7473f30a04747e",
-    "date": "2026-09-15"
+    "hash": "ad9516ca36525c6c",
+    "date": "2026-09-26"
   },
   "entry:@validate": {
-    "hash": "fc8adb95faee9cfa",
-    "date": "2026-09-15"
+    "hash": "a009869233029d27",
+    "date": "2026-09-26"
   },
   "entry:@u8": {
     "hash": "421ad6c0dd5b4d5f",
@@ -440,24 +440,24 @@
     "date": "2026-09-07"
   },
   "entry:class": {
-    "hash": "2164632c5a084169",
-    "date": "2026-09-07"
+    "hash": "e88830bc872e316d",
+    "date": "2026-09-26"
   },
   "entry:declare": {
-    "hash": "8f74250a055a3fb8",
-    "date": "2026-09-24"
+    "hash": "8130fcea3a1f3fb5",
+    "date": "2026-09-26"
   },
   "entry:HashMap": {
-    "hash": "1566d26ffdcd3399",
-    "date": "2026-09-24"
+    "hash": "1cfc0a7110b76b43",
+    "date": "2026-09-26"
   },
   "entry:Set": {
-    "hash": "65d4105acf983367",
-    "date": "2026-09-24"
+    "hash": "9a95ec8080b33fbc",
+    "date": "2026-09-26"
   },
   "entry:BitSet": {
-    "hash": "1a948c3867ef74cc",
-    "date": "2026-09-24"
+    "hash": "4764a0147e2a0465",
+    "date": "2026-09-26"
   },
   "entry:Array": {
     "hash": "9538c8b519554e3b",
@@ -472,60 +472,60 @@
     "date": "2026-09-07"
   },
   "entry:Future": {
-    "hash": "63fe835fd138402c",
-    "date": "2026-09-24"
+    "hash": "28e2cb730c9ecdeb",
+    "date": "2026-09-26"
   },
   "entry:Result": {
     "hash": "20cbcc43de4b2130",
     "date": "2026-09-24"
   },
   "entry:Ok": {
-    "hash": "86797789bd4141fe",
-    "date": "2026-09-07"
+    "hash": "d2ff20e37bd8ac58",
+    "date": "2026-09-26"
   },
   "entry:Err": {
-    "hash": "a52bcae78b88b980",
-    "date": "2026-09-07"
+    "hash": "ef0398b39cd835e8",
+    "date": "2026-09-26"
   },
   "entry:R15Character": {
     "hash": "be9a0ca267c7c59f",
     "date": "2026-09-15"
   },
   "entry:R6Character": {
-    "hash": "063fb9299aa3fec8",
-    "date": "2026-09-15"
+    "hash": "77ec9064af6bb3aa",
+    "date": "2026-09-26"
   },
   "entry:Queue": {
-    "hash": "dd3d26f3c2e0e086",
-    "date": "2026-09-08"
+    "hash": "fd5d40aefd6b9ba1",
+    "date": "2026-09-26"
   },
   "entry:Heap": {
-    "hash": "a7814e3890152b4a",
-    "date": "2026-09-08"
+    "hash": "ab674f77566fbfe0",
+    "date": "2026-09-26"
   },
   "entry:Scope": {
-    "hash": "f1c063d7f44d1f0a",
-    "date": "2026-09-08"
+    "hash": "39cd2099926f74df",
+    "date": "2026-09-26"
   },
   "entry:Iter": {
-    "hash": "618bc102d9ff9dd4",
-    "date": "2026-09-24"
+    "hash": "e9908e1429deac68",
+    "date": "2026-09-26"
   },
   "entry:Symbol": {
-    "hash": "554043b076c5f892",
-    "date": "2026-09-07"
+    "hash": "3558b4c969cf73cd",
+    "date": "2026-09-26"
   },
   "entry:Signal": {
-    "hash": "b30daf2d3424c490",
-    "date": "2026-09-08"
+    "hash": "f090c38078301120",
+    "date": "2026-09-26"
   },
   "entry:Traits": {
-    "hash": "26814a89c733d173",
-    "date": "2026-09-24"
+    "hash": "3fdcefec5d895814",
+    "date": "2026-09-26"
   },
   "entry:Partial": {
-    "hash": "2bb95949a5f991f6",
-    "date": "2026-09-07"
+    "hash": "0b79fe761cf4dec9",
+    "date": "2026-09-26"
   },
   "entry:Readonly": {
     "hash": "cd539dc6dae0a9fe",
@@ -536,28 +536,28 @@
     "date": "2026-09-07"
   },
   "entry:Attributes": {
-    "hash": "bc43979360a234a9",
-    "date": "2026-09-24"
+    "hash": "56b0f79337871243",
+    "date": "2026-09-26"
   },
   "entry:@sealed": {
-    "hash": "55e9063bdba75541",
-    "date": "2026-09-24"
+    "hash": "ff3fdf6238d1d735",
+    "date": "2026-09-26"
   },
   "entry:topic:strict": {
     "hash": "38aa58eb83f4d25b",
     "date": "2026-09-18"
   },
   "entry:topic:results-and-futures": {
-    "hash": "53fc248deda942be",
-    "date": "2026-09-11"
+    "hash": "8bb5d8cc8763bb3d",
+    "date": "2026-09-26"
   },
   "entry:topic:exhaustive": {
     "hash": "fe671330b67e2a20",
     "date": "2026-09-24"
   },
   "entry:topic:wire": {
-    "hash": "74843d59dc5691eb",
-    "date": "2026-09-24"
+    "hash": "cae40166db9b92be",
+    "date": "2026-09-26"
   },
   "entry:topic:lint": {
     "hash": "9a1f92b921537434",
@@ -568,11 +568,11 @@
     "date": "2026-09-08"
   },
   "entry:topic:test": {
-    "hash": "19d3f2b48eac9b10",
-    "date": "2026-09-24"
+    "hash": "c07cac298b16fb71",
+    "date": "2026-09-25"
   },
   "entry:topic:fmt": {
-    "hash": "e660682e36da3152",
+    "hash": "5353412ed4ffda35",
     "date": "2026-09-25"
   },
   "entry:topic:check": {
@@ -580,8 +580,8 @@
     "date": "2026-09-07"
   },
   "entry:topic:build": {
-    "hash": "8e8df944f58dffb1",
-    "date": "2026-09-14"
+    "hash": "19ff783e3b1e3a8f",
+    "date": "2026-09-25"
   },
   "entry:topic:config": {
     "hash": "f993387d4404c350",
@@ -592,8 +592,8 @@
     "date": "2026-09-24"
   },
   "entry:topic:structs-or-tables": {
-    "hash": "c587a68b85f9d3cd",
-    "date": "2026-09-24"
+    "hash": "134c8f1966a9337c",
+    "date": "2026-09-26"
   },
   "entry:topic:init": {
     "hash": "0e0fbacb8f986377",
@@ -612,8 +612,8 @@
     "date": "2026-09-08"
   },
   "entry:topic:alloy-ignore-start": {
-    "hash": "c1ed6de77d48c991",
-    "date": "2026-09-08"
+    "hash": "d94d92e9e13213b9",
+    "date": "2026-09-26"
   },
   "entry:topic:alloy-expect-error": {
     "hash": "43db2885e0014861",
@@ -628,32 +628,32 @@
     "date": "2026-09-08"
   },
   "entry:topic:naming-conventions": {
-    "hash": "476d62ab58779d49",
+    "hash": "b0589ea9c6e8aacf",
     "date": "2026-09-25"
   },
   "entry:topic:alloy-preserve": {
-    "hash": "cfc3b624b7dee919",
-    "date": "2026-09-08"
+    "hash": "b480f630db2319cc",
+    "date": "2026-09-26"
   },
   "entry:topic:markup": {
-    "hash": "4f948d28b9a1f526",
-    "date": "2026-09-24"
+    "hash": "e3556fe82f103fd1",
+    "date": "2026-09-26"
   },
   "entry:alx.static_conditional_child": {
-    "hash": "7956ec7dfebdbf76",
-    "date": "2026-09-13"
+    "hash": "ec19a384b31aa7b4",
+    "date": "2026-09-26"
   },
   "entry:topic:ingots": {
     "hash": "83cb6126aa4b6382",
     "date": "2026-09-24"
   },
   "entry:topic:mount": {
-    "hash": "2384f2b5498dbb0f",
-    "date": "2026-09-24"
+    "hash": "a5bc7c2ae0579f3f",
+    "date": "2026-09-25"
   },
   "entry:topic:data": {
-    "hash": "7b23e88386e007b9",
-    "date": "2026-09-07"
+    "hash": "650c98489b397852",
+    "date": "2026-09-26"
   },
   "entry:optional_access": {
     "hash": "f1e460a4349591b0",
@@ -672,8 +672,8 @@
     "date": "2026-09-14"
   },
   "entry:argument_count": {
-    "hash": "9790e4ba1fd0596e",
-    "date": "2026-09-14"
+    "hash": "5ca28fa6c1effdfc",
+    "date": "2026-09-25"
   },
   "entry:unreachable_default": {
     "hash": "4b68b6751717ada4",
@@ -719,13 +719,25 @@
     "hash": "8ee56d0332576ed7",
     "date": "2026-09-14"
   },
+  "entry:identity_compare": {
+    "hash": "1dcd3c63812d2414",
+    "date": "2026-09-25"
+  },
   "entry:circular_import": {
     "hash": "4cbe50e3c9dff3ba",
     "date": "2026-09-14"
   },
+  "entry:single_angle_call": {
+    "hash": "c4656dac171f68db",
+    "date": "2026-09-26"
+  },
   "entry:deprecated_namespace": {
     "hash": "d0ab0a73f5898677",
     "date": "2026-09-14"
+  },
+  "entry:deprecated_call": {
+    "hash": "4fba462e407524e9",
+    "date": "2026-09-25"
   },
   "entry:and_or_ternary": {
     "hash": "c89870687d140a9c",
@@ -780,7 +792,7 @@
     "date": "2026-09-24"
   },
   "entry:prefer_const": {
-    "hash": "7c2e124ec3cfc305",
+    "hash": "a3b5fa351fdec8d2",
     "date": "2026-09-25"
   },
   "entry:redundant_as": {
@@ -832,8 +844,8 @@
     "date": "2026-09-14"
   },
   "entry:local_then_return": {
-    "hash": "1003efc1808cfe28",
-    "date": "2026-09-14"
+    "hash": "e5603e4fcadaf274",
+    "date": "2026-09-25"
   },
   "entry:numeric_for_index": {
     "hash": "eaf4773a3a05a44e",
@@ -932,7 +944,7 @@
     "date": "2026-09-20"
   },
   "entry:naming_convention": {
-    "hash": "cb2dc9d83077acad",
+    "hash": "2a3ca6d501a7fdd0",
     "date": "2026-09-25"
   },
   "entry:AlloyError": {
@@ -940,32 +952,32 @@
     "date": "2026-09-18"
   },
   "entry:AsyncError": {
-    "hash": "273592ee3b07cbc9",
-    "date": "2026-09-25"
+    "hash": "562aa879a16ba01f",
+    "date": "2026-09-26"
   },
   "entry:AttributeContract": {
-    "hash": "645899379698a373",
-    "date": "2026-09-24"
+    "hash": "4336580936778098",
+    "date": "2026-09-26"
   },
   "entry:AttributeError": {
-    "hash": "e60e094f6f8a0d86",
-    "date": "2026-09-24"
+    "hash": "2e9e8e39f23dc59f",
+    "date": "2026-09-26"
   },
   "entry:BoundError": {
-    "hash": "c5da5b4c71491cd2",
-    "date": "2026-09-24"
+    "hash": "8cfd7eaf2d6d8ad0",
+    "date": "2026-09-26"
   },
   "entry:ConstError": {
     "hash": "aaf3372beb1e53b8",
     "date": "2026-09-14"
   },
   "entry:ConstructorError": {
-    "hash": "0dca55c6bfd3351d",
-    "date": "2026-09-24"
+    "hash": "d94fc9eadd8fea53",
+    "date": "2026-09-26"
   },
   "entry:DataError": {
-    "hash": "6074cca5d6a922cf",
-    "date": "2026-09-14"
+    "hash": "bd08f776bafb3394",
+    "date": "2026-09-26"
   },
   "entry:DeclareError": {
     "hash": "230bfcf6e41b39cb",
@@ -988,8 +1000,8 @@
     "date": "2026-09-24"
   },
   "entry:ImportError": {
-    "hash": "0e1bf62180c0b45e",
-    "date": "2026-09-25"
+    "hash": "3dd9e6e655a85950",
+    "date": "2026-09-26"
   },
   "entry:IngotError": {
     "hash": "b31a62426ed4b0d0",
@@ -1000,12 +1012,12 @@
     "date": "2026-09-18"
   },
   "entry:MacroError": {
-    "hash": "08c4729bcd17d8aa",
-    "date": "2026-09-24"
+    "hash": "dc576367e6f90620",
+    "date": "2026-09-26"
   },
   "entry:MarkupError": {
-    "hash": "4c3a63a39600c8bb",
-    "date": "2026-09-24"
+    "hash": "2c3aa7a753bf64dc",
+    "date": "2026-09-26"
   },
   "entry:ReservedWord": {
     "hash": "7c68d15ef4fedce7",
@@ -1016,32 +1028,32 @@
     "date": "2026-09-18"
   },
   "entry:StructError": {
-    "hash": "4629d243c948357c",
-    "date": "2026-09-24"
+    "hash": "03b5b9ba25d2db4c",
+    "date": "2026-09-26"
   },
   "entry:SyntaxError": {
     "hash": "8e014c580cea7dea",
     "date": "2026-09-14"
   },
   "entry:TestError": {
-    "hash": "ce56f7cd62eb2937",
-    "date": "2026-09-24"
+    "hash": "214696b3dfffce71",
+    "date": "2026-09-26"
   },
   "entry:TraitContract": {
-    "hash": "da4312d04464bbbd",
-    "date": "2026-09-24"
+    "hash": "483f57402e2f2eb8",
+    "date": "2026-09-26"
   },
   "entry:TypeError": {
     "hash": "12994bab04e48ae7",
     "date": "2026-09-14"
   },
   "entry:UnknownModule": {
-    "hash": "56f73e340acbfe5e",
-    "date": "2026-09-25"
+    "hash": "be4519f2810443bb",
+    "date": "2026-09-26"
   },
   "entry:WireType": {
-    "hash": "e36700214dcc2fd9",
-    "date": "2026-09-24"
+    "hash": "b35ada254a700a58",
+    "date": "2026-09-26"
   },
   "lint:optional_access": {
     "hash": "a60ddd2ef91350e2",
@@ -1060,8 +1072,8 @@
     "date": "2026-09-08"
   },
   "lint:argument_count": {
-    "hash": "bb14a3ee1ca1e6ba",
-    "date": "2026-09-08"
+    "hash": "e71429a4f03ecb95",
+    "date": "2026-09-25"
   },
   "lint:unreachable_default": {
     "hash": "5bdefbf9dfbeb223",
@@ -1107,13 +1119,25 @@
     "hash": "6653317d0e101592",
     "date": "2026-09-08"
   },
+  "lint:identity_compare": {
+    "hash": "2b9d4995e1ab82c1",
+    "date": "2026-09-25"
+  },
   "lint:circular_import": {
     "hash": "611eec030434dc39",
     "date": "2026-09-07"
   },
+  "lint:single_angle_call": {
+    "hash": "c0f4229675bfc152",
+    "date": "2026-09-26"
+  },
   "lint:deprecated_namespace": {
     "hash": "79fbf74802c33515",
     "date": "2026-09-09"
+  },
+  "lint:deprecated_call": {
+    "hash": "227ae454bf1a098f",
+    "date": "2026-09-25"
   },
   "lint:and_or_ternary": {
     "hash": "a2104c73499a2179",
@@ -1168,7 +1192,7 @@
     "date": "2026-09-24"
   },
   "lint:prefer_const": {
-    "hash": "020b76ae9be88601",
+    "hash": "9476373324ac35a7",
     "date": "2026-09-25"
   },
   "lint:redundant_as": {
@@ -1220,8 +1244,8 @@
     "date": "2026-09-07"
   },
   "lint:local_then_return": {
-    "hash": "fad116a7c045240c",
-    "date": "2026-09-07"
+    "hash": "aa51f5fd1ce42da5",
+    "date": "2026-09-25"
   },
   "lint:numeric_for_index": {
     "hash": "502f90f6f49943ac",
@@ -1320,7 +1344,7 @@
     "date": "2026-09-20"
   },
   "lint:naming_convention": {
-    "hash": "0c8815fb5ba8efe9",
+    "hash": "c8a5fd03ffd642cd",
     "date": "2026-09-25"
   },
   "slide:safe": {

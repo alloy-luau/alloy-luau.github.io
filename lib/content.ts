@@ -267,12 +267,19 @@ export function rfcBody(markdown: string): string {
  * its label, the part of the docs that holds it, and its plain text. */
 export type SearchDoc = { href: string; label: string; section: string; text: string };
 
-/** Markdown as plain words: fences, code marks, and table bars go. */
+/** Markdown as plain words: fences, code marks, and table bars go.
+ * An inline mark goes without a space, so "`x`." stays "x.". A generic
+ * such as `<number>` stays, because search reads it. */
 export function plainText(markdown: string): string {
   return markdown
     .replace(/```[a-z]*\n?/g, " ")
-    .replace(/[`*_|#>]/g, " ")
-    .replace(/<[^>]+>/g, " ")
+    .replace(/^[ \t]*[#>]+[ \t]*/gm, "")
+    .replace(/<\/?(code|b|i|em|strong|kbd)>/g, "")
+    .replace(/[`*]/g, "")
+    .replace(/\|/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
     .replace(/&[a-z]+;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
