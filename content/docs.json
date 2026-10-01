@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0-rc.8",
+  "version": "0.1.0-rc.10",
   "entries": [
     {
       "key": "?",
@@ -405,7 +405,7 @@
       "key": "new",
       "title": "new",
       "group": "Keywords",
-      "markdown": "```\nnew Name(...)\nnew Name(...) { Field = value }\n```\nConstructs a value. `new Name(...)` calls the constructor a struct's impl wrote, `new` or `New`, or the `new` of a Roblox datatype, an Instance, or any class; braces after it set fields on the new value, one per line. The braces set `Parent` after every other field, in a statement or an expression, so an Instance enters the tree with its properties set. `new Name { ... }` is a struct's fields form, the only way to construct one that writes no constructor. A struct never constructs without `new`.\n\nThe word is also free as a name. `new` before a type name constructs; `new(x)`, `new.field`, `new = 1`, and `new \"Part\"` read the Luau way, so a local named `new` may hold `Instance.new`.\n\nA constructor chains. `new Thing():method()` and `new Thing().field` read the way `(new Thing()):method()` does.",
+      "markdown": "```\nnew Name(...)\nnew Name(...) { Field = value }\n```\nConstructs a value. `new Name(...)` calls the constructor a struct's impl wrote, `new` or `New`, or the `new` of a Roblox datatype, an Instance, or any class; braces after it set fields on the new value, one per line. The braces set `Parent` after every other field, in a statement or an expression, so an Instance enters the tree with its properties set. `new Name { ... }` is a struct's fields form, the only way to construct one that writes no constructor. A struct never constructs without `new`.\n\nThe word is also free as a name. `new` before a type name constructs; `new(x)`, `new.field`, `new = 1`, and `new \"Part\"` read the Luau way, so a local named `new` may hold `Instance.new`.\n\nA constructor chains. `new Thing():method()` and `new Thing().field` read the way `(new Thing()):method()` does.\n\nFor a Roblox datatype, an Instance, or a class, `new Thing(...)` emits `Thing.new(...)`. The `prefer_new` lint reports `Thing.new(...)` on a capitalized type path, and `alloy flux --fix` writes `new Thing(...)`.",
       "signature": null,
       "members": []
     },
@@ -429,7 +429,7 @@
       "key": "after",
       "title": "after",
       "group": "Keywords",
-      "markdown": "```alloy\nlocal part = Instance.new(\"Part\")\nlocal alive = true\nlocal function respawn() end\n\nafter 3 do\n    part.Transparency = 1\nend\n\nafter 3 where alive do\n    respawn()\nend\n```\nRuns a block later: `task.delay(seconds, function() ... end)`. The seconds are a number. `return` leaves the block, not the function around it, since the block is a function of its own.\n\n`where` puts a condition on it, and the condition is read when the timer fires, not when the block is scheduled. A local the code changes in between is read at its new value.\n\n`after` is also the word in `destroy x after n`.\n\nThe word is free as a name too. `after` before a delay is the keyword, and the block closes it: `after 2 do`, `after (n + 1) do`, and `after 3 where cond do`. Every other reading is a name, so `after = 1`, `after(x)`, `after[1] = 2`, and `after += 1` read the Luau way. The delay and its `do` sit on one line when the delay is parenthesized, since `after(x)` on its own line is a call.",
+      "markdown": "```alloy\nlocal part = new Instance(\"Part\")\nlocal alive = true\nlocal function respawn() end\n\nafter 3 do\n    part.Transparency = 1\nend\n\nafter 3 where alive do\n    respawn()\nend\n```\nRuns a block later: `task.delay(seconds, function() ... end)`. The seconds are a number. `return` leaves the block, not the function around it, since the block is a function of its own.\n\n`where` puts a condition on it, and the condition is read when the timer fires, not when the block is scheduled. A local the code changes in between is read at its new value.\n\n`after` is also the word in `destroy x after n`.\n\nThe word is free as a name too. `after` before a delay is the keyword, and the block closes it: `after 2 do`, `after (n + 1) do`, and `after 3 where cond do`. Every other reading is a name, so `after = 1`, `after(x)`, `after[1] = 2`, and `after += 1` read the Luau way. The delay and its `do` sit on one line when the delay is parenthesized, since `after(x)` on its own line is a call.",
       "signature": null,
       "members": []
     },
@@ -437,7 +437,7 @@
       "key": "attribute",
       "title": "attribute",
       "group": "Keywords",
-      "markdown": "```\nattribute name(params) on target, ...\n```\n```alloy\nattribute service on impl as\n    requires public function Start(self)\n    requires private field state: number\nend\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, interface, type, local, namespace, impl, trait. A parameter can carry a default, `attribute icon(asset: string = \"none\")`; a use that omits the argument gets it, and `Attributes.get` reads it.\n\nThe built-in ones: `@derive` and `@sealed` on a struct or an enum; `@test` and `@cfg` on a function, `@test` and `@cfg` on a namespace too, `@cfg` on a local as well; `@deprecated` on a namespace as well; `@rename` and `@skip` on a field; `@unreliable`, `@ratelimit`, `@timeout`, and `@validate` on a remote; `@u8` to `@f32` on a parameter or a field; and Luau's own `@native`, `@checked`, `@deprecated`, `@inline`, `@noinline`, which pass through.\n\nA `namespace` holds an attribute. Inside the group the bare name reads it; outside it reads as `@Name.tag`, and `@Outer.Inner.tag` through a nested namespace. A `private` one stays inside the group.\n\nThe `as ... end` form states a contract: what the thing the attribute sits on must carry. `alloy doc requires` has the clause. A declaration with no clause keeps the short form and reads as it always did.\n\nThe word is also free as a name. `attribute` declares only before a name on the same line, so `local attribute = 1` and `t.attribute` read the Luau way.",
+      "markdown": "```\nattribute name(params) on target, ...\n```\n```alloy\nattribute service on impl as\n    requires public function Start(self)\n    requires private field state: number\nend\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, message, interface, type, local, namespace, impl, trait. A parameter can carry a default, `attribute icon(asset: string = \"none\")`; a use that omits the argument gets it, and `Attributes.get` reads it.\n\nThe built-in ones: `@derive` and `@sealed` on a struct or an enum; `@test` and `@cfg` on a function, `@test` and `@cfg` on a namespace too, `@cfg` on a local as well; `@deprecated` on a namespace as well; `@rename` and `@skip` on a field; `@unreliable`, `@ratelimit`, `@timeout`, and `@validate` on a remote; `@u8` to `@f32` on a parameter or a field; and Luau's own `@native`, `@checked`, `@deprecated`, `@inline`, `@noinline`, which pass through.\n\nA `namespace` holds an attribute. Inside the group the bare name reads it; outside it reads as `@Name.tag`, and `@Outer.Inner.tag` through a nested namespace. A `private` one stays inside the group.\n\nThe `as ... end` form states a contract: what the thing the attribute sits on must carry. `alloy doc requires` has the clause. A declaration with no clause keeps the short form and reads as it always did.\n\nThe word is also free as a name. `attribute` declares only before a name on the same line, so `local attribute = 1` and `t.attribute` read the Luau way.",
       "signature": null,
       "members": []
     },
@@ -454,6 +454,38 @@
       "title": "remote",
       "group": "Keywords",
       "markdown": "```\nremote Name(params) from client\nremote function Name(params): R from server\n```\nA typed channel between server and client. The compiler reads a layout off the parameters, and the runtime packs each fire into one `buffer`: a `number` at the width its attribute names, `@u8` to `@f32`, or 64 bits without one; a `boolean` as a byte; a `string` with its length; an optional parameter with a presence byte. A struct opens to its fields, with the widths its fields declare, and the reader restores its metatable; a record type, `{ x: number, y: number }`, opens the same way; `T[]`, `{ T }`, and `Array<T>` pack a count and each item. An enum crosses too: a unit enum as the variant's name, which the reader checks, and a payload enum beside the buffer, where the reader checks the tag and restores the metatable, so the variant's methods and `==` work on arrival. What none of that covers, a `Player`, an Instance, a map, crosses beside the buffer as it is, and a remote whose parameters are all such stays unpacked. The handler sees the arguments as declared, defaults filled.\n\nThe object: `fire(...)` sends (to the server from a client; to one player, the first argument, from the server), `fire_all(...)` and `fire_except(player, ...)` send from the server to every client or all but one, `call(...)` asks a remote function and yields `Future<R>`, `on(handler)` and `once(handler)` receive (the connection comes back), `wait()` yields a Future of the next event, and `on_ratelimited(handler)` hears a sender that `@ratelimit` refused. `spec` holds the declaration, and `instance` the Roblox object behind it, typed by the kind: `RemoteEvent?`, `UnreliableRemoteEvent?` under `@unreliable`, or `RemoteFunction?` for a `remote function`.\n\nThe declaration types the object. The side that fires passes the parameters, and a default makes one optional; a handler gets them filled, and a server handler gets the sender first: `BuySaber.on(function(sender, id) ... end)` types `sender: Player` and `id: string`. `call` on a remote function yields `Future<R>`.\n\nThe word is also free as a name. `remote` declares only before a name or `function` on the same line, so `local remote = folder.Hit` and `t.remote` read the Luau way.",
+      "signature": null,
+      "members": []
+    },
+    {
+      "key": "parallel",
+      "title": "parallel",
+      "group": "Keywords",
+      "markdown": "```alloy\nlocal parts: { BasePart } = {}\nlocal hits: { BasePart } = {}\n\nparallel do\n    for _, part in parts do\n        if part.Position.Y < 0 then\n            table.insert(hits, part)\n        end\n    end\nend\n\nfor _, part in hits do\n    part.Position = new Vector3(0, 10, 0)\nend\n```\nRuns the block in the parallel phase. The engine runs code in parallel only in a script under an `Actor`, so the block goes in a `.server.actor.aly` or `.client.actor.aly` script, or in a module that such a script requires. `alloy doc actor` has the infix.\n\nThe emit writes `task.desynchronize() do` on the line of the header and `task.synchronize() end` on the line of the `end`. The line count holds, and the block keeps its own scope. The block is a statement and not an expression, because the phase belongs to the thread and not to a value.\n\nThe compiler refuses what the engine refuses, as far as this file shows it:\n\n- a write to a property of an Instance whose type the file knows, and a write to `Parent`;\n- `Instance.new`, `new Instance`, `Destroy`, `Clone`, `destroy`, and `delete`;\n- a call to a function of this file that does one of those itself, one level deep;\n- a `parallel` block inside the block;\n- `await`, because a Future resumes in the serial phase;\n- a `return`, a `break`, or a `continue` that leaves the block, because the thread would skip `task.synchronize()`.\n\nEach report names the rule, and the write it refuses: a `parallel` block cannot write `part.Position`; move the write after the block. The quick fix moves a refused statement after the block when nothing later in the block reads what it writes.\n\nThis check is a guard rail, not a proof. It reads this file and no further. A call into another module is not followed, and a write through a value typed `any` cannot be seen. The engine has the last word, and its error comes at run time.\n\n`SharedTable` is the Roblox type for state that several actors share. Alloy does not wrap it, and a `message` carries one like any other value.\n\nThe word is free as a name. `parallel` opens the block only before `do` on the same line, so `local parallel = true` and `parallel(x)` read the Luau way.",
+      "signature": null,
+      "members": []
+    },
+    {
+      "key": "message",
+      "title": "message",
+      "group": "Keywords",
+      "markdown": "```alloy\n--- One tick of the simulation.\nexport message Step(dt: number, gravity: number)\n\n--- A job, and the levels a worker answers with.\nexport message Light(job: number, input: buffer) reply(job: number, levels: buffer)\n\n--- The parts that fell this tick.\nexport message Fallen(parts: { BasePart }) as parallel\n```\n```\nStep.fire(worker, 0.016, 196.2)            -- worker:SendMessage(\"Step\", ...)\nStep.on(function(dt, gravity) end)         -- script:GetActor():BindToMessage(\"Step\", ...)\nFallen.once(function(parts) end)           -- the first message, then the binding goes\nLight.replied(function(job, levels) end)   -- any script: the answers come back here\nLight.on(function(job, input, respond)     -- the worker: `respond` sends one\n    respond(job, input)\nend)\n```\nA typed channel between actors. The name is the topic, so a typo in a topic cannot compile. The parameters type both ends: `fire` takes them after the Actor, and the handler of `on` and `once` gets them.\n\n`fire` sends to the Actor it takes first. `on` and `once` bind on the Actor of the script that calls them. That script needs the `.actor.` infix, and the compiler reports the call in any other file. `as parallel` binds with `BindToMessageParallel`. The handler then runs in the parallel phase and takes the rules of a `parallel` block.\n\n`reply(params)` gives the message an answer that any script can take, an actor script or not. `replied` binds a handler of the reply, and it needs no `.actor.` infix. The handler of `on` and `once` takes `respond` after the parameters, and `respond(...)` sends the reply to the script that fired. The header reads parameters, then `reply(...)`, then `as parallel`.\n\nThe answer rides a `BindableEvent`. Each Luau VM makes its own on the first `replied`, and `fire` sends it after the arguments, where the source does not show it. A `fire` before any `replied` of its VM sends no event, and `respond` then does nothing. A `BindableEvent` fires only in the serial phase, so `respond` in an `as parallel` handler calls `task.synchronize()` first, and the statements after it run serial. Nothing matches an answer to its request: pass a job number both ways, as `job` above. A message whose parameters end in `...` takes no reply.\n\nA message carries what the engine carries. The arguments cross as they are, with no serializer, because an actor boundary is not a network boundary. A function, a coroutine, and a value that keeps its methods on a metatable, such as a struct, a payload enum, or a `HashMap`, do not arrive whole. Each one is a `WireType` report with the rule named for actors. A reply parameter takes the same rules. A `SharedTable` crosses by reference. A parameter takes no default and no pattern.\n\nThe name holds a table with `topic` and a `fire`, and `replied` under a reply, so `Attributes.get(Step, tag)` reads an attribute of the declaration. `on` and `once` bind only through the name, because the compiler writes them on the Actor of the script where they stand.\n\nAn attribute goes on a message when its declaration names `message` in its targets. A contract reads the parameters as fields: `requires field job: number`.\n\nThe word is free as a name. `message` declares only before a name and `(` on the same line, so `local message = \"hi\"` and `message(x)` read the Luau way.",
+      "signature": null,
+      "members": []
+    },
+    {
+      "key": "reply",
+      "title": "reply",
+      "group": "Keywords",
+      "markdown": "```alloy\n--- A job, and the levels a worker answers with.\nexport message Light(job: number, input: buffer) reply(job: number, levels: buffer)\n\nLight.replied(function(job, levels)\n    print(job, buffer.len(levels))\nend)\n```\n```\n-- The worker, an `.actor.` script:\nLight.on(function(job, input, respond)\n    respond(job, input)\nend)\n```\nThe answer of a `message`. `replied` binds a handler of the reply on any script, and the handler of `on` and `once` takes `respond` after the parameters. `respond` fires a `BindableEvent`, so in an `as parallel` handler it calls `task.synchronize()` first. A reply parameter takes the rules of a message parameter. `alloy doc message` has the rest.\n\nThe word is free as a name. `reply` opens the clause only after the parameters of a `message`, before `(` on the same line, so a parameter or a local named `reply` reads the Luau way.",
+      "signature": null,
+      "members": []
+    },
+    {
+      "key": "actor",
+      "title": "actor",
+      "group": "Keywords",
+      "markdown": "```\nsrc/server/physics.server.actor.aly\n```\n```alloy\nlocal hits = {}\n\nparallel do\n    table.insert(hits, 1)\nend\n```\n`.actor.` after the side puts a script in an `Actor`. `physics.server.actor.aly` builds as the Actor `physics` with the Script `physics` in it, and `.client.actor.aly` makes one with a LocalScript. The script keeps the class that its side gives it.\n\nThe build writes the script as `physics/physics.server.luau`, beside an `init.meta.json` that gives the folder the class `Actor`. Rojo reads that file, so the project file and the source cannot disagree. The sourcemap holds the Actor too, so `script.Parent` is the Actor in the editor. A relative import climbs one more folder in the emit, because the script sits one folder deeper.\n\nOne file makes one Actor. A pool of workers is a number that changes with the device and the load, so clone the Actor that the build writes:\n\n```\nlocal template = script.Parent:FindFirstChild(\"worker\") :: Actor\n\nfor i = 1, workers do\n    local worker = template:Clone()\n    worker.Parent = folder\nend\n```\n\nOnly a script takes the infix. A module under an Actor runs nothing on its own, so `.actor.` on a module is an error that names the script to put it on. An `init` script takes the name of its folder, so it takes no infix either. `x.actor.server.aly` puts the infix before the side, and the report gives the order.\n\n`Step.on` and `Step.once` of a `message` bind on the Actor of the script, so they need the infix. A `parallel` block runs in any script under an Actor.",
       "signature": null,
       "members": []
     },
@@ -677,7 +709,7 @@
       "key": "@cfg",
       "title": "@cfg",
       "group": "Attributes",
-      "markdown": "```\n@cfg(condition)\n```\n```alloy\n@cfg(server)\nfunction save(player: Player) end\n\n@cfg(server)\nprint(\"the server starts\")\n\n@cfg(client and not studio)\nconst hud = Instance.new(\"ScreenGui\")\n```\nCode for one side. One rule covers every form: code with nothing to give does nothing on the wrong side; code that owes the caller a value says it cannot run there.\n\nA function that gives back no value returns at once where the condition fails. This is what a shared bootstrap needs: `startup` calls `start_server` and `start_client`, and each half runs on its own side. A function that gives back a value keeps its type and raises there. A silent nil where the signature promises a `Player` breaks somewhere else instead of naming the mistake, which is calling a server function from the client.\n\nThe signature decides. `function start()` with no `return` of a value skips, `function start(): ()` skips, and `function key(): string` raises. An optional return type raises too: the type says the caller gets a value, and nil is one of its answers.\n\nA statement runs where the condition holds and the other side skips it. A statement gives nobody a value, so a skip tells no lie. The emit is a guard on the statement's own line: `if __alloy.cfg.server() then start_server() end`. Two `@cfg` lines over one statement read as one condition, joined by `and`. A `@cfg` on a `return` changes what the rest of the block does on each side, so read the statements under it. `@cfg` is the only attribute a statement takes; every other one goes on a declaration.\n\nA local reads its value only where the condition holds, and stays typed as the value; elsewhere it is nil. On a namespace, each member reaches the table only where the condition holds, so the name is nil on the other side.\n\nThe conditions: `server`, `client`, `studio`, `edit`, `running`, and `test` (an `alloy test` run). Join them with `not`, `and`, `or`, or `any(...)` and `all(...)`.\n\nA shared module loads on both sides, so no form is removed at build time. Each condition is a read of RunService when the code runs.\n\n**Applies to** `function` · `local` · `namespace` · `statement`",
+      "markdown": "```\n@cfg(condition)\n```\n```alloy\n@cfg(server)\nfunction save(player: Player) end\n\n@cfg(server)\nprint(\"the server starts\")\n\n@cfg(client and not studio)\nconst hud = new Instance(\"ScreenGui\")\n```\nCode for one side. One rule covers every form: code with nothing to give does nothing on the wrong side; code that owes the caller a value says it cannot run there.\n\nA function that gives back no value returns at once where the condition fails. This is what a shared bootstrap needs: `startup` calls `start_server` and `start_client`, and each half runs on its own side. A function that gives back a value keeps its type and raises there. A silent nil where the signature promises a `Player` breaks somewhere else instead of naming the mistake, which is calling a server function from the client.\n\nThe signature decides. `function start()` with no `return` of a value skips, `function start(): ()` skips, and `function key(): string` raises. An optional return type raises too: the type says the caller gets a value, and nil is one of its answers.\n\nA statement runs where the condition holds and the other side skips it. A statement gives nobody a value, so a skip tells no lie. The emit is a guard on the statement's own line: `if __alloy.cfg.server() then start_server() end`. Two `@cfg` lines over one statement read as one condition, joined by `and`. A `@cfg` on a `return` changes what the rest of the block does on each side, so read the statements under it. `@cfg` is the only attribute a statement takes; every other one goes on a declaration.\n\nA local reads its value only where the condition holds, and stays typed as the value; elsewhere it is nil. On a namespace, each member reaches the table only where the condition holds, so the name is nil on the other side.\n\nThe conditions: `server`, `client`, `studio`, `edit`, `running`, and `test` (an `alloy test` run). Join them with `not`, `and`, `or`, or `any(...)` and `all(...)`.\n\nA shared module loads on both sides, so no form is removed at build time. Each condition is a read of RunService when the code runs.\n\n**Applies to** `function` · `local` · `namespace` · `statement`",
       "signature": null,
       "members": []
     },
@@ -717,7 +749,7 @@
       "key": "@allow",
       "title": "@allow",
       "group": "Attributes",
-      "markdown": "```alloy\n@allow(too_many_arguments)\nfunction spawn(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) end\n\n@allow(flux.unused_variable, luau.LocalShadow)\nlocal function setup() end\n```\nQuiets lints over what it sits on, the way Rust's `#[allow]` does: a function, a local, a struct, a field, an enum, a variant, an impl, a namespace, an attribute declaration, or a statement. A name is a lint, a group (`@allow(pedantic)`), or a lint under its tool: `flux.` for the compiler's, `luau.` for luau-lsp's, `alx.` for the markup lints, and an ingot's name for its own. The rustc and Clippy names of the lints Alloy has read as those lints, and `clippy.` is a tool like `flux.`: `unused_variables`, `unused_imports`, `dead_code`, `needless_return`, `let_and_return`, `print_stdout`, and `todo`. A name no lint has is an error, and so is an error kind: `@allow` quiets lints, and `--@alloy-expect-error` keeps an error the author means.\n\n**`@allow` or a directive.** Reach for `@allow` when one lint is wrong about one declaration: the name says which lint, the attribute moves with the code, and a typo reports. Reach for a `--@alloy-` comment when the thing to quiet is no declaration or no lint: `--@alloy-ignore` for one line the checker misreads, `--@alloy-ignore-start` and `-end` for a run of statements inside a body, `--@alloy-lint name=allow` for a whole file, `--@alloy-nocheck` for a generated or vendored file, and `--@alloy-expect-error` for an error a test means. `alloy doc directives` lists them.\n\n**Applies to** `function` · `local` · `struct` · `field` · `enum` · `variant` · `impl` · `trait` · `interface` · `namespace` · `remote` · `type` · `attribute` · `statement`",
+      "markdown": "```alloy\n@allow(too_many_arguments)\nfunction spawn(a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) end\n\n@allow(flux.unused_variable, luau.LocalShadow)\nlocal function setup() end\n```\nQuiets lints over what it sits on, the way Rust's `#[allow]` does: a function, a local, a struct, a field, an enum, a variant, an impl, a namespace, an attribute declaration, or a statement. A name is a lint, a group (`@allow(pedantic)`), or a lint under its tool: `flux.` for the compiler's, `luau.` for luau-lsp's, `alx.` for the markup lints, and an ingot's name for its own. The rustc and Clippy names of the lints Alloy has read as those lints, and `clippy.` is a tool like `flux.`: `unused_variables`, `unused_imports`, `dead_code`, `needless_return`, `let_and_return`, `print_stdout`, and `todo`. A name no lint has is an error, and so is an error kind: `@allow` quiets lints, and `--@alloy-expect-error` keeps an error the author means.\n\n**`@allow` or a directive.** Reach for `@allow` when one lint is wrong about one declaration: the name says which lint, the attribute moves with the code, and a typo reports. Reach for a `--@alloy-` comment when the thing to quiet is no declaration or no lint: `--@alloy-ignore` for one line the checker misreads, `--@alloy-ignore-start` and `-end` for a run of statements inside a body, `--@alloy-lint name=allow` for a whole file, `--@alloy-nocheck` for a generated or vendored file, and `--@alloy-expect-error` for an error a test means. `alloy doc directives` lists them.\n\n**Applies to** `function` · `local` · `struct` · `field` · `enum` · `variant` · `impl` · `trait` · `interface` · `namespace` · `remote` · `message` · `type` · `attribute` · `statement`",
       "signature": null,
       "members": []
     },
@@ -901,15 +933,15 @@
       "key": "HashMap",
       "title": "HashMap",
       "group": "Std",
-      "markdown": "```alloy\nimport { HashMap } from \"@alloy/std/collections\"\n\nlocal prices = $map[[\"sword\", 10], [\"pet\", 25]]\nlocal m: HashMap<string, number> = HashMap.new()\nm:set(\"gem\", 5)\nfor key, value in m:entries() do end\n```\nA map with methods, from the std. Any value that is not nil is a key. `HashMap.new()` is empty, `HashMap.from(t)` copies a table's pairs, and `$map[[k, v], ...]` is the literal. `for key, value in m` walks the pairs.",
+      "markdown": "```alloy\nimport { HashMap } from \"@alloy/std/collections\"\n\nlocal prices = $map[[\"sword\", 10], [\"pet\", 25]]\nlocal m: HashMap<string, number> = new HashMap()\nm:set(\"gem\", 5)\nfor key, value in m:entries() do end\n```\nA map with methods, from the std. Any value that is not nil is a key. `new HashMap()` is empty, `HashMap.from(t)` copies a table's pairs, and `$map[[k, v], ...]` is the literal. `for key, value in m` walks the pairs.",
       "signature": "HashMap<K, V>",
       "members": [
         {
           "name": "new",
           "kind": "static",
-          "signature": "HashMap.new<K, V>(): HashMap<K, V>",
-          "doc": "An empty map. The annotation on the binding fixes `K` and `V`, since an empty map infers neither.",
-          "example": "import { HashMap } from \"@alloy/std/collections\"\n\nlocal prices: HashMap<string, number> = HashMap.new()\nprices:set(\"sword\", 10)"
+          "signature": "HashMap.new<K, V>(t: { [K]: V }?): HashMap<K, V>",
+          "doc": "An empty map, or with `t` the map `HashMap.from(t)` gives. The annotation on the binding fixes `K` and `V`, since an empty map infers neither.",
+          "example": "import { HashMap } from \"@alloy/std/collections\"\n\nlocal prices: HashMap<string, number> = new HashMap()\nprices:set(\"sword\", 10)"
         },
         {
           "name": "from",
@@ -930,7 +962,7 @@
           "kind": "method",
           "signature": "HashMap:set(key: K, value: V): HashMap<K, V>",
           "doc": "Stores `value` under `key` and returns the map, so calls chain. A `set` to nil removes the key and drops the count, so `len` stays true.",
-          "example": "import { HashMap } from \"@alloy/std/collections\"\n\nlocal prices: HashMap<string, number> = HashMap.new()\nprices:set(\"gem\", 5):set(\"sword\", 10)\nprint(prices:len())"
+          "example": "import { HashMap } from \"@alloy/std/collections\"\n\nlocal prices: HashMap<string, number> = new HashMap()\nprices:set(\"gem\", 5):set(\"sword\", 10)\nprint(prices:len())"
         },
         {
           "name": "has",
@@ -979,7 +1011,7 @@
           "kind": "method",
           "signature": "HashMap:get_or_insert(key: K, default: V): V",
           "doc": "The value under `key`. When there is none the map stores `default` first, so the result is never nil.",
-          "example": "import { HashMap } from \"@alloy/std/collections\"\n\nlocal counts: HashMap<string, number> = HashMap.new()\nlocal n = counts:get_or_insert(\"hits\", 0)\nprint(n)"
+          "example": "import { HashMap } from \"@alloy/std/collections\"\n\nlocal counts: HashMap<string, number> = new HashMap()\nlocal n = counts:get_or_insert(\"hits\", 0)\nprint(n)"
         },
         {
           "name": "clear",
@@ -1001,15 +1033,15 @@
       "key": "Set",
       "title": "Set",
       "group": "Std",
-      "markdown": "```alloy\nimport { Set } from \"@alloy/std/collections\"\n\nlocal seen = $set[1, 2, 3]\nlocal s: Set<string> = Set.new()\nif s:add(\"a\"):has(\"a\") then end\n```\nA set with methods, from the std. Any value that is not nil is a member. `Set.new()` is empty, `Set.from(t)` takes an array's items, and `$set[a, b]` is the literal. `for value in s` walks the members, in no set order.",
+      "markdown": "```alloy\nimport { Set } from \"@alloy/std/collections\"\n\nlocal seen = $set[1, 2, 3]\nlocal s: Set<string> = new Set()\nif s:add(\"a\"):has(\"a\") then end\n```\nA set with methods, from the std. Any value that is not nil is a member. `new Set()` is empty, `Set.from(t)` takes an array's items, and `$set[a, b]` is the literal. `for value in s` walks the members, in no set order.",
       "signature": "Set<T>",
       "members": [
         {
           "name": "new",
           "kind": "static",
-          "signature": "Set.new<T>(): Set<T>",
-          "doc": "An empty set. The annotation on the binding fixes `T`.",
-          "example": "import { Set } from \"@alloy/std/collections\"\n\nlocal seen: Set<string> = Set.new()\nseen:add(\"a\")"
+          "signature": "Set.new<T>(items: { T }?): Set<T>",
+          "doc": "An empty set, or with `items` the set `Set.from(items)` gives. The annotation on the binding fixes `T` of an empty set.",
+          "example": "import { Set } from \"@alloy/std/collections\"\n\nlocal seen: Set<string> = new Set()\nseen:add(\"a\")"
         },
         {
           "name": "from",
@@ -1023,7 +1055,7 @@
           "kind": "method",
           "signature": "Set:add(value: T): Set<T>",
           "doc": "Adds `value` and returns the set, so calls chain. Adding a member again changes nothing.",
-          "example": "import { Set } from \"@alloy/std/collections\"\n\nlocal seen: Set<string> = Set.new()\nif seen:add(\"a\"):has(\"a\") then\n    print(\"added\")\nend"
+          "example": "import { Set } from \"@alloy/std/collections\"\n\nlocal seen: Set<string> = new Set()\nif seen:add(\"a\"):has(\"a\") then\n    print(\"added\")\nend"
         },
         {
           "name": "has",
@@ -1094,7 +1126,7 @@
       "key": "BitSet",
       "title": "BitSet",
       "group": "Std",
-      "markdown": "```alloy\nimport { BitSet } from \"@alloy/std/collections\"\n\nlocal visited = BitSet.new(1024)\nvisited:add(7):add(40)\nif visited:has(7) then end\nfor i in visited do print(i) end\n```\nA set of whole numbers from 0 up, from the std, with one bit per number in a buffer. A `Set<number>` spends a table slot on each member. A BitSet spends one bit on each number up to its largest member, and `add` and `has` run about 2x faster. It suits dense numbers: tile indices, entity ids, visited flags. `BitSet.new(size)` makes room for the numbers below `size`, and a larger number grows the buffer. `for i in bits` walks the members in rising order.",
+      "markdown": "```alloy\nimport { BitSet } from \"@alloy/std/collections\"\n\nlocal visited = new BitSet(1024)\nvisited:add(7):add(40)\nif visited:has(7) then end\nfor i in visited do print(i) end\n```\nA set of whole numbers from 0 up, from the std, with one bit per number in a buffer. A `Set<number>` spends a table slot on each member. A BitSet spends one bit on each number up to its largest member, and `add` and `has` run about 2x faster. It suits dense numbers: tile indices, entity ids, visited flags. `new BitSet(size)` makes room for the numbers below `size`, and a larger number grows the buffer. `for i in bits` walks the members in rising order.",
       "signature": "BitSet",
       "members": [
         {
@@ -1102,7 +1134,7 @@
           "kind": "static",
           "signature": "BitSet.new(size: number?): BitSet",
           "doc": "An empty set with room for the numbers below `size`, or below 256 without it. A larger number grows the buffer, so `size` only saves the copies.",
-          "example": "import { BitSet } from \"@alloy/std/collections\"\n\nlocal visited = BitSet.new(1024)\nvisited:add(7)"
+          "example": "import { BitSet } from \"@alloy/std/collections\"\n\nlocal visited = new BitSet(1024)\nvisited:add(7)"
         },
         {
           "name": "from",
@@ -1116,7 +1148,7 @@
           "kind": "method",
           "signature": "BitSet:add(index: number): BitSet",
           "doc": "Adds `index` and returns the set, so calls chain. The number must be whole and 0 or more, or the call raises.",
-          "example": "import { BitSet } from \"@alloy/std/collections\"\n\nlocal bits = BitSet.new()\nbits:add(3):add(5)\nprint(bits:has(5))"
+          "example": "import { BitSet } from \"@alloy/std/collections\"\n\nlocal bits = new BitSet()\nbits:add(3):add(5)\nprint(bits:has(5))"
         },
         {
           "name": "has",
@@ -1144,7 +1176,7 @@
           "kind": "method",
           "signature": "BitSet:is_empty(): boolean",
           "doc": "Whether the set holds no members.",
-          "example": "import { BitSet } from \"@alloy/std/collections\"\n\nlocal bits = BitSet.new()\nprint(bits:is_empty())"
+          "example": "import { BitSet } from \"@alloy/std/collections\"\n\nlocal bits = new BitSet()\nprint(bits:is_empty())"
         },
         {
           "name": "clear",
@@ -1193,9 +1225,9 @@
         {
           "name": "new",
           "kind": "static",
-          "signature": "Array.new<T>(): T[]",
-          "doc": "An empty array with the Array metatable. `[ ]` is the literal for one.",
-          "example": "local xs: number[] = Array.new()\nxs:push(1)"
+          "signature": "Array.new<T>(t: { T }?): T[]",
+          "doc": "An empty array with the Array metatable, or with `t` the array `Array.from(t)` gives. `[ ]` is the literal for one.",
+          "example": "local xs: number[] = new Array()\nxs:push(1)"
         },
         {
           "name": "with_capacity",
@@ -1705,15 +1737,15 @@
       "key": "Queue",
       "title": "Queue",
       "group": "Std",
-      "markdown": "```alloy\nimport { Queue } from \"@alloy/std/collections\"\n\ntype Job = { name: string }\n\nlocal jobs: Queue<Job> = Queue.new()\njobs:push({ name = \"save\" })\nwhile local next = jobs:pop() do\n    print(next.name)\nend\n```\nA first-in, first-out queue over a ring of indices, from the std: `push` at the back costs the same at any size, and so does `pop` at the front. `Queue.from(t)` fills one from an array. A `for` loop reads it front to back without a pop.",
+      "markdown": "```alloy\nimport { Queue } from \"@alloy/std/collections\"\n\ntype Job = { name: string }\n\nlocal jobs: Queue<Job> = new Queue()\njobs:push({ name = \"save\" })\nwhile local next = jobs:pop() do\n    print(next.name)\nend\n```\nA first-in, first-out queue over a ring of indices, from the std: `push` at the back costs the same at any size, and so does `pop` at the front. `Queue.from(t)` fills one from an array. A `for` loop reads it front to back without a pop.",
       "signature": "Queue<T>",
       "members": [
         {
           "name": "new",
           "kind": "static",
-          "signature": "Queue.new<T>(): Queue<T>",
-          "doc": "An empty queue. The annotation on the binding fixes `T`.",
-          "example": "import { Queue } from \"@alloy/std/collections\"\n\nlocal jobs: Queue<string> = Queue.new()\njobs:push(\"build\")"
+          "signature": "Queue.new<T>(items: { T }?): Queue<T>",
+          "doc": "An empty queue, or with `items` the queue `Queue.from(items)` gives. The annotation on the binding fixes `T` of an empty queue.",
+          "example": "import { Queue } from \"@alloy/std/collections\"\n\nlocal jobs: Queue<string> = new Queue()\njobs:push(\"build\")"
         },
         {
           "name": "from",
@@ -1727,7 +1759,7 @@
           "kind": "method",
           "signature": "Queue:push(value: T)",
           "doc": "Appends `value` at the back. The ring of indices makes this cost the same at any size.",
-          "example": "import { Queue } from \"@alloy/std/collections\"\n\nlocal jobs: Queue<string> = Queue.new()\njobs:push(\"build\")"
+          "example": "import { Queue } from \"@alloy/std/collections\"\n\nlocal jobs: Queue<string> = new Queue()\njobs:push(\"build\")"
         },
         {
           "name": "pop",
@@ -1755,7 +1787,7 @@
           "kind": "method",
           "signature": "Queue:is_empty(): boolean",
           "doc": "Whether the queue holds nothing.",
-          "example": "import { Queue } from \"@alloy/std/collections\"\n\nlocal jobs: Queue<string> = Queue.new()\nprint(jobs:is_empty())"
+          "example": "import { Queue } from \"@alloy/std/collections\"\n\nlocal jobs: Queue<string> = new Queue()\nprint(jobs:is_empty())"
         },
         {
           "name": "clear",
@@ -1784,7 +1816,7 @@
       "key": "Heap",
       "title": "Heap",
       "group": "Std",
-      "markdown": "```alloy\nimport { Heap } from \"@alloy/std/collections\"\n\ntype Node = { cost: number }\nlocal open = Heap.new(function(a: Node, b: Node): boolean return a.cost < b.cost end)\nopen:push({ cost = 3 })\nprint(open:pop())\n```\nA binary heap, from the std: `pop` yields the least value under `less`, which defaults to `<`, so numbers and strings need no comparator and tables take one. `Heap.new(less?)` and `Heap.from(t, less?)` both give a `Heap<T>`, and `Heap.from` builds one from an array. A `for` loop reads it least first without a pop; `to_array` returns the items sorted.",
+      "markdown": "```alloy\nimport { Heap } from \"@alloy/std/collections\"\n\ntype Node = { cost: number }\nlocal open = new Heap(function(a: Node, b: Node): boolean return a.cost < b.cost end)\nopen:push({ cost = 3 })\nprint(open:pop())\n```\nA binary heap, from the std: `pop` yields the least value under `less`, which defaults to `<`, so numbers and strings need no comparator and tables take one. `new Heap(less?)` and `Heap.from(t, less?)` both give a `Heap<T>`, and `Heap.from` builds one from an array. A `for` loop reads it least first without a pop; `to_array` returns the items sorted.",
       "signature": "Heap<T>",
       "members": [
         {
@@ -1792,7 +1824,7 @@
           "kind": "static",
           "signature": "Heap.new<T>(less: ((T, T) -> boolean)?): Heap<T>",
           "doc": "An empty heap. `less` decides which value is least and defaults to `<`, so numbers and strings need none and tables take one.",
-          "example": "import { Heap } from \"@alloy/std/collections\"\n\nlocal open = Heap.new(function(a: number, b: number) return a < b end)\nopen:push(3)"
+          "example": "import { Heap } from \"@alloy/std/collections\"\n\nlocal open = new Heap(function(a: number, b: number) return a < b end)\nopen:push(3)"
         },
         {
           "name": "from",
@@ -1806,7 +1838,7 @@
           "kind": "method",
           "signature": "Heap:push(value: T)",
           "doc": "Adds a value and sifts it up. The cost grows with the log of the size.",
-          "example": "import { Heap } from \"@alloy/std/collections\"\n\nlocal costs: Heap<number> = Heap.new()\ncosts:push(3)"
+          "example": "import { Heap } from \"@alloy/std/collections\"\n\nlocal costs: Heap<number> = new Heap()\ncosts:push(3)"
         },
         {
           "name": "pop",
@@ -1834,7 +1866,7 @@
           "kind": "method",
           "signature": "Heap:is_empty(): boolean",
           "doc": "Whether the heap holds nothing.",
-          "example": "import { Heap } from \"@alloy/std/collections\"\n\nlocal costs: Heap<number> = Heap.new()\nprint(costs:is_empty())"
+          "example": "import { Heap } from \"@alloy/std/collections\"\n\nlocal costs: Heap<number> = new Heap()\nprint(costs:is_empty())"
         },
         {
           "name": "clear",
@@ -1863,7 +1895,7 @@
       "key": "Scope",
       "title": "Scope",
       "group": "Std",
-      "markdown": "```alloy\nimport { Scope } from \"@alloy/std/async\"\n\nlocal part = Instance.new(\"Part\")\nlocal function on_touch(hit: BasePart) print(hit.Name) end\n\nlocal scope = Scope.new()\nscope:add(part.Touched:Connect(on_touch))\nscope:add(function() print(\"bye\") end)\ndelete scope\n```\nA cleanup bag, from the std. `add` takes anything `delete` accepts, an Instance, a connection, a thread, a table with `Destroy` or `Disconnect`, or a function, and gives it back, so `local conn = scope:add(signal:Connect(f))` reads as before. `clean` runs the cleanups newest first and empties the bag; `delete scope` does the same through `Destroy`. A scope may hold another scope.",
+      "markdown": "```alloy\nimport { Scope } from \"@alloy/std/async\"\n\nlocal part = new Instance(\"Part\")\nlocal function on_touch(hit: BasePart) print(hit.Name) end\n\nlocal scope = new Scope()\nscope:add(part.Touched:Connect(on_touch))\nscope:add(function() print(\"bye\") end)\ndelete scope\n```\nA cleanup bag, from the std. `add` takes anything `delete` accepts, an Instance, a connection, a thread, a table with `Destroy` or `Disconnect`, or a function, and gives it back, so `local conn = scope:add(signal:Connect(f))` reads as before. `clean` runs the cleanups newest first and empties the bag; `delete scope` does the same through `Destroy`. A scope may hold another scope.",
       "signature": "Scope",
       "members": [
         {
@@ -1871,49 +1903,49 @@
           "kind": "static",
           "signature": "Scope.new(): Scope",
           "doc": "An empty cleanup bag.",
-          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = Scope.new()\nprint(scope:len())"
+          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = new Scope()\nprint(scope:len())"
         },
         {
           "name": "add",
           "kind": "method",
           "signature": "Scope:add<T>(item: T, owner: Instance?): T",
           "doc": "Adds a cleanup and gives `item` straight back, so a binding reads as it did before. It takes anything `delete` accepts, or a function. `owner` names the Instance the item belongs to: `delete` on that Instance cleans the item before the Destroy.",
-          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = Scope.new()\nlocal stop = scope:add(function() print(\"bye\") end)\nprint(stop ~= nil)"
+          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = new Scope()\nlocal stop = scope:add(function() print(\"bye\") end)\nprint(stop ~= nil)"
         },
         {
           "name": "remove",
           "kind": "method",
           "signature": "Scope:remove(item: any): boolean",
           "doc": "Takes a cleanup out without running it, and says whether it was there.",
-          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = Scope.new()\nlocal f = scope:add(function() end)\nprint(scope:remove(f))"
+          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = new Scope()\nlocal f = scope:add(function() end)\nprint(scope:remove(f))"
         },
         {
           "name": "clean",
           "kind": "method",
           "signature": "Scope:clean()",
           "doc": "Runs every cleanup, newest first, and empties the bag. A function is called; anything else goes through `delete`.",
-          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = Scope.new()\nscope:add(function() print(\"bye\") end)\nscope:clean()"
+          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = new Scope()\nscope:add(function() print(\"bye\") end)\nscope:clean()"
         },
         {
           "name": "extend",
           "kind": "method",
           "signature": "Scope:extend(): Scope",
           "doc": "A child scope, already added to this one, so cleaning the parent cleans the child.",
-          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = Scope.new()\nlocal child = scope:extend()\nchild:add(function() end)"
+          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = new Scope()\nlocal child = scope:extend()\nchild:add(function() end)"
         },
         {
           "name": "len",
           "kind": "method",
           "signature": "Scope:len(): number",
           "doc": "The number of cleanups the bag holds.",
-          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = Scope.new()\nscope:add(function() end)\nprint(scope:len())"
+          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = new Scope()\nscope:add(function() end)\nprint(scope:len())"
         },
         {
           "name": "Destroy",
           "kind": "method",
           "signature": "Scope:Destroy()",
           "doc": "The same function as `clean`, under the name `delete` calls. `delete scope` is the form to write.",
-          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = Scope.new()\nscope:add(function() end)\ndelete scope"
+          "example": "import { Scope } from \"@alloy/std/async\"\n\nlocal scope = new Scope()\nscope:add(function() end)\ndelete scope"
         }
       ]
     },
@@ -2063,7 +2095,7 @@
       "key": "Symbol",
       "title": "Symbol",
       "group": "Std",
-      "markdown": "```alloy\nimport { Symbol } from \"@alloy/std/collections\"\n\nlocal key = Symbol.new(\"name\")\nlocal t = { [key] = 1 }\n```\nA unique key that no string can collide with, from the std: a frozen table that prints as `Symbol(name)`. Use one for a private table slot, or a sentinel a value cannot forge.",
+      "markdown": "```alloy\nimport { Symbol } from \"@alloy/std/collections\"\n\nlocal key = new Symbol(\"name\")\nlocal t = { [key] = 1 }\n```\nA unique key that no string can collide with, from the std: a frozen table that prints as `Symbol(name)`. Use one for a private table slot, or a sentinel a value cannot forge.",
       "signature": "Symbol",
       "members": [
         {
@@ -2071,7 +2103,7 @@
           "kind": "static",
           "signature": "Symbol.new(name: string)",
           "doc": "A unique frozen table that no string can collide with. It prints as `Symbol(name)`, and `name` is a label alone: two symbols of one name are still two keys.",
-          "example": "import { Symbol } from \"@alloy/std/collections\"\n\nlocal key = Symbol.new(\"slot\")\nlocal t = { [key] = 1 }\nprint(t[key])"
+          "example": "import { Symbol } from \"@alloy/std/collections\"\n\nlocal key = new Symbol(\"slot\")\nlocal t = { [key] = 1 }\nprint(t[key])"
         }
       ]
     },
@@ -2079,7 +2111,7 @@
       "key": "Signal",
       "title": "Signal",
       "group": "Std",
-      "markdown": "```alloy\nimport { Signal } from \"@alloy/std/signal\"\n\nlocal player = game:GetService(\"Players\").LocalPlayer\nlocal damaged = Signal.new<<Player, number>>()\nlocal conn = damaged:Connect(function(who, amount) end)\ndamaged:Fire(player, 10)\nlocal who, amount = damaged:Wait(5)\n```\nA typed signal, from the std, with the shape of `RBXScriptSignal`, so code that takes one takes the other. `Signal.new<T...>()` fires `T...`; handlers run in connection order, each on a reused thread, and a handler may disconnect any connection during a fire.\n\nEach has a snake_case twin, `connect`, `once`, `wait`, `fire`, `fire_deferred`, `disconnect_all`, `destroy`. A connection has `Connected`, `Disconnect`, and `disconnect`. `Signal.is(value)` says whether a value is one.\n\n`Signal.collect(source)` turns any signal with `Connect` or `connect`, the shape `Signalish<T...>`, a Roblox one included, into an iterator that drains the queued events in order, plus the connection: `for id, value in Signal.collect(changed) do`. `Signal.wrap(source)` gives a Signal that fires with the source.",
+      "markdown": "```alloy\nimport { Signal } from \"@alloy/std/signal\"\n\nlocal player = game:GetService(\"Players\").LocalPlayer\nlocal damaged = new Signal<<Player, number>>()\nlocal conn = damaged:Connect(function(who, amount) end)\ndamaged:Fire(player, 10)\nlocal who, amount = damaged:Wait(5)\n```\nA typed signal, from the std, with the shape of `RBXScriptSignal`, so code that takes one takes the other. `Signal.new<T...>()` fires `T...`; handlers run in connection order, each on a reused thread, and a handler may disconnect any connection during a fire.\n\nEach has a snake_case twin, `connect`, `once`, `wait`, `fire`, `fire_deferred`, `disconnect_all`, `destroy`. A connection has `Connected`, `Disconnect`, and `disconnect`. `Signal.is(value)` says whether a value is one.\n\n`Signal.collect(source)` turns any signal with `Connect` or `connect`, the shape `Signalish<T...>`, a Roblox one included, into an iterator that drains the queued events in order, plus the connection: `for id, value in Signal.collect(changed) do`. `Signal.wrap(source)` gives a Signal that fires with the source.",
       "signature": "Signal<T...>",
       "members": [
         {
@@ -2087,126 +2119,126 @@
           "kind": "static",
           "signature": "Signal.new<T...>(): Signal<T...>",
           "doc": "A signal that fires `T...`. The pack takes no explicit type arguments at the call, so write them with `<<...>>` or on the binding.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:Fire(10)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:Fire(10)"
         },
         {
           "name": "is",
           "kind": "static",
           "signature": "Signal.is(value: any): boolean",
           "doc": "Whether `value` is one of the std's signals. An `RBXScriptSignal` is not.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\nprint(Signal.is(damaged))"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\nprint(Signal.is(damaged))"
         },
         {
           "name": "wrap",
           "kind": "static",
           "signature": "Signal.wrap<T...>(source: Signalish<T...>): Signal<T...>",
           "doc": "A std Signal that fires whenever `source` does. `source` is anything with `Connect` or `connect`, a Roblox signal included.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal source = Signal.new<<number>>()\nlocal mine = Signal.wrap(source)\nprint(Signal.is(mine))"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal source = new Signal<<number>>()\nlocal mine = Signal.wrap(source)\nprint(Signal.is(mine))"
         },
         {
           "name": "collect",
           "kind": "static",
           "signature": "Signal.collect<T...>(source: Signalish<T...>): ((...any) -> T..., SignalConnection)",
           "doc": "An iterator that drains the queued events of `source` in order, and the connection that feeds it. Disconnect it when the loop ends.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal changed = Signal.new<<number>>()\nlocal events, conn = Signal.collect(changed)\nchanged:Fire(1)\nprint(events(), conn.Connected)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal changed = new Signal<<number>>()\nlocal events, conn = Signal.collect(changed)\nchanged:Fire(1)\nprint(events(), conn.Connected)"
         },
         {
           "name": "Connect",
           "kind": "method",
           "signature": "Signal:Connect(handler: (T...) -> ()): SignalConnection",
           "doc": "Runs `handler` on every fire and returns the connection. Handlers run in connection order, each on a reused thread.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\nlocal conn = damaged:Connect(function(amount) print(amount) end)\nconn:Disconnect()"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\nlocal conn = damaged:Connect(function(amount) print(amount) end)\nconn:Disconnect()"
         },
         {
           "name": "Once",
           "kind": "method",
           "signature": "Signal:Once(handler: (T...) -> ()): SignalConnection",
           "doc": "Runs `handler` on the next fire alone, then disconnects itself.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal ready = Signal.new<<>>()\nready:Once(function() print(\"go\") end)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal ready = new Signal<<>>()\nready:Once(function() print(\"go\") end)"
         },
         {
           "name": "Wait",
           "kind": "method",
           "signature": "Signal:Wait(timeout: number?): T...",
           "doc": "Yields until the next fire and returns its values. With a timeout it returns nothing when the time runs out.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\nlocal amount = damaged:Wait(5)\nprint(amount)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\nlocal amount = damaged:Wait(5)\nprint(amount)"
         },
         {
           "name": "Fire",
           "kind": "method",
           "signature": "Signal:Fire(...: T...)",
           "doc": "Runs every handler now, in connection order. A handler may disconnect any connection during the fire.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:Fire(10)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:Fire(10)"
         },
         {
           "name": "FireDeferred",
           "kind": "method",
           "signature": "Signal:FireDeferred(...: T...)",
           "doc": "Runs the handlers at the next resumption point, through `task.defer`, so the caller returns first.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:FireDeferred(10)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:FireDeferred(10)"
         },
         {
           "name": "DisconnectAll",
           "kind": "method",
           "signature": "Signal:DisconnectAll()",
           "doc": "Drops every connection. The signal stays usable.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:DisconnectAll()"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:DisconnectAll()"
         },
         {
           "name": "Destroy",
           "kind": "method",
           "signature": "Signal:Destroy()",
           "doc": "Disconnects everything and marks the signal dead, which is what `delete` calls.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndelete damaged"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndelete damaged"
         },
         {
           "name": "connect",
           "kind": "method",
           "signature": "Signal:connect(handler: (T...) -> ()): SignalConnection",
           "doc": "The snake_case twin of `Connect`. Both name one function, for a file that keeps to Alloy's own naming.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\nlocal conn = damaged:connect(function(amount) print(amount) end)\nconn:disconnect()"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\nlocal conn = damaged:connect(function(amount) print(amount) end)\nconn:disconnect()"
         },
         {
           "name": "once",
           "kind": "method",
           "signature": "Signal:once(handler: (T...) -> ()): SignalConnection",
           "doc": "The snake_case twin of `Once`.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal ready = Signal.new<<>>()\nready:once(function() print(\"go\") end)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal ready = new Signal<<>>()\nready:once(function() print(\"go\") end)"
         },
         {
           "name": "wait",
           "kind": "method",
           "signature": "Signal:wait(timeout: number?): T...",
           "doc": "The snake_case twin of `Wait`.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\nprint(damaged:wait(5))"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\nprint(damaged:wait(5))"
         },
         {
           "name": "fire",
           "kind": "method",
           "signature": "Signal:fire(...: T...)",
           "doc": "The snake_case twin of `Fire`.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:fire(10)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:fire(10)"
         },
         {
           "name": "fire_deferred",
           "kind": "method",
           "signature": "Signal:fire_deferred(...: T...)",
           "doc": "The snake_case twin of `FireDeferred`.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:fire_deferred(10)"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:fire_deferred(10)"
         },
         {
           "name": "disconnect_all",
           "kind": "method",
           "signature": "Signal:disconnect_all()",
           "doc": "The snake_case twin of `DisconnectAll`.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:disconnect_all()"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:disconnect_all()"
         },
         {
           "name": "destroy",
           "kind": "method",
           "signature": "Signal:destroy()",
           "doc": "The snake_case twin of `Destroy`.",
-          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = Signal.new<<number>>()\ndamaged:destroy()"
+          "example": "import { Signal } from \"@alloy/std/signal\"\n\nlocal damaged = new Signal<<number>>()\ndamaged:destroy()"
         }
       ]
     },
@@ -2560,7 +2592,7 @@
       "key": "topic:markup",
       "title": "topic:markup",
       "group": "Articles",
-      "markdown": "**Markup**\n\nAn `.alx` file is Alloy with markup in it: tags, attributes, fragments, and text, the way JSX sits in TypeScript. The markup lowers to calls on a factory the project names, and the Alloy around it compiles as in any `.aly`.\n\n```alx\nlocal function Row(props: { item: Item, on_pick: () -> () })\n    return (\n        <TextButton Size={UDim2.new(1, 0, 0, 24)} Activated={props.on_pick}>\n            {props.item.name} x{props.item.count}\n        </TextButton>\n    )\nend\n```\n\nA tag names a Roblox class or a component in scope; a component starts with a capital and is called with its props. The props are a plain table the lowering builds, so a component declares their type as a `type` or an `interface`; a `struct` is nominal and no tag satisfies it. An attribute is `Name={expr}` or `Name=\"text\"`; an event name takes a function. An attribute value must fit the type of its property, or the type of the prop the component declares, and any other value is a type error at the attribute. A nil value leaves a property unset. With `interpolate = \"wrap\"`, a Roblox tag's value can also be a source, so the check skips it. A bare `{props}` among the attributes spreads a table into them. `{expr}` in a body is a child, and text with `{holes}` interpolates. In a class with a `Text` property, such as `TextLabel`, the text between the tags sets `Text`, and so does a lone `{expr}`. When an attribute sets `Text`, each `{expr}` in the body is a child. With `interpolate = \"plain\"`, the default of the element form, that value must be a string or a number, or a React binding of one, and any other value is a type error. An attribute of a Roblox tag takes a binding too, and the value the binding holds must fit the property. With `\"wrap\"` it can also be a source that a reactive library reads. `<> ... </>` is a fragment, `<!-- -->` a comment. A child that depends on a condition wraps in a function, `{function() return if open then <Menu /> else nil end}`, so a reactive library re-runs it; a bare conditional child is built once, and the `static_conditional_child` lint says so.\n\nThe `[alx]` table of alloy.toml sets the lowering. The table form, for Vide or Fusion:\n\n```toml\n[alx.factory]\nbackend = \"table\"        # table: create(name)(props); element: create(name, props, children)\ncreate = \"create\"        # the function a tag calls; a bare name must be in scope\nchildren = \"Children\"    # the key children go under; unset, they are numeric entries\nevent = \"OnEvent\"        # wraps an event name: OnEvent(\"Activated\")\ncompute = \"computed\"     # wraps interpolated text; `use` names the reader inside it\ninterpolate = \"wrap\"     # wrap: text with holes is a function that reads them; plain: a string\nmerge = \"merge\"          # how a spread group `{props}` combines\n```\n\nThe element form, for React, needs a fragment; the table form takes none, and a fragment there is a plain table:\n\n```toml\n[alx.factory]\nbackend = \"element\"\ncreate = \"React.createElement\"\nfragment = \"React.Fragment\"\nevent = \"React.Event.\"   # a trailing dot indexes: React.Event.Activated\n```\n\nEither form renames tags and properties:\n\n```toml\n[alx.elements]\nall = \"camelCase\"        # a naming scheme for every class, or one alias per name\n\n[alx.properties]\nText = \"text\"            # an alias for a property, everywhere or per class\n```\n\nThe level of a markup lint sits with the other lints, under `alx.`:\n\n```toml\n[lint.rules]\nalx.static_conditional_child = \"warn\"    # allow, warn, deny\n```\n\nWith no `[alx]`, the lowering is the element form for React: a tag calls `React.createElement`, so `React` must be in scope, and a fragment is `React.Fragment`. An `[alx.factory]` table sets every name itself. `[fmt.alx]` sets how `alloy fmt` lays a tag out. An ingot may read a markup attribute, `ClassName` for Enamel, and rewrite the tag before the lowering.\n\nIn the editor a tag and an attribute hover and complete from the Roblox API, and the semantic tokens of the lowered code stay out of the markup.",
+      "markdown": "**Markup**\n\nAn `.alx` file is Alloy with markup in it: tags, attributes, fragments, and text, the way JSX sits in TypeScript. The markup lowers to calls on a factory the project names, and the Alloy around it compiles as in any `.aly`.\n\n```alx\nlocal function Row(props: { item: Item, on_pick: () -> () })\n    return (\n        <TextButton Size={new UDim2(1, 0, 0, 24)} Activated={props.on_pick}>\n            {props.item.name} x{props.item.count}\n        </TextButton>\n    )\nend\n```\n\nA tag names a Roblox class or a component in scope; a component starts with a capital and is called with its props. The props are a plain table the lowering builds, so a component declares their type as a `type` or an `interface`; a `struct` is nominal and no tag satisfies it. An attribute is `Name={expr}` or `Name=\"text\"`; an event name takes a function. An attribute value must fit the type of its property, or the type of the prop the component declares, and any other value is a type error at the attribute. A nil value leaves a property unset. With `interpolate = \"wrap\"`, a Roblox tag's value can also be a source, so the check skips it. A bare `{props}` among the attributes spreads a table into them. `{expr}` in a body is a child, and text with `{holes}` interpolates. In a class with a `Text` property, such as `TextLabel`, the text between the tags sets `Text`, and so does a lone `{expr}`. When an attribute sets `Text`, each `{expr}` in the body is a child. With `interpolate = \"plain\"`, the default of the element form, that value must be a string or a number, or a React binding of one, and any other value is a type error. An attribute of a Roblox tag takes a binding too, and the value the binding holds must fit the property. With `\"wrap\"` it can also be a source that a reactive library reads. `<> ... </>` is a fragment, `<!-- -->` a comment. A child that depends on a condition wraps in a function, `{function() return if open then <Menu /> else nil end}`, so a reactive library re-runs it; a bare conditional child is built once, and the `static_conditional_child` lint says so.\n\nThe `[alx]` table of alloy.toml sets the lowering. The table form, for Vide or Fusion:\n\n```toml\n[alx.factory]\nbackend = \"table\"        # table: create(name)(props); element: create(name, props, children)\ncreate = \"create\"        # the function a tag calls; a bare name must be in scope\nchildren = \"Children\"    # the key children go under; unset, they are numeric entries\nevent = \"OnEvent\"        # wraps an event name: OnEvent(\"Activated\")\ncompute = \"computed\"     # wraps interpolated text; `use` names the reader inside it\ninterpolate = \"wrap\"     # wrap: text with holes is a function that reads them; plain: a string\nmerge = \"merge\"          # how a spread group `{props}` combines\n```\n\nThe element form, for React, needs a fragment; the table form takes none, and a fragment there is a plain table:\n\n```toml\n[alx.factory]\nbackend = \"element\"\ncreate = \"React.createElement\"\nfragment = \"React.Fragment\"\nevent = \"React.Event.\"   # a trailing dot indexes: React.Event.Activated\n```\n\nEither form renames tags and properties:\n\n```toml\n[alx.elements]\nall = \"camelCase\"        # a naming scheme for every class, or one alias per name\n\n[alx.properties]\nText = \"text\"            # an alias for a property, everywhere or per class\n```\n\nThe level of a markup lint sits with the other lints, under `alx.`:\n\n```toml\n[lint.rules]\nalx.static_conditional_child = \"warn\"    # allow, warn, deny\n```\n\nWith no `[alx]`, the lowering is the element form for React: a tag calls `React.createElement`, so `React` must be in scope, and a fragment is `React.Fragment`. An `[alx.factory]` table sets every name itself. `[fmt.alx]` sets how `alloy fmt` lays a tag out. An ingot may read a markup attribute, `ClassName` for Enamel, and rewrite the tag before the lowering.\n\nIn the editor a tag and an attribute hover and complete from the Roblox API, and the semantic tokens of the lowered code stay out of the markup.",
       "signature": null,
       "members": []
     },
@@ -2632,7 +2664,7 @@
       "key": "argument_count",
       "title": "argument_count",
       "group": "Lints",
-      "markdown": "**argument_count**\nGroup: correctness. Default: warn\n\na call passes more arguments than the function takes\n\nThe extra values are evaluated and dropped, so a mistake in the argument order reads as working code. The lint counts a call of a function with a fixed parameter list that the file or an imported module declares: a plain name, `M.f` through `import * as M`, a static, a method on a value the file types with an annotation or a `new`, and a function in a table a local holds. A vararg, a default, or a name declared twice makes the count a range and the lint stands down. The checker reports the other direction, a call with too few arguments.",
+      "markdown": "**argument_count**\nGroup: correctness. Default: warn\n\na call passes more arguments than the function takes\n\nThe extra values are evaluated and dropped, so a mistake in the argument order reads as working code. The lint counts a call of a function with a fixed parameter list that the file or an imported module declares: a plain name, `M.f` through `import * as M`, a static, a method on a value the file types with an annotation or a `new`, a function in a table a local holds, and the constructor that `new W(a)` calls. A vararg, a default, or a name declared twice makes the count a range and the lint stands down. The checker reports the other direction, a call with too few arguments.",
       "signature": null,
       "members": []
     },
@@ -2965,6 +2997,14 @@
       "members": []
     },
     {
+      "key": "prefer_new",
+      "title": "prefer_new",
+      "group": "Lints",
+      "markdown": "**prefer_new**\nGroup: style. Default: warn\n\n`X.new(...)` in place of `new X(...)`\n\nFlux. `new X(...)` is the constructor call, and it emits `X.new(...)`. The lint fires when each part of the type path starts with a capital letter: `Vector3.new(1, 2, 3)`, `Net.Route.new(r)`, and `HashMap.new<<string, number>>()`. In an `.alx` file it also reads the markup: an attribute such as `Size={UDim2.new(1, 0, 0, 24)}`, and a `{...}` hole. A call that an ingot writes stays quiet. A lowercase name such as `t.new()` or `self.new()` may hold no class, so it stays quiet. `X:new()`, `X.New(...)`, and a `.new` that nothing calls stay quiet too. The lint also stays quiet where `new X` does not build the same value: a call inside `typeof(...)`, a call that a `{ ... }` table follows, and an enum. So does a struct whose impl writes no `new` or writes `New`, and `X.new()` with no arguments inside the impl of `X`. `alloy flux --fix` writes `new X` over `X.new` and keeps the rest: `X.new(a):m()` becomes `new X(a):m()`.",
+      "signature": null,
+      "members": []
+    },
+    {
       "key": "manual_ternary_return",
       "title": "manual_ternary_return",
       "group": "Lints",
@@ -3104,7 +3144,7 @@
       "key": "instance_new_parent",
       "title": "instance_new_parent",
       "group": "Lints",
-      "markdown": "**instance_new_parent**\nGroup: roblox. Default: warn\n\n`Instance.new(class, parent)`, the parent as an argument\n\nWith the parent set first, every property written after it replicates and fires a change on its own. Create the instance, set its properties, then set `Parent` last. No automatic rewrite: the assignments move.",
+      "markdown": "**instance_new_parent**\nGroup: roblox. Default: warn\n\n`Instance.new(class, parent)` or `new Instance(class, parent)`, the parent as an argument\n\nWith the parent set first, every property written after it replicates and fires a change on its own. Create the instance, set its properties, then set `Parent` last. `new Instance(class) { Parent = parent }` does that: the braces set `Parent` after every other field. No automatic rewrite: the assignments move.",
       "signature": null,
       "members": []
     },
@@ -3189,6 +3229,14 @@
       "members": []
     },
     {
+      "key": "ActorError",
+      "title": "ActorError",
+      "group": "Errors",
+      "markdown": "`ActorError` is a report of section 3.15, Parallel Luau: https://alloy-luau.github.io/docs/#parallel\n\n```alloy\nlocal parts: { BasePart } = {}\nlocal hits: { BasePart } = {}\n\nparallel do\n    for _, part in parts do\n        if part.Position.Y < 0 then\n            table.insert(hits, part)\n        end\n    end\nend\n\nfor _, part in hits do\n    part.Position = new Vector3(0, 10, 0)\nend\n```\nRuns the block in the parallel phase. The engine runs code in parallel only in a script under an `Actor`, so the block goes in a `.server.actor.aly` or `.client.actor.aly` script, or in a module that such a script requires. `alloy doc actor` has the infix.\n\nThe emit writes `task.desynchronize() do` on the line of the header and `task.synchronize() end` on the line of the `end`. The line count holds, and the block keeps its own scope. The block is a statement and not an expression, because the phase belongs to the thread and not to a value.\n\nThe compiler refuses what the engine refuses, as far as this file shows it:\n\n- a write to a property of an Instance whose type the file knows, and a write to `Parent`;\n- `Instance.new`, `new Instance`, `Destroy`, `Clone`, `destroy`, and `delete`;\n- a call to a function of this file that does one of those itself, one level deep;\n- a `parallel` block inside the block;\n- `await`, because a Future resumes in the serial phase;\n- a `return`, a `break`, or a `continue` that leaves the block, because the thread would skip `task.synchronize()`.\n\nEach report names the rule, and the write it refuses: a `parallel` block cannot write `part.Position`; move the write after the block. The quick fix moves a refused statement after the block when nothing later in the block reads what it writes.\n\nThis check is a guard rail, not a proof. It reads this file and no further. A call into another module is not followed, and a write through a value typed `any` cannot be seen. The engine has the last word, and its error comes at run time.\n\n`SharedTable` is the Roblox type for state that several actors share. Alloy does not wrap it, and a `message` carries one like any other value.\n\nThe word is free as a name. `parallel` opens the block only before `do` on the same line, so `local parallel = true` and `parallel(x)` read the Luau way.",
+      "signature": null,
+      "members": []
+    },
+    {
       "key": "AlloyError",
       "title": "AlloyError",
       "group": "Errors",
@@ -3208,7 +3256,7 @@
       "key": "AttributeContract",
       "title": "AttributeContract",
       "group": "Errors",
-      "markdown": "`AttributeContract` is a report of section 3.11, Attributes: https://alloy-luau.github.io/docs/#attributes\n\n```\nattribute name(params) on target, ...\n```\n```alloy\nattribute service on impl as\n    requires public function Start(self)\n    requires private field state: number\nend\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, interface, type, local, namespace, impl, trait. A parameter can carry a default, `attribute icon(asset: string = \"none\")`; a use that omits the argument gets it, and `Attributes.get` reads it.\n\nThe built-in ones: `@derive` and `@sealed` on a struct or an enum; `@test` and `@cfg` on a function, `@test` and `@cfg` on a namespace too, `@cfg` on a local as well; `@deprecated` on a namespace as well; `@rename` and `@skip` on a field; `@unreliable`, `@ratelimit`, `@timeout`, and `@validate` on a remote; `@u8` to `@f32` on a parameter or a field; and Luau's own `@native`, `@checked`, `@deprecated`, `@inline`, `@noinline`, which pass through.\n\nA `namespace` holds an attribute. Inside the group the bare name reads it; outside it reads as `@Name.tag`, and `@Outer.Inner.tag` through a nested namespace. A `private` one stays inside the group.\n\nThe `as ... end` form states a contract: what the thing the attribute sits on must carry. `alloy doc requires` has the clause. A declaration with no clause keeps the short form and reads as it always did.\n\nThe word is also free as a name. `attribute` declares only before a name on the same line, so `local attribute = 1` and `t.attribute` read the Luau way.",
+      "markdown": "`AttributeContract` is a report of section 3.11, Attributes: https://alloy-luau.github.io/docs/#attributes\n\n```\nattribute name(params) on target, ...\n```\n```alloy\nattribute service on impl as\n    requires public function Start(self)\n    requires private field state: number\nend\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, message, interface, type, local, namespace, impl, trait. A parameter can carry a default, `attribute icon(asset: string = \"none\")`; a use that omits the argument gets it, and `Attributes.get` reads it.\n\nThe built-in ones: `@derive` and `@sealed` on a struct or an enum; `@test` and `@cfg` on a function, `@test` and `@cfg` on a namespace too, `@cfg` on a local as well; `@deprecated` on a namespace as well; `@rename` and `@skip` on a field; `@unreliable`, `@ratelimit`, `@timeout`, and `@validate` on a remote; `@u8` to `@f32` on a parameter or a field; and Luau's own `@native`, `@checked`, `@deprecated`, `@inline`, `@noinline`, which pass through.\n\nA `namespace` holds an attribute. Inside the group the bare name reads it; outside it reads as `@Name.tag`, and `@Outer.Inner.tag` through a nested namespace. A `private` one stays inside the group.\n\nThe `as ... end` form states a contract: what the thing the attribute sits on must carry. `alloy doc requires` has the clause. A declaration with no clause keeps the short form and reads as it always did.\n\nThe word is also free as a name. `attribute` declares only before a name on the same line, so `local attribute = 1` and `t.attribute` read the Luau way.",
       "signature": null,
       "members": []
     },
@@ -3216,7 +3264,7 @@
       "key": "AttributeError",
       "title": "AttributeError",
       "group": "Errors",
-      "markdown": "`AttributeError` is a report of section 3.11, Attributes: https://alloy-luau.github.io/docs/#attributes\n\n```\nattribute name(params) on target, ...\n```\n```alloy\nattribute service on impl as\n    requires public function Start(self)\n    requires private field state: number\nend\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, interface, type, local, namespace, impl, trait. A parameter can carry a default, `attribute icon(asset: string = \"none\")`; a use that omits the argument gets it, and `Attributes.get` reads it.\n\nThe built-in ones: `@derive` and `@sealed` on a struct or an enum; `@test` and `@cfg` on a function, `@test` and `@cfg` on a namespace too, `@cfg` on a local as well; `@deprecated` on a namespace as well; `@rename` and `@skip` on a field; `@unreliable`, `@ratelimit`, `@timeout`, and `@validate` on a remote; `@u8` to `@f32` on a parameter or a field; and Luau's own `@native`, `@checked`, `@deprecated`, `@inline`, `@noinline`, which pass through.\n\nA `namespace` holds an attribute. Inside the group the bare name reads it; outside it reads as `@Name.tag`, and `@Outer.Inner.tag` through a nested namespace. A `private` one stays inside the group.\n\nThe `as ... end` form states a contract: what the thing the attribute sits on must carry. `alloy doc requires` has the clause. A declaration with no clause keeps the short form and reads as it always did.\n\nThe word is also free as a name. `attribute` declares only before a name on the same line, so `local attribute = 1` and `t.attribute` read the Luau way.",
+      "markdown": "`AttributeError` is a report of section 3.11, Attributes: https://alloy-luau.github.io/docs/#attributes\n\n```\nattribute name(params) on target, ...\n```\n```alloy\nattribute service on impl as\n    requires public function Start(self)\n    requires private field state: number\nend\n```\nDeclares an attribute: metadata the compiler reads and `Attributes` reads at runtime. Targets: function, struct, enum, variant, field, param, remote, message, interface, type, local, namespace, impl, trait. A parameter can carry a default, `attribute icon(asset: string = \"none\")`; a use that omits the argument gets it, and `Attributes.get` reads it.\n\nThe built-in ones: `@derive` and `@sealed` on a struct or an enum; `@test` and `@cfg` on a function, `@test` and `@cfg` on a namespace too, `@cfg` on a local as well; `@deprecated` on a namespace as well; `@rename` and `@skip` on a field; `@unreliable`, `@ratelimit`, `@timeout`, and `@validate` on a remote; `@u8` to `@f32` on a parameter or a field; and Luau's own `@native`, `@checked`, `@deprecated`, `@inline`, `@noinline`, which pass through.\n\nA `namespace` holds an attribute. Inside the group the bare name reads it; outside it reads as `@Name.tag`, and `@Outer.Inner.tag` through a nested namespace. A `private` one stays inside the group.\n\nThe `as ... end` form states a contract: what the thing the attribute sits on must carry. `alloy doc requires` has the clause. A declaration with no clause keeps the short form and reads as it always did.\n\nThe word is also free as a name. `attribute` declares only before a name on the same line, so `local attribute = 1` and `t.attribute` read the Luau way.",
       "signature": null,
       "members": []
     },
@@ -3317,6 +3365,14 @@
       "members": []
     },
     {
+      "key": "LuauLimit",
+      "title": "LuauLimit",
+      "group": "Errors",
+      "markdown": "`LuauLimit` is a report of section 5.1, alloy build: https://alloy-luau.github.io/docs/#build\n\n**alloy build**\n\nCompiles every `.aly` and `.alx` under `[build] in` to Luau under `[build] out`, mirroring the tree, and writes the runtime as `alloy.luau` at the output root. A plain `.luau` or `.lua` beside the sources is copied as it is, so a `require(\"./other\")` finds it in the output. A file that did not change is not rewritten, so a Rojo sync stays quiet. A file that reports an error is not written; its last output stays. `artifact = \"ship\"` writes the code Roblox runs; `\"check\"` writes what luau-lsp sees, with the types kept. A renamed or deleted source takes the output the build wrote for it, and `.alloy/outputs.txt` lists what the build wrote; `clean = true` also removes every other `.luau` under `out` that no source makes. The build runs no lint; `alloy check` reports them, and a denied one fails that run. An import into another project builds that project first, by its own alloy.toml, and the require names its output; `alloy check`, `alloy flux`, and `--watch` follow it too, and `alloy test`, `alloy lint`, and `alloy fmt` do not.\n\n```\nalloy build                      one project\nalloy build src/game.aly         one file, to stdout\nalloy build src/game.aly --out d one file, under d\nalloy build --check --map        the check artifact and its chunk map\n```",
+      "signature": null,
+      "members": []
+    },
+    {
       "key": "MacroError",
       "title": "MacroError",
       "group": "Errors",
@@ -3328,7 +3384,15 @@
       "key": "MarkupError",
       "title": "MarkupError",
       "group": "Errors",
-      "markdown": "`MarkupError` is a report of section 3.13, Markup: https://alloy-luau.github.io/docs/#markup\n\n**Markup**\n\nAn `.alx` file is Alloy with markup in it: tags, attributes, fragments, and text, the way JSX sits in TypeScript. The markup lowers to calls on a factory the project names, and the Alloy around it compiles as in any `.aly`.\n\n```alx\nlocal function Row(props: { item: Item, on_pick: () -> () })\n    return (\n        <TextButton Size={UDim2.new(1, 0, 0, 24)} Activated={props.on_pick}>\n            {props.item.name} x{props.item.count}\n        </TextButton>\n    )\nend\n```\n\nA tag names a Roblox class or a component in scope; a component starts with a capital and is called with its props. The props are a plain table the lowering builds, so a component declares their type as a `type` or an `interface`; a `struct` is nominal and no tag satisfies it. An attribute is `Name={expr}` or `Name=\"text\"`; an event name takes a function. An attribute value must fit the type of its property, or the type of the prop the component declares, and any other value is a type error at the attribute. A nil value leaves a property unset. With `interpolate = \"wrap\"`, a Roblox tag's value can also be a source, so the check skips it. A bare `{props}` among the attributes spreads a table into them. `{expr}` in a body is a child, and text with `{holes}` interpolates. In a class with a `Text` property, such as `TextLabel`, the text between the tags sets `Text`, and so does a lone `{expr}`. When an attribute sets `Text`, each `{expr}` in the body is a child. With `interpolate = \"plain\"`, the default of the element form, that value must be a string or a number, or a React binding of one, and any other value is a type error. An attribute of a Roblox tag takes a binding too, and the value the binding holds must fit the property. With `\"wrap\"` it can also be a source that a reactive library reads. `<> ... </>` is a fragment, `<!-- -->` a comment. A child that depends on a condition wraps in a function, `{function() return if open then <Menu /> else nil end}`, so a reactive library re-runs it; a bare conditional child is built once, and the `static_conditional_child` lint says so.\n\nThe `[alx]` table of alloy.toml sets the lowering. The table form, for Vide or Fusion:\n\n```toml\n[alx.factory]\nbackend = \"table\"        # table: create(name)(props); element: create(name, props, children)\ncreate = \"create\"        # the function a tag calls; a bare name must be in scope\nchildren = \"Children\"    # the key children go under; unset, they are numeric entries\nevent = \"OnEvent\"        # wraps an event name: OnEvent(\"Activated\")\ncompute = \"computed\"     # wraps interpolated text; `use` names the reader inside it\ninterpolate = \"wrap\"     # wrap: text with holes is a function that reads them; plain: a string\nmerge = \"merge\"          # how a spread group `{props}` combines\n```\n\nThe element form, for React, needs a fragment; the table form takes none, and a fragment there is a plain table:\n\n```toml\n[alx.factory]\nbackend = \"element\"\ncreate = \"React.createElement\"\nfragment = \"React.Fragment\"\nevent = \"React.Event.\"   # a trailing dot indexes: React.Event.Activated\n```\n\nEither form renames tags and properties:\n\n```toml\n[alx.elements]\nall = \"camelCase\"        # a naming scheme for every class, or one alias per name\n\n[alx.properties]\nText = \"text\"            # an alias for a property, everywhere or per class\n```\n\nThe level of a markup lint sits with the other lints, under `alx.`:\n\n```toml\n[lint.rules]\nalx.static_conditional_child = \"warn\"    # allow, warn, deny\n```\n\nWith no `[alx]`, the lowering is the element form for React: a tag calls `React.createElement`, so `React` must be in scope, and a fragment is `React.Fragment`. An `[alx.factory]` table sets every name itself. `[fmt.alx]` sets how `alloy fmt` lays a tag out. An ingot may read a markup attribute, `ClassName` for Enamel, and rewrite the tag before the lowering.\n\nIn the editor a tag and an attribute hover and complete from the Roblox API, and the semantic tokens of the lowered code stay out of the markup.",
+      "markdown": "`MarkupError` is a report of section 3.13, Markup: https://alloy-luau.github.io/docs/#markup\n\n**Markup**\n\nAn `.alx` file is Alloy with markup in it: tags, attributes, fragments, and text, the way JSX sits in TypeScript. The markup lowers to calls on a factory the project names, and the Alloy around it compiles as in any `.aly`.\n\n```alx\nlocal function Row(props: { item: Item, on_pick: () -> () })\n    return (\n        <TextButton Size={new UDim2(1, 0, 0, 24)} Activated={props.on_pick}>\n            {props.item.name} x{props.item.count}\n        </TextButton>\n    )\nend\n```\n\nA tag names a Roblox class or a component in scope; a component starts with a capital and is called with its props. The props are a plain table the lowering builds, so a component declares their type as a `type` or an `interface`; a `struct` is nominal and no tag satisfies it. An attribute is `Name={expr}` or `Name=\"text\"`; an event name takes a function. An attribute value must fit the type of its property, or the type of the prop the component declares, and any other value is a type error at the attribute. A nil value leaves a property unset. With `interpolate = \"wrap\"`, a Roblox tag's value can also be a source, so the check skips it. A bare `{props}` among the attributes spreads a table into them. `{expr}` in a body is a child, and text with `{holes}` interpolates. In a class with a `Text` property, such as `TextLabel`, the text between the tags sets `Text`, and so does a lone `{expr}`. When an attribute sets `Text`, each `{expr}` in the body is a child. With `interpolate = \"plain\"`, the default of the element form, that value must be a string or a number, or a React binding of one, and any other value is a type error. An attribute of a Roblox tag takes a binding too, and the value the binding holds must fit the property. With `\"wrap\"` it can also be a source that a reactive library reads. `<> ... </>` is a fragment, `<!-- -->` a comment. A child that depends on a condition wraps in a function, `{function() return if open then <Menu /> else nil end}`, so a reactive library re-runs it; a bare conditional child is built once, and the `static_conditional_child` lint says so.\n\nThe `[alx]` table of alloy.toml sets the lowering. The table form, for Vide or Fusion:\n\n```toml\n[alx.factory]\nbackend = \"table\"        # table: create(name)(props); element: create(name, props, children)\ncreate = \"create\"        # the function a tag calls; a bare name must be in scope\nchildren = \"Children\"    # the key children go under; unset, they are numeric entries\nevent = \"OnEvent\"        # wraps an event name: OnEvent(\"Activated\")\ncompute = \"computed\"     # wraps interpolated text; `use` names the reader inside it\ninterpolate = \"wrap\"     # wrap: text with holes is a function that reads them; plain: a string\nmerge = \"merge\"          # how a spread group `{props}` combines\n```\n\nThe element form, for React, needs a fragment; the table form takes none, and a fragment there is a plain table:\n\n```toml\n[alx.factory]\nbackend = \"element\"\ncreate = \"React.createElement\"\nfragment = \"React.Fragment\"\nevent = \"React.Event.\"   # a trailing dot indexes: React.Event.Activated\n```\n\nEither form renames tags and properties:\n\n```toml\n[alx.elements]\nall = \"camelCase\"        # a naming scheme for every class, or one alias per name\n\n[alx.properties]\nText = \"text\"            # an alias for a property, everywhere or per class\n```\n\nThe level of a markup lint sits with the other lints, under `alx.`:\n\n```toml\n[lint.rules]\nalx.static_conditional_child = \"warn\"    # allow, warn, deny\n```\n\nWith no `[alx]`, the lowering is the element form for React: a tag calls `React.createElement`, so `React` must be in scope, and a fragment is `React.Fragment`. An `[alx.factory]` table sets every name itself. `[fmt.alx]` sets how `alloy fmt` lays a tag out. An ingot may read a markup attribute, `ClassName` for Enamel, and rewrite the tag before the lowering.\n\nIn the editor a tag and an attribute hover and complete from the Roblox API, and the semantic tokens of the lowered code stay out of the markup.",
+      "signature": null,
+      "members": []
+    },
+    {
+      "key": "ParallelError",
+      "title": "ParallelError",
+      "group": "Errors",
+      "markdown": "`ParallelError` is a report of section 3.15, Parallel Luau: https://alloy-luau.github.io/docs/#parallel\n\n```alloy\nlocal parts: { BasePart } = {}\nlocal hits: { BasePart } = {}\n\nparallel do\n    for _, part in parts do\n        if part.Position.Y < 0 then\n            table.insert(hits, part)\n        end\n    end\nend\n\nfor _, part in hits do\n    part.Position = new Vector3(0, 10, 0)\nend\n```\nRuns the block in the parallel phase. The engine runs code in parallel only in a script under an `Actor`, so the block goes in a `.server.actor.aly` or `.client.actor.aly` script, or in a module that such a script requires. `alloy doc actor` has the infix.\n\nThe emit writes `task.desynchronize() do` on the line of the header and `task.synchronize() end` on the line of the `end`. The line count holds, and the block keeps its own scope. The block is a statement and not an expression, because the phase belongs to the thread and not to a value.\n\nThe compiler refuses what the engine refuses, as far as this file shows it:\n\n- a write to a property of an Instance whose type the file knows, and a write to `Parent`;\n- `Instance.new`, `new Instance`, `Destroy`, `Clone`, `destroy`, and `delete`;\n- a call to a function of this file that does one of those itself, one level deep;\n- a `parallel` block inside the block;\n- `await`, because a Future resumes in the serial phase;\n- a `return`, a `break`, or a `continue` that leaves the block, because the thread would skip `task.synchronize()`.\n\nEach report names the rule, and the write it refuses: a `parallel` block cannot write `part.Position`; move the write after the block. The quick fix moves a refused statement after the block when nothing later in the block reads what it writes.\n\nThis check is a guard rail, not a proof. It reads this file and no further. A call into another module is not followed, and a write through a value typed `any` cannot be seen. The engine has the last word, and its error comes at run time.\n\n`SharedTable` is the Roblox type for state that several actors share. Alloy does not wrap it, and a `message` carries one like any other value.\n\nThe word is free as a name. `parallel` opens the block only before `do` on the same line, so `local parallel = true` and `parallel(x)` read the Luau way.",
       "signature": null,
       "members": []
     },
@@ -3439,7 +3503,7 @@
       "group": "correctness",
       "default": "warn",
       "summary": "a call passes more arguments than the function takes",
-      "detail": "The extra values are evaluated and dropped, so a mistake in the argument order reads as working code. The lint counts a call of a function with a fixed parameter list that the file or an imported module declares: a plain name, `M.f` through `import * as M`, a static, a method on a value the file types with an annotation or a `new`, and a function in a table a local holds. A vararg, a default, or a name declared twice makes the count a range and the lint stands down. The checker reports the other direction, a call with too few arguments."
+      "detail": "The extra values are evaluated and dropped, so a mistake in the argument order reads as working code. The lint counts a call of a function with a fixed parameter list that the file or an imported module declares: a plain name, `M.f` through `import * as M`, a static, a method on a value the file types with an annotation or a `new`, a function in a table a local holds, and the constructor that `new W(a)` calls. A vararg, a default, or a name declared twice makes the count a range and the lint stands down. The checker reports the other direction, a call with too few arguments."
     },
     {
       "name": "unreachable_default",
@@ -3729,6 +3793,13 @@
       "detail": "Flux. The metatable idiom writes the constructor, the `__index`, and the method table by hand, and the checker sees plain tables. `struct X as ... end` with `impl X` emits the same tables with types, `new X(...)` for construction, and traits for shared behaviour. No automatic rewrite."
     },
     {
+      "name": "prefer_new",
+      "group": "style",
+      "default": "warn",
+      "summary": "`X.new(...)` in place of `new X(...)`",
+      "detail": "Flux. `new X(...)` is the constructor call, and it emits `X.new(...)`. The lint fires when each part of the type path starts with a capital letter: `Vector3.new(1, 2, 3)`, `Net.Route.new(r)`, and `HashMap.new<<string, number>>()`. In an `.alx` file it also reads the markup: an attribute such as `Size={UDim2.new(1, 0, 0, 24)}`, and a `{...}` hole. A call that an ingot writes stays quiet. A lowercase name such as `t.new()` or `self.new()` may hold no class, so it stays quiet. `X:new()`, `X.New(...)`, and a `.new` that nothing calls stay quiet too. The lint also stays quiet where `new X` does not build the same value: a call inside `typeof(...)`, a call that a `{ ... }` table follows, and an enum. So does a struct whose impl writes no `new` or writes `New`, and `X.new()` with no arguments inside the impl of `X`. `alloy flux --fix` writes `new X` over `X.new` and keeps the rest: `X.new(a):m()` becomes `new X(a):m()`."
+    },
+    {
       "name": "manual_ternary_return",
       "group": "style",
       "default": "warn",
@@ -3851,8 +3922,8 @@
       "name": "instance_new_parent",
       "group": "roblox",
       "default": "warn",
-      "summary": "`Instance.new(class, parent)`, the parent as an argument",
-      "detail": "With the parent set first, every property written after it replicates and fires a change on its own. Create the instance, set its properties, then set `Parent` last. No automatic rewrite: the assignments move."
+      "summary": "`Instance.new(class, parent)` or `new Instance(class, parent)`, the parent as an argument",
+      "detail": "With the parent set first, every property written after it replicates and fires a change on its own. Create the instance, set its properties, then set `Parent` last. `new Instance(class) { Parent = parent }` does that: the braces set `Parent` after every other field. No automatic rewrite: the assignments move."
     },
     {
       "name": "deprecated_body_mover",

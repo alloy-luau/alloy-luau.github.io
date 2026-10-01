@@ -191,6 +191,21 @@
         "<b>Line for line:</b> the four source lines become four blank lines, so every later line keeps its number.",
         "<b>The std has its own suite:</b> ten lest specs, sixty tests, over Result, Future, Array, HashMap, Set, Symbol, Signal, dispatch, Attributes, and the helpers."
       ]
+    },
+    {
+      "id": "parallel",
+      "eyebrow": "Concurrency",
+      "title": "Actor scripts, <code>parallel</code> blocks, and typed messages",
+      "thesis": "A file named worker.server.actor.aly builds into an Actor. A parallel do block runs in the parallel phase, and the compiler refuses the writes the engine refuses. A message types both ends of SendMessage, and its reply comes back to any script.",
+      "src": "export message Scan(parts: { BasePart }) reply(fallen: { BasePart })\n\nexport function scan(parts: { BasePart }): { BasePart }\n    const fallen: { BasePart } = {}\n    parallel do\n        for _, part in parts do\n            if part.Position.Y < 0 then table.insert(fallen, part) end\n        end\n    end\n    return fallen\nend",
+      "emit": "local __alloy = require(\"@alloy\") local Scan = __alloy.message(\"Scan\", 1)\n\nlocal function scan(parts: { BasePart }): { BasePart }\n    const fallen: { BasePart } = {}\n    task.desynchronize() do\n        for _, part in parts do\n            if part.Position.Y < 0 then table.insert(fallen, part) end\n        end\n    task.synchronize() end\n    return fallen\nend return { Scan = Scan, scan = scan }",
+      "points": [
+        "<b>An actor script</b> such as <code>worker.server.actor.aly</code> builds as the Actor <code>worker</code> with the Script inside. There, <code>Scan.on(function(parts, respond) respond(scan(parts)) end)</code> binds the handler.",
+        "<b>The block keeps its lines:</b> <code>task.desynchronize()</code> and <code>task.synchronize()</code> go on the lines of its header and its <code>end</code>.",
+        "<b>The compiler refuses</b> an Instance write that it can see, <code>Instance.new</code>, <code>Destroy</code>, <code>Clone</code>, <code>await</code>, and a <code>return</code> out of the block. It reads this file only, so the check is a guard rail, not a proof.",
+        "<b><code>Scan.fire(worker, parts)</code></b> sends from any script, and <code>Scan.replied</code> takes the answer in any script. <code>as parallel</code> runs a handler in the parallel phase.",
+        "<b>The reference:</b> <a href=\"/docs/reference/keywords/actor/\"><code>actor</code></a>, <a href=\"/docs/reference/keywords/parallel/\"><code>parallel</code></a>, <a href=\"/docs/reference/keywords/message/\"><code>message</code></a>, <a href=\"/docs/reference/keywords/reply/\"><code>reply</code></a>, and the reports <a href=\"/docs/reference/errors/parallelerror/\"><code>ParallelError</code></a> and <a href=\"/docs/reference/errors/actorerror/\"><code>ActorError</code></a>."
+      ]
     }
   ],
   "stdItems": [

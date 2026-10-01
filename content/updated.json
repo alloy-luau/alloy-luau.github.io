@@ -200,8 +200,8 @@
     "date": "2026-09-26"
   },
   "entry:new": {
-    "hash": "d1625e0588ede764",
-    "date": "2026-09-26"
+    "hash": "da7e83239e523d38",
+    "date": "2026-10-01"
   },
   "entry:delete": {
     "hash": "194a395fb5fa09d0",
@@ -212,12 +212,12 @@
     "date": "2026-09-26"
   },
   "entry:after": {
-    "hash": "7db56f9e189e840f",
-    "date": "2026-09-26"
+    "hash": "4ae5b82fd0c290c5",
+    "date": "2026-10-01"
   },
   "entry:attribute": {
-    "hash": "0d6296725956f7f8",
-    "date": "2026-09-26"
+    "hash": "751dfab514c7cc10",
+    "date": "2026-10-01"
   },
   "entry:on": {
     "hash": "f4d1e8945619ba37",
@@ -226,6 +226,22 @@
   "entry:remote": {
     "hash": "d760edcec7215acc",
     "date": "2026-09-26"
+  },
+  "entry:parallel": {
+    "hash": "a6bbfcb3e17f80c6",
+    "date": "2026-10-01"
+  },
+  "entry:message": {
+    "hash": "0b3ea6ad39cad791",
+    "date": "2026-10-01"
+  },
+  "entry:reply": {
+    "hash": "b70b6c5b414b70d4",
+    "date": "2026-10-01"
+  },
+  "entry:actor": {
+    "hash": "1d9362a7bf07c080",
+    "date": "2026-10-01"
   },
   "entry:where": {
     "hash": "98b14eeab955765e",
@@ -336,8 +352,8 @@
     "date": "2026-09-26"
   },
   "entry:@cfg": {
-    "hash": "5c1332d5f95f06a5",
-    "date": "2026-09-26"
+    "hash": "2c021b4b033f8455",
+    "date": "2026-10-01"
   },
   "entry:@alias": {
     "hash": "8a73e876746d72e2",
@@ -356,8 +372,8 @@
     "date": "2026-09-24"
   },
   "entry:@allow": {
-    "hash": "8638692c2e4ab723",
-    "date": "2026-09-26"
+    "hash": "a0fd1354bff46920",
+    "date": "2026-10-01"
   },
   "entry:@native": {
     "hash": "a820418df51325f2",
@@ -448,16 +464,16 @@
     "date": "2026-09-26"
   },
   "entry:HashMap": {
-    "hash": "1cfc0a7110b76b43",
-    "date": "2026-09-26"
+    "hash": "9134a56392cff023",
+    "date": "2026-10-01"
   },
   "entry:Set": {
-    "hash": "9a95ec8080b33fbc",
-    "date": "2026-09-26"
+    "hash": "c1f278366abd143d",
+    "date": "2026-10-01"
   },
   "entry:BitSet": {
-    "hash": "4764a0147e2a0465",
-    "date": "2026-09-26"
+    "hash": "0dfb084d2178a4c2",
+    "date": "2026-10-01"
   },
   "entry:Array": {
     "hash": "9538c8b519554e3b",
@@ -496,28 +512,28 @@
     "date": "2026-09-26"
   },
   "entry:Queue": {
-    "hash": "fd5d40aefd6b9ba1",
-    "date": "2026-09-26"
+    "hash": "bb34c943b51aabec",
+    "date": "2026-10-01"
   },
   "entry:Heap": {
-    "hash": "ab674f77566fbfe0",
-    "date": "2026-09-26"
+    "hash": "6e98cb8d3c7ffe5a",
+    "date": "2026-10-01"
   },
   "entry:Scope": {
-    "hash": "39cd2099926f74df",
-    "date": "2026-09-26"
+    "hash": "d66a50103688cb9c",
+    "date": "2026-10-01"
   },
   "entry:Iter": {
     "hash": "e9908e1429deac68",
     "date": "2026-09-26"
   },
   "entry:Symbol": {
-    "hash": "3558b4c969cf73cd",
-    "date": "2026-09-26"
+    "hash": "3c823993387e3174",
+    "date": "2026-10-01"
   },
   "entry:Signal": {
-    "hash": "f090c38078301120",
-    "date": "2026-09-26"
+    "hash": "cbd79d09f2cb7516",
+    "date": "2026-10-01"
   },
   "entry:Traits": {
     "hash": "3fdcefec5d895814",
@@ -636,8 +652,8 @@
     "date": "2026-09-26"
   },
   "entry:topic:markup": {
-    "hash": "eeae6265fd765fbb",
-    "date": "2026-09-26"
+    "hash": "38067b71d3f31740",
+    "date": "2026-10-01"
   },
   "entry:alx.static_conditional_child": {
     "hash": "ec19a384b31aa7b4",
@@ -672,8 +688,8 @@
     "date": "2026-09-14"
   },
   "entry:argument_count": {
-    "hash": "5ca28fa6c1effdfc",
-    "date": "2026-09-25"
+    "hash": "a89ab0d0892fd32e",
+    "date": "2026-10-01"
   },
   "entry:unreachable_default": {
     "hash": "4b68b6751717ada4",
@@ -839,6 +855,10 @@
     "hash": "430ab1e2390fb535",
     "date": "2026-09-14"
   },
+  "entry:prefer_new": {
+    "hash": "b3f9a3924f5b8421",
+    "date": "2026-10-01"
+  },
   "entry:manual_ternary_return": {
     "hash": "724dfc7e4acc38b2",
     "date": "2026-09-14"
@@ -908,8 +928,8 @@
     "date": "2026-09-14"
   },
   "entry:instance_new_parent": {
-    "hash": "23144e1df7b49a7c",
-    "date": "2026-09-14"
+    "hash": "5a867387537981a7",
+    "date": "2026-10-01"
   },
   "entry:deprecated_body_mover": {
     "hash": "94248eca6cb27b84",
@@ -951,6 +971,10 @@
     "hash": "2a3ca6d501a7fdd0",
     "date": "2026-09-25"
   },
+  "entry:ActorError": {
+    "hash": "b521dca6619021ce",
+    "date": "2026-10-01"
+  },
   "entry:AlloyError": {
     "hash": "320246e6b384a13f",
     "date": "2026-09-18"
@@ -960,12 +984,12 @@
     "date": "2026-09-26"
   },
   "entry:AttributeContract": {
-    "hash": "4336580936778098",
-    "date": "2026-09-26"
+    "hash": "37b8b4237474c286",
+    "date": "2026-10-01"
   },
   "entry:AttributeError": {
-    "hash": "2e9e8e39f23dc59f",
-    "date": "2026-09-26"
+    "hash": "72c2fb0a60faffe3",
+    "date": "2026-10-01"
   },
   "entry:BoundError": {
     "hash": "8cfd7eaf2d6d8ad0",
@@ -1015,13 +1039,21 @@
     "hash": "768f2cbe8897eed7",
     "date": "2026-09-18"
   },
+  "entry:LuauLimit": {
+    "hash": "6b8a8493f9569924",
+    "date": "2026-10-01"
+  },
   "entry:MacroError": {
     "hash": "dc576367e6f90620",
     "date": "2026-09-26"
   },
   "entry:MarkupError": {
-    "hash": "5cc163ee7507c8d3",
-    "date": "2026-09-26"
+    "hash": "377f442be2cba83b",
+    "date": "2026-10-01"
+  },
+  "entry:ParallelError": {
+    "hash": "dfa317fc55ac1bd7",
+    "date": "2026-10-01"
   },
   "entry:ReservedWord": {
     "hash": "7c68d15ef4fedce7",
@@ -1076,8 +1108,8 @@
     "date": "2026-09-08"
   },
   "lint:argument_count": {
-    "hash": "e71429a4f03ecb95",
-    "date": "2026-09-25"
+    "hash": "f1c4108fea1cc713",
+    "date": "2026-10-01"
   },
   "lint:unreachable_default": {
     "hash": "5bdefbf9dfbeb223",
@@ -1243,6 +1275,10 @@
     "hash": "010adb7b6ce94364",
     "date": "2026-09-07"
   },
+  "lint:prefer_new": {
+    "hash": "546924b0b4a62728",
+    "date": "2026-10-01"
+  },
   "lint:manual_ternary_return": {
     "hash": "3f7fc35893525b05",
     "date": "2026-09-07"
@@ -1312,8 +1348,8 @@
     "date": "2026-09-08"
   },
   "lint:instance_new_parent": {
-    "hash": "7a318de7c05e2af8",
-    "date": "2026-09-07"
+    "hash": "859c08c7390f0e70",
+    "date": "2026-10-01"
   },
   "lint:deprecated_body_mover": {
     "hash": "2e5c8b7d15e3cdc2",
@@ -1410,6 +1446,10 @@
   "slide:tests": {
     "hash": "0131c95b85c42636",
     "date": "2026-09-07"
+  },
+  "slide:parallel": {
+    "hash": "f4b6c39c6b9994ed",
+    "date": "2026-10-01"
   },
   "cards": {
     "hash": "cc8b37d518e56731",

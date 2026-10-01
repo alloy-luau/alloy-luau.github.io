@@ -92,6 +92,7 @@ const CHAPTER_TITLES: Record<string, string> = {
   remotes: "Remotes",
   markup: "Markup",
   tests: "Tests",
+  parallel: "Parallel Luau",
 };
 
 /** Where each known article lives, in sidebar order, with the anchors

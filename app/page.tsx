@@ -142,11 +142,11 @@ export default function Home() {
           <Reveal>
             <div className="eyebrow">The language</div>
             <h2 className="display mb-6 mt-2 text-[28px] font-bold leading-[1.1] md:text-[36px]">
-              Fourteen chapters, each with its emit beside it.
+              Fifteen chapters, each with its emit beside it.
             </h2>
           </Reveal>
           {/* One panel, two stacked lists. The book numbers each chapter
-              3.1 to 3.14, so the row carries the same number, and each
+              3.1 to 3.15, so the row carries the same number, and each
               column runs in order. */}
           <Reveal delay={0.06}>
             <div className="card overflow-hidden">
