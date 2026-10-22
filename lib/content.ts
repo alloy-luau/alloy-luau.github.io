@@ -180,6 +180,7 @@ export const commands: [string, string][] = [
   ["alloy fmt", "format the sources in place; --check writes nothing"],
   ["alloy test --run", "a lest spec per source with a @test, then lest; --watch, --coverage"],
   ["alloy doc strict", "an article; `alloy doc` lists every topic"],
+  ["alloy mcp", "the same docs for a coding agent, over MCP"],
   ["alloy init", "alloy.toml, .luaurc, and .config.luau"],
   ["alloy migrate", "alloy.toml rewritten as .config.aly, with its keys and comments"],
   ["rojo serve .alloy/build.project.json", "the compiled tree, from the [mount] table"],

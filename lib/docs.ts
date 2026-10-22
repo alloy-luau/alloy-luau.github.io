@@ -22,7 +22,7 @@ export type GroupSlug = "getting-started" | "language" | "tooling" | "configurat
 export const groups: { slug: GroupSlug; title: string; blurb: string }[] = [
   { slug: "getting-started", title: "Getting started", blurb: "Install the toolchain, make a first project, and set up the editor." },
   { slug: "language", title: "Language", blurb: "Each construct beside the Luau it emits, and the rules the compiler holds." },
-  { slug: "tooling", title: "Tooling", blurb: "The commands: init, build, check, flux, lint, fmt, test, and doc." },
+  { slug: "tooling", title: "Tooling", blurb: "The commands: init, build, check, flux, lint, fmt, test, doc, and mcp." },
   { slug: "configuration", title: "Configuration", blurb: "alloy.toml, the Luau configuration, mounts, and the directives of one file." },
   { slug: "reference", title: "Reference", blurb: "Every keyword, operator, intrinsic, attribute, derive, std type, error kind, and lint." },
   { slug: "guides", title: "Guides", blurb: "Articles on one subject each." },
@@ -130,6 +130,7 @@ const PROSE: { id: string; group: GroupSlug; title: string; summary: string; aft
   { id: "first-project", group: "getting-started", title: "A first project", summary: "`alloy init`, a first source file, and a build that Rojo can sync." },
   { id: "editor", group: "getting-started", title: "The editor", summary: "The language server: a proxy over luau-lsp that maps its answers onto Alloy lines." },
   { id: "doc", group: "tooling", title: "alloy doc", summary: "Prints one page of these docs on the terminal.", after: "test" },
+  { id: "mcp", group: "tooling", title: "alloy mcp", summary: "Serves these docs to a coding agent over MCP.", after: "test" },
 ];
 
 const BOLD_LINE = /^\*\*([^*]+)\*\*\s*$/;
