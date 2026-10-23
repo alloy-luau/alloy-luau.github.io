@@ -37,7 +37,7 @@ export const prose: Record<string, ReactNode> = {
         </p>
       </div>
       {shell(
-        "scripts/build.sh --release --install   # every crate, the extension, then the two binaries\nalloy --version\nalloy self uninstall                   # removes them again",
+        "scripts/build.sh --release --install   # every crate, the extension, then the two binaries\nalloy --version\nalloy self update                      # later: fetch the latest release\nalloy self uninstall                   # removes them again",
       )}
       <div className="prose">
         <p>
@@ -73,6 +73,12 @@ export const prose: Record<string, ReactNode> = {
         <p>
           Point Rojo, or any sync tool, at <code>build</code>. An unchanged output is not rewritten, so the sync stays
           quiet.
+        </p>
+        <p>
+          Packages come from <a href="https://emberpm.dev">Ember</a>. Set <code>language = &quot;alloy&quot;</code> in
+          the <code>[target]</code> of <code>ember.toml</code>. <code>embr add</code> then installs Alloy and Luau
+          packages, and <code>embr publish</code> runs <code>alloy build</code> before it packs. Alloy itself runs no
+          package manager.
         </p>
       </div>
     </>
@@ -150,6 +156,35 @@ export const prose: Record<string, ReactNode> = {
           layout, the commands, and the style rules, and it names <code>alloy mcp</code>.
         </p>
       </div>
+    </>
+  ),
+  migrate: (
+    <>
+      <div className="prose">
+        <p>
+          Rewrites <code>alloy.toml</code> in the current folder as <code>.config.aly</code>, then removes{" "}
+          <code>alloy.toml</code>. While both files exist, <code>alloy.toml</code> wins.
+        </p>
+        <p>
+          The new file keeps every key and every comment, and the <code>[fmt]</code> table of the project sets its
+          quotes and its indent. Before it writes, the command loads the new file and compares the two configs. When
+          they differ, it writes nothing. It never overwrites a <code>.config.aly</code>.
+        </p>
+      </div>
+      {shell("alloy migrate      # alloy.toml -> .config.aly")}
+    </>
+  ),
+  self: (
+    <>
+      <div className="prose">
+        <p>
+          Manages the installed binaries, <code>alloy</code> and <code>alloy-lsp</code>, in{" "}
+          <code>~/.alloy/bin</code>. <code>--dir</code> picks another folder.
+        </p>
+      </div>
+      {shell(
+        "alloy self install             # copy the binaries to ~/.alloy/bin; what is missing comes from the release\nalloy self update              # fetch the latest release and install it\nalloy self update --version v  # fetch that release\nalloy self uninstall           # remove the binaries\nalloy self code                # write ~/.alloy/alloy.schema.json and point VS Code and Zed at it\nalloy self code --dry-run      # print those edits, write nothing\nalloy self schema              # print the JSON Schema of alloy.toml",
+      )}
     </>
   ),
 };

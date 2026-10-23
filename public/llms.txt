@@ -24,5 +24,10 @@ The compiler is `alloy` (Rust); the language server is `alloy-lsp`, a proxy over
 
 - `alloy build` compiles the project; `alloy build -W` watches.
 - `alloy check` compiles without writing and reports errors and lints.
+- `alloy flux` compiles, type-checks, and lints; `alloy test --run` runs the inline tests.
 - `alloy lint`, `alloy fmt`, `alloy doc <topic>`, `alloy init`.
+- `alloy doc style` is the style guide: how to write Alloy that reads as Alloy.
+- `alloy mcp` serves these docs to a coding agent over MCP (stdio).
 - `alloy migrate` rewrites alloy.toml as .config.aly.
+- `alloy self` installs, updates, or removes the binaries.
+- Packages come from Ember (https://emberpm.dev): `language = "alloy"` in ember.toml, then `embr add`.

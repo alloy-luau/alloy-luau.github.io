@@ -244,8 +244,8 @@
     "date": "2026-10-01"
   },
   "entry:where": {
-    "hash": "98b14eeab955765e",
-    "date": "2026-09-26"
+    "hash": "44c22e9b6d5b63dd",
+    "date": "2026-10-23"
   },
   "entry:satisfies": {
     "hash": "d3a7a4581c17e5ff",
@@ -611,9 +611,13 @@
     "hash": "134c8f1966a9337c",
     "date": "2026-09-26"
   },
+  "entry:topic:style": {
+    "hash": "74515456c9f2a716",
+    "date": "2026-10-23"
+  },
   "entry:topic:init": {
-    "hash": "0e0fbacb8f986377",
-    "date": "2026-09-20"
+    "hash": "241868251865d897",
+    "date": "2026-10-23"
   },
   "entry:topic:luaurc": {
     "hash": "f81a157ab8e09bef",
@@ -1456,7 +1460,7 @@
     "date": "2026-09-07"
   },
   "page:docs": {
-    "hash": "dfb96563099f46d1",
-    "date": "2026-10-21"
+    "hash": "eade9529835a9d2a",
+    "date": "2026-10-23"
   }
 }
