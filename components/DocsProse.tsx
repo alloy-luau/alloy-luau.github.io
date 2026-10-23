@@ -43,7 +43,7 @@ export const prose: Record<string, ReactNode> = {
         <p>
           The extension is the <code>.vsix</code> the script writes under <code>extensions/vscode</code>. Install it from
           the Extensions view with &ldquo;Install from VSIX&rdquo;. It finds the binaries on PATH or through the{" "}
-          <code>alloy.path</code> setting.
+          <code>alloy-luau.server.path</code> setting.
         </p>
       </div>
     </>
@@ -52,21 +52,23 @@ export const prose: Record<string, ReactNode> = {
     <>
       <div className="prose">
         <p>
-          <code>alloy init</code> writes <code>alloy.toml</code>. When the folder has no Luau configuration, it also
-          writes the two configuration files, with strict mode and the <code>@alloy</code> alias. Sources go under{" "}
-          <code>src</code> and compile under <code>build</code>. The runtime sits beside them as <code>alloy.luau</code>.
+          <code>alloy init</code> asks a few questions, and <code>-y</code> takes the recommended answers. It writes{" "}
+          <code>alloy.toml</code> and, when the folder has no Luau configuration, one <code>.config.luau</code> with
+          strict mode and the <code>@alloy</code> alias. It also writes <code>ember.toml</code>, an agent guide, and a{" "}
+          <code>src</code> folder with <code>client</code>, <code>server</code>, and <code>shared</code>. Sources compile
+          under <code>build</code>, and the runtime sits beside them as <code>alloy.luau</code>.
         </p>
       </div>
       {shell(
-        "mkdir game && cd game\nalloy init          # alloy.toml, .luaurc, .config.luau\nmkdir src\nalloy build         # src/**/*.aly -> build/**/*.luau\nalloy flux          # the compile, the type check, and the lints\nalloy test --run    # one lest spec per source with a @test, then lest",
+        "mkdir game && cd game\nalloy init -y       # alloy.toml, .config.luau, ember.toml, AGENTS.md, src/\nalloy build         # src/**/*.aly -> build/**/*.luau\nalloy flux          # the compile, the type check, and the lints\nalloy test --run    # one lest spec per source with a @test, then lest",
       )}
       <CodePane
         code={
-          '-- src/hello.aly\nstruct Greeting\n    name: string\n    times: number = 1\nend\n\nlocal g = new Greeting { name = "world" }\n\nfor _ = 1, g.times do\n    print(`hello, {g.name}`)\nend'
+          '-- src/shared/hello.aly\nstruct Greeting\n    name: string\n    times: number = 1\nend\n\nlocal g = new Greeting { name = "world" }\n\nfor _ = 1, g.times do\n    print(`hello, {g.name}`)\nend'
         }
         mode="alloy"
         label="Alloy"
-        note="src/hello.aly"
+        note="src/shared/hello.aly"
         className="mb-4"
       />
       <div className="prose">
