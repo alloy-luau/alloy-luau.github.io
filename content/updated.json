@@ -156,8 +156,8 @@
     "date": "2026-09-26"
   },
   "entry:export": {
-    "hash": "a248df70bfcb9cc2",
-    "date": "2026-09-26"
+    "hash": "ff8444f685bb25a2",
+    "date": "2026-10-23"
   },
   "entry:global": {
     "hash": "a2abaa54baef3cb1",
@@ -176,8 +176,8 @@
     "date": "2026-09-26"
   },
   "entry:const": {
-    "hash": "aa1fbe50de3e2e10",
-    "date": "2026-09-26"
+    "hash": "11424c84bfe8eb25",
+    "date": "2026-10-23"
   },
   "entry:async": {
     "hash": "02f7801d6a346f05",
@@ -416,8 +416,8 @@
     "date": "2026-09-26"
   },
   "entry:@ratelimit": {
-    "hash": "90dbcf99a81d6a2d",
-    "date": "2026-09-26"
+    "hash": "9ec708590dd72644",
+    "date": "2026-10-23"
   },
   "entry:@timeout": {
     "hash": "ad9516ca36525c6c",
@@ -572,8 +572,8 @@
     "date": "2026-09-24"
   },
   "entry:topic:wire": {
-    "hash": "cae40166db9b92be",
-    "date": "2026-09-26"
+    "hash": "55751a10a768c514",
+    "date": "2026-10-23"
   },
   "entry:topic:lint": {
     "hash": "9a1f92b921537434",
@@ -756,8 +756,8 @@
     "date": "2026-09-14"
   },
   "entry:stale_export": {
-    "hash": "09c5270bf798f20a",
-    "date": "2026-09-26"
+    "hash": "e2909f8da8102821",
+    "date": "2026-10-23"
   },
   "entry:deprecated_call": {
     "hash": "4fba462e407524e9",
@@ -816,8 +816,8 @@
     "date": "2026-09-24"
   },
   "entry:prefer_const": {
-    "hash": "a3b5fa351fdec8d2",
-    "date": "2026-09-25"
+    "hash": "c0dea9d896f49875",
+    "date": "2026-10-23"
   },
   "entry:redundant_as": {
     "hash": "7813f64b662fe3f8",
@@ -960,8 +960,8 @@
     "date": "2026-09-14"
   },
   "entry:const_mutation": {
-    "hash": "7882a300bfa1675c",
-    "date": "2026-09-14"
+    "hash": "ed4ce82d79cbf748",
+    "date": "2026-10-23"
   },
   "entry:missing_doc": {
     "hash": "e1436054e25dd4e4",
@@ -1092,8 +1092,8 @@
     "date": "2026-09-26"
   },
   "entry:WireType": {
-    "hash": "b35ada254a700a58",
-    "date": "2026-09-26"
+    "hash": "f63594bed3b15726",
+    "date": "2026-10-23"
   },
   "lint:optional_access": {
     "hash": "a60ddd2ef91350e2",
@@ -1176,8 +1176,8 @@
     "date": "2026-09-09"
   },
   "lint:stale_export": {
-    "hash": "b2139b62f06433dd",
-    "date": "2026-09-26"
+    "hash": "193d49d98a98212a",
+    "date": "2026-10-23"
   },
   "lint:deprecated_call": {
     "hash": "227ae454bf1a098f",
@@ -1236,8 +1236,8 @@
     "date": "2026-09-24"
   },
   "lint:prefer_const": {
-    "hash": "9476373324ac35a7",
-    "date": "2026-09-25"
+    "hash": "7b3ce0a6e35787f6",
+    "date": "2026-10-23"
   },
   "lint:redundant_as": {
     "hash": "0101c5a3a690c215",
@@ -1380,8 +1380,8 @@
     "date": "2026-09-11"
   },
   "lint:const_mutation": {
-    "hash": "8a6c6f90617cdcda",
-    "date": "2026-09-08"
+    "hash": "a3965f1c02e4dca7",
+    "date": "2026-10-23"
   },
   "lint:missing_doc": {
     "hash": "3596239205b506e4",
