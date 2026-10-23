@@ -105,4 +105,51 @@ export const prose: Record<string, ReactNode> = {
       )}
     </>
   ),
+  mcp: (
+    <>
+      <div className="prose">
+        <p>
+          Serves these docs to a coding agent over MCP, the Model Context Protocol. The agent starts{" "}
+          <code>alloy mcp</code> and talks to it over stdio. The answers come from the table of{" "}
+          <code>alloy doc</code>, so the agent reads the docs of the compiler it runs.
+        </p>
+        <p>The server gives four tools:</p>
+        <ul className="pointlist">
+          <li>
+            <code>search_docs</code> ranks the topics by a query, and returns each one with a short snippet.
+          </li>
+          <li>
+            <code>read_doc</code> returns one topic as markdown, the text <code>alloy doc</code> prints.
+          </li>
+          <li>
+            <code>list_topics</code> lists every topic, by group.
+          </li>
+          <li>
+            <code>style_guide</code> returns <code>alloy doc style</code>: how to write Alloy that reads as Alloy.
+          </li>
+        </ul>
+        <p>Register it with Claude Code once:</p>
+      </div>
+      {shell("claude mcp add alloy -- alloy mcp")}
+      <div className="prose">
+        <p>
+          Another MCP client starts the same command, with no arguments. A client that reads a JSON list of
+          servers, such as <code>.mcp.json</code>, takes this entry:
+        </p>
+      </div>
+      <CodePane
+        code={'{\n  "mcpServers": {\n    "alloy": { "command": "alloy", "args": ["mcp"] }\n  }\n}'}
+        mode="json"
+        label="JSON"
+        note=".mcp.json"
+        className="mb-4"
+      />
+      <div className="prose">
+        <p>
+          <code>alloy init</code> also writes an agent guide, <code>AGENTS.md</code> by default. The guide gives the
+          layout, the commands, and the style rules, and it names <code>alloy mcp</code>.
+        </p>
+      </div>
+    </>
+  ),
 };

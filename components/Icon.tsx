@@ -27,6 +27,8 @@ const PATHS: Record<string, string> = {
   networking: "M12 20v-6M8 10a6 6 0 018 0M5 7a10 10 0 0114 0M12 14a1 1 0 100 2 1 1 0 000-2",
   ui: "M3 5h18v14H3zM3 10h18M8 10v9",
   testing: "M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3M8 15h8",
+  // A robot head, for the coding agents `alloy mcp` serves (Lucide: bot).
+  bot: "M12 8V4H8M6 8h12a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8a2 2 0 012-2zM2 14h2M20 14h2M15 13v2M9 13v2",
 };
 
 export default function Icon({ name, size = 22, className = "" }: { name: string; size?: number; className?: string }) {

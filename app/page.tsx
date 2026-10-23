@@ -213,6 +213,14 @@ export default function Home() {
               formats, and documents. The language server runs luau-lsp over a mirror of the compiled files. Hover,
               completion, and diagnostics land on the Alloy lines. The VS Code extension connects both.
             </p>
+            <Link
+              href="/docs/tooling/mcp/"
+              className="chip glass glass-live mb-5 inline-flex items-center gap-2 self-start no-underline"
+            >
+              <Icon name="bot" size={15} className="text-accent-ink" />
+              <span className="font-semibold text-ink">MCP</span>
+              <span>alloy mcp serves these docs to coding agents</span>
+            </Link>
             <div className="mt-auto">
               <CodePane
                 code={commands.map(([c, d]) => `${c.padEnd(36)} # ${d}`).join("\n")}
