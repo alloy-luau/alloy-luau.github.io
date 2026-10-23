@@ -19,7 +19,15 @@ npm run content    # ../crates/scripts/docs-content.sh: alloy doc --json, then t
 
 Run it after a change to `alloy/src/docs.rs` or `lint.rs` in the `alloy` repository, checked out beside this one as `../crates`. The
 tour on both pages reads `content/slides.json`: each chapter's source and
-its emitted Luau.
+its emitted Luau. The emit is not written by hand: `npm run content`
+first runs `scripts/slides.mjs`, which compiles each chapter's source with
+the compiler in `../crates` (or `$ALLOY`) and writes what it emits. A
+chapter that does not compile stops the run, so the tour never shows code
+the compiler refuses.
+
+```sh
+npm run content:slides   # only the tour's emit
+```
 
 The docs have one page per subject, in six groups: Getting started,
 Language, Tooling, Configuration, Reference, and Guides. `lib/docs.ts`
