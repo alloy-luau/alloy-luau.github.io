@@ -172,8 +172,8 @@
     "date": "2026-09-26"
   },
   "entry:local": {
-    "hash": "89674bdd514c0d1d",
-    "date": "2026-09-26"
+    "hash": "97d6e6f48c74f0fa",
+    "date": "2026-10-24"
   },
   "entry:const": {
     "hash": "11424c84bfe8eb25",
@@ -192,8 +192,8 @@
     "date": "2026-09-26"
   },
   "entry:macro": {
-    "hash": "6d3186da012402d6",
-    "date": "2026-09-26"
+    "hash": "e5b2173d333bbcbe",
+    "date": "2026-10-24"
   },
   "entry:namespace": {
     "hash": "9489d53a3575660f",
@@ -228,8 +228,8 @@
     "date": "2026-10-23"
   },
   "entry:parallel": {
-    "hash": "a6bbfcb3e17f80c6",
-    "date": "2026-10-01"
+    "hash": "b6f6a372abdd5b71",
+    "date": "2026-10-24"
   },
   "entry:message": {
     "hash": "0b3ea6ad39cad791",
@@ -588,8 +588,8 @@
     "date": "2026-09-26"
   },
   "entry:topic:fmt": {
-    "hash": "5353412ed4ffda35",
-    "date": "2026-09-25"
+    "hash": "a7f9f6d37292ed1c",
+    "date": "2026-10-24"
   },
   "entry:topic:check": {
     "hash": "9c6da179ee54c951",
@@ -976,8 +976,8 @@
     "date": "2026-09-25"
   },
   "entry:ActorError": {
-    "hash": "b521dca6619021ce",
-    "date": "2026-10-01"
+    "hash": "7dbb0f199664e783",
+    "date": "2026-10-24"
   },
   "entry:AlloyError": {
     "hash": "320246e6b384a13f",
@@ -1048,16 +1048,16 @@
     "date": "2026-10-01"
   },
   "entry:MacroError": {
-    "hash": "dc576367e6f90620",
-    "date": "2026-09-26"
+    "hash": "84704bfe97c23b41",
+    "date": "2026-10-24"
   },
   "entry:MarkupError": {
     "hash": "377f442be2cba83b",
     "date": "2026-10-01"
   },
   "entry:ParallelError": {
-    "hash": "dfa317fc55ac1bd7",
-    "date": "2026-10-01"
+    "hash": "9324b86773457772",
+    "date": "2026-10-24"
   },
   "entry:ReservedWord": {
     "hash": "7c68d15ef4fedce7",
