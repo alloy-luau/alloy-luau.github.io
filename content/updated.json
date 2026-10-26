@@ -1408,16 +1408,16 @@
     "date": "2026-10-23"
   },
   "slide:enums": {
-    "hash": "908aacab0fe5b7c3",
-    "date": "2026-10-23"
+    "hash": "fdd85048ba9828f1",
+    "date": "2026-10-26"
   },
   "slide:bindings": {
     "hash": "c6d3a85616e9efdf",
     "date": "2026-10-23"
   },
   "slide:structs": {
-    "hash": "38cc5917fe4bb50d",
-    "date": "2026-10-23"
+    "hash": "1f05d2f3bd661236",
+    "date": "2026-10-26"
   },
   "slide:interfaces": {
     "hash": "29458974d4423a5a",
@@ -1436,8 +1436,8 @@
     "date": "2026-10-23"
   },
   "slide:attributes": {
-    "hash": "c499a5d12bc3715f",
-    "date": "2026-10-23"
+    "hash": "3e516a072aea78fd",
+    "date": "2026-10-26"
   },
   "slide:remotes": {
     "hash": "74627ba4f122ff71",
