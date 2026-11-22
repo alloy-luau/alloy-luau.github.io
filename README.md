@@ -10,23 +10,45 @@ npm run dev        # http://localhost:3000
 npm run build      # writes out/
 ```
 
-The reference reads `content/docs.json`, which the compiler writes from
-its own documentation table, the same text the editor shows on hover:
+## Versions
+
+The docs keep one set of pages for each release line. The default set
+is the latest release that is no candidate, and it lives at `/docs`.
+Each other set lives at `/docs/v/<version>`, and the menu at the top of
+the sidebar moves between them.
+
+`scripts/snapshot-docs.mjs` writes a set from the binary of a release:
 
 ```sh
-npm run content    # ../crates/scripts/docs-content.sh: alloy doc --json, then the RFCs
+ALLOY=/path/to/alloy npm run snapshot -- 0.2.0 2026-12-01
 ```
 
-Run it after a change to `alloy/src/docs.rs` or `lint.rs` in the `alloy` repository, checked out beside this one as `../crates`. The
-tour on both pages reads `content/slides.json`: each chapter's source and
-its emitted Luau. The emit is not written by hand: `npm run content`
-first runs `scripts/slides.mjs`, which compiles each chapter's source with
-the compiler in `../crates` (or `$ALLOY`) and writes what it emits. A
-chapter that does not compile stops the run, so the tour never shows code
-the compiler refuses.
+Run it when a release is cut, then commit the result. `$ALLOY` is the
+binary of that release, and the day is the day of the release. The
+script writes two files under `content/versions/<version>/`:
+
+- `docs.json` is the documentation table of the compiler,
+  `alloy doc --json`, the same text the editor shows on hover.
+- `slides.json` holds the tour chapters with the Luau that binary emits.
+  A chapter the binary cannot compile is left out of that release.
+
+`content/versions/versions.json` lists the releases, the newest first.
+The script keeps the list in order:
+
+- The newest patch of a line replaces the older ones: `0.1.10` stands
+  for `0.1`. The export writes about 60 MB for each release, and GitHub
+  Pages stops at 1 GB.
+- A candidate stays only while it is newer than the latest release.
+- Two releases with equal docs share one folder.
+
+For the default release the script also copies the two files to
+`content/docs.json` and `content/slides.json`. The landing page, the
+playground, and the version in the top bar read those. A chapter is
+written in `content/slides.json`, in its `src`; the emit is not written
+by hand.
 
 ```sh
-npm run content:slides   # only the tour's emit
+npm run content    # the RFCs and the grammars of the editor
 ```
 
 The docs have one page per subject, in six groups: Getting started,

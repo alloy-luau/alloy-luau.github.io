@@ -19,6 +19,9 @@
 			"include": "#enum-body"
 		},
 		{
+			"include": "#lambda"
+		},
+		{
 			"include": "#type-position"
 		},
 		{
@@ -268,6 +271,25 @@
 					}
 				},
 				{
+					"comment": "struct UserId(number): a struct over one type",
+					"match": "(?<![.:])\\b(struct)[ \\t]+([A-Za-z_][A-Za-z0-9_]*)[ \\t]*(\\()([^()\\n]*)(\\))",
+					"captures": {
+						"1": {
+							"name": "storage.type.aly"
+						},
+						"2": {
+							"name": "entity.name.type.aly"
+						},
+						"4": {
+							"patterns": [
+								{
+									"include": "#type-content"
+								}
+							]
+						}
+					}
+				},
+				{
 					"comment": "struct Name<T> as, enum Name as, trait Name, interface Name [extends A, B] as",
 					"match": "(?<![.:])\\b(struct|enum|trait|interface)[ \\t]+(?!(?:end|then|else|elseif|do|until|and|or|not|in|is|as|satisfies|where|return|local|const|break|continue|with|from|band|bor|bxor|shl|shr)\\b)([A-Za-z_][A-Za-z0-9_]*)(\\s*<(?:[^<>]|<(?:[^<>]|<(?:[^<>]|<[^<>]*>)*>)*>)*>)?",
 					"captures": {
@@ -346,7 +368,7 @@
 				},
 				{
 					"comment": "function name, local function name, async function name",
-					"match": "\\b(function)\\s+([A-Za-z_][A-Za-z0-9_.:]*)",
+					"match": "\\b(function)\\*?\\s+([A-Za-z_][A-Za-z0-9_.:]*)",
 					"captures": {
 						"1": {
 							"name": "storage.type.aly"
@@ -505,9 +527,32 @@
 					"match": "(?<![.:])\\basync\\b(?=[ \\t]+(?:function|do)\\b)"
 				},
 				{
+					"comment": "using opens a statement: a name follows it, then `=` or the `:` of its type; `using = f` and `using.f` are a local named using",
+					"name": "storage.type.aly",
+					"match": "^[ \\t]*\\busing\\b(?=[ \\t]+[A-Za-z_][A-Za-z0-9_]*[ \\t]*[=:](?!=))"
+				},
+				{
+					"comment": "defer opens a statement, and a name or `do` follows it; `defer(f)`, `defer = f`, and `defer.f` are a local named defer",
+					"name": "keyword.control.aly",
+					"match": "^[ \\t]*\\bdefer\\b(?=[ \\t]+[A-Za-z_])"
+				},
+				{
+					"comment": "yield opens a statement and takes a value; `yield = f`, `yield.f`, and `yield, a = 1, 2` are a local named yield",
+					"name": "keyword.control.aly",
+					"match": "^[ \\t]*\\byield\\b(?![ \\t]*(?:[=,.:]|$|[-+*/%^]=|\\.\\.=))"
+				},
+				{
 					"comment": "await takes an operand; `await(p)`, `await = f`, and `await.f` are a local named await",
 					"name": "keyword.control.aly",
 					"match": "(?<![.:])\\bawait\\b(?=[ \\t]+(?:(?!(?:end|then|else|elseif|do|until|and|or|not|in|is|as|satisfies|where|return|local|const|break|continue|with|from|band|bor|bxor|shl|shr)\\b)[A-Za-z_$#]|[0-9]|-[^-]))"
+				},
+				{
+					"comment": "import inline data from: `inline` is the modifier when a name, a `{`, or a `*` follows it; `import inline from` is a module under the name inline",
+					"match": "(?<![.:])\\b(import)[ \\t]+(inline)\\b(?=[ \\t]*(?:\\*|\\{)|[ \\t]+(?!from\\b)[A-Za-z_])",
+					"captures": {
+						"1": { "name": "storage.type.aly" },
+						"2": { "name": "storage.modifier.aly" }
+					}
 				},
 				{
 					"comment": "import opens the statement, and import(...) and import \"m\" are its expression form; `local import = {}` and `import.cache` are a local named import",
@@ -588,7 +633,7 @@
 				},
 				{
 					"name": "keyword.operator.aly",
-					"match": "==|~=|<=|>=|<<|>>|<|>|\\+=|-=|\\*=|/=|//=|%=|\\^=|\\.\\.=|::|\\.\\.\\.|\\.\\.|[+\\-*/%^#=|&]"
+					"match": ":=|==|~=|<=|>=|<<|>>|<|>|\\+=|-=|\\*=|/=|//=|%=|\\^=|\\.\\.=|::|\\.\\.\\.|\\.\\.|[+\\-*/%^#=|&]"
 				},
 				{
 					"name": "punctuation.definition.array.aly",
@@ -795,6 +840,43 @@
 				{
 					"name": "punctuation.separator.type.aly",
 					"match": "[,;]"
+				}
+			]
+		},
+		"lambda": {
+			"comment": "|a, b: T| value. A bar opens a lambda where a value may start: after =, (, a comma, {, [, or a word such as return. After a type it is a union, and |> is the pipe. A parameter type stops at the bar that closes, so a union there stands in parens.",
+			"begin": "(?:(?<=[=(,{\\[])|(?<=\\breturn)|(?<=\\bthen)|(?<=\\belse)|(?<=\\band)|(?<=\\bor)|(?<=\\bnot)|(?<=\\bdo))[ \\t]*(\\|)(?!>)",
+			"beginCaptures": {
+				"1": {
+					"name": "punctuation.definition.parameters.begin.aly"
+				}
+			},
+			"end": "\\|",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.aly"
+				}
+			},
+			"name": "meta.function.lambda.parameters.aly",
+			"patterns": [
+				{
+					"begin": "(:)",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.separator.type.annotation.aly"
+						}
+					},
+					"end": "(?=[,|])",
+					"name": "meta.type.annotation.aly",
+					"patterns": [
+						{
+							"include": "#type-content"
+						}
+					]
+				},
+				{
+					"name": "variable.parameter.aly",
+					"match": "[A-Za-z_][A-Za-z0-9_]*|\\.\\.\\."
 				}
 			]
 		},

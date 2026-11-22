@@ -1,0 +1,14 @@
+[
+  {
+    "version": "0.2.0-rc.6",
+    "date": "2026-11-22",
+    "prerelease": true,
+    "docs": "0.2.0-rc.6"
+  },
+  {
+    "version": "0.1.10",
+    "date": "2026-11-16",
+    "prerelease": false,
+    "docs": "0.1.10"
+  }
+]

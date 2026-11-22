@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 import { SearchField } from "@/components/FilterList";
 import type { SearchDoc } from "@/lib/content";
 import type { NavGroup } from "@/lib/docs";
+import type { VersionMenu } from "@/lib/versions";
 
 /** The words around the first hit of `q` in `text`. */
 function snippet(text: string, q: string): string {
@@ -35,9 +36,42 @@ function marked(text: string, q: string): ReactNode {
   );
 }
 
-/** The sidebar: a search box over every page, then the groups, each one
- *  a disclosure the reader can fold. */
-function Sidebar({ nav, here }: { nav: NavGroup[]; here: string }) {
+/** The release the reader is in, as a menu of every release with docs.
+ *  A choice opens the same page of that release. A page the release
+ *  lacks falls back to the home of its docs. */
+function VersionPicker({ menu, base, here }: { menu: VersionMenu; base: string; here: string }) {
+  const router = useRouter();
+
+  const go = (version: string) => {
+    const to = menu.releases.find((r) => r.version === version);
+
+    if (!to || version === menu.version) return;
+
+    const page = `${to.base}${here.slice(base.length)}`;
+
+    fetch(page, { method: "HEAD" })
+      .then((r) => router.push(r.ok ? page : `${to.base}/`))
+      .catch(() => router.push(`${to.base}/`));
+  };
+
+  return (
+    <label className="version-picker mb-3">
+      <span>Version</span>
+      <select value={menu.version} onChange={(e) => go(e.target.value)} aria-label="The version of the docs">
+        {menu.releases.map((r) => (
+          <option key={r.version} value={r.version}>
+            {r.version}
+            {r.version === menu.latest ? " (latest)" : r.prerelease ? " (pre-release)" : ""}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+/** The sidebar: the version menu, a search box over every page, then
+ *  the groups, each one a disclosure the reader can fold. */
+function Sidebar({ nav, here, base, menu }: { nav: NavGroup[]; here: string; base: string; menu: VersionMenu }) {
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<SearchDoc[] | null>(null);
   const q = query.trim().toLowerCase();
@@ -47,7 +81,7 @@ function Sidebar({ nav, here }: { nav: NavGroup[]; here: string }) {
   const load = () => {
     if (index) return;
 
-    fetch("/docs/search.json")
+    fetch(`${base}/search.json`)
       .then((r) => r.json())
       .then(setIndex)
       .catch(() => setIndex([]));
@@ -76,6 +110,7 @@ function Sidebar({ nav, here }: { nav: NavGroup[]; here: string }) {
 
   return (
     <nav className="toc" aria-label="Docs">
+      {menu.releases.length > 1 ? <VersionPicker menu={menu} base={base} here={here} /> : null}
       <SearchField value={query} onChange={setQuery} onFocus={load} label="Search the docs" className="mb-3" />
       {q ? (
         <div className="results">
@@ -93,7 +128,7 @@ function Sidebar({ nav, here }: { nav: NavGroup[]; here: string }) {
         </div>
       ) : (
         <>
-          {link("/docs/", "Overview")}
+          {link(`${base}/`, "Overview")}
           {nav.map((g) => (
             <details key={g.path} open>
               <summary className="chapter">{g.title}</summary>
@@ -160,7 +195,18 @@ function OnThisPage({ here }: { here: string }) {
 // the page on the right. Under the `lg` breakpoint the sidebar is a
 // drawer, a native modal dialog, so focus and Escape work with no code.
 
-export default function DocsShell({ nav, children }: { nav: NavGroup[]; children: ReactNode }) {
+export default function DocsShell({
+  nav,
+  base,
+  menu,
+  children,
+}: {
+  nav: NavGroup[];
+  /** Where the docs of this release start: `/docs`, or `/docs/v/<version>`. */
+  base: string;
+  menu: VersionMenu;
+  children: ReactNode;
+}) {
   const pathname = usePathname();
   const here = pathname.endsWith("/") ? pathname : `${pathname}/`;
   const drawer = useRef<HTMLDialogElement>(null);
@@ -197,7 +243,7 @@ export default function DocsShell({ nav, children }: { nav: NavGroup[]; children
     <div className="mx-auto grid max-w-[1400px] grid-cols-1 px-5 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_220px]">
       <aside className="hidden lg:block">
         <div ref={side} className="sticky top-14 max-h-[calc(100vh-56px)] overflow-y-auto border-r border-line py-6 pr-4 pl-1">
-          <Sidebar nav={nav} here={here} />
+          <Sidebar nav={nav} here={here} base={base} menu={menu} />
         </div>
       </aside>
 
@@ -241,7 +287,7 @@ export default function DocsShell({ nav, children }: { nav: NavGroup[]; children
           </button>
         </div>
         <div className="px-3 py-3">
-          <Sidebar nav={nav} here={here} />
+          <Sidebar nav={nav} here={here} base={base} menu={menu} />
         </div>
       </dialog>
 

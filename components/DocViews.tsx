@@ -5,21 +5,8 @@ import CodePane from "@/components/CodePane";
 import { prose } from "@/components/DocsProse";
 import FilterList from "@/components/FilterList";
 import Markdown from "@/components/Markdown";
-import { contracts, entry, lintGroups, memberGroups, memberLabel, plainText, stdItems, type Entry } from "@/lib/content";
-import {
-  article,
-  categories,
-  childrenOf,
-  docHref,
-  entryLabel,
-  entrySlug,
-  errorReport,
-  groupOf,
-  neighbours,
-  pageAt,
-  subPagesOf,
-  type Page,
-} from "@/lib/docs";
+import { contracts, memberGroups, memberLabel, plainText, type Entry } from "@/lib/content";
+import { article, entryLabel, entrySlug, errorReport, groupOf, type Docs, type Page } from "@/lib/docs";
 import { inline } from "@/lib/inline";
 
 // The parts of a docs page: the trail above it, the body for each kind
@@ -29,13 +16,13 @@ const md = (text: string): ReactNode =>
   inline(text).map((n, j) => <Fragment key={j}>{n}</Fragment>);
 
 /** Docs / Reference / Keywords / struct, each one a link but the last. */
-export function Crumbs({ page }: { page: Page }) {
-  const trail: { title: string; path: string }[] = [{ title: "Docs", path: "/docs/" }];
+export function Crumbs({ docs, page }: { docs: Docs; page: Page }) {
+  const trail: { title: string; path: string }[] = [{ title: "Docs", path: docs.home }];
   const group = groupOf(page);
 
-  if (page.path !== `/docs/${group.slug}/`) trail.push({ title: group.title, path: `/docs/${group.slug}/` });
+  if (page.path !== `${docs.home}${group.slug}/`) trail.push({ title: group.title, path: `${docs.home}${group.slug}/` });
 
-  const parent = page.parent ? pageAt(page.parent) : undefined;
+  const parent = page.parent ? docs.pageAt(page.parent) : undefined;
 
   if (parent) trail.push({ title: parent.title, path: parent.path });
 
@@ -54,8 +41,8 @@ export function Crumbs({ page }: { page: Page }) {
 }
 
 /** The page before and the page after, in sidebar order. */
-export function Pager({ page }: { page: Page }) {
-  const { prev, next } = neighbours(page);
+export function Pager({ docs, page }: { docs: Docs; page: Page }) {
+  const { prev, next } = docs.neighbours(page);
 
   return (
     <nav aria-label="Previous and next pages" className="pager">
@@ -78,7 +65,7 @@ export function Pager({ page }: { page: Page }) {
 }
 
 /** A grid of pages, each with its one-line summary. */
-export function Cards({ items, filter = false }: { items: Page[]; filter?: boolean }) {
+export function Cards({ docs, items, filter = false }: { docs: Docs; items: Page[]; filter?: boolean }) {
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {items.map((p) => (
@@ -90,8 +77,8 @@ export function Cards({ items, filter = false }: { items: Page[]; filter?: boole
         >
           <span className={p.parent ? "font-mono text-[14px]" : "display text-[16px] font-bold"}>{p.title}</span>
           {p.summary ? <span className="doc-card-summary">{md(p.summary)}</span> : null}
-          {p.view.kind === "entry" && stdLine(p.view.entry) ? (
-            <span className="doc-card-summary font-mono text-[12px] text-muted">{stdLine(p.view.entry)}</span>
+          {p.view.kind === "entry" && stdLine(docs, p.view.entry) ? (
+            <span className="doc-card-summary font-mono text-[12px] text-muted">{stdLine(docs, p.view.entry)}</span>
           ) : null}
         </Link>
       ))}
@@ -100,8 +87,8 @@ export function Cards({ items, filter = false }: { items: Page[]; filter?: boole
 }
 
 /** The members a std card lists, from the summary cards of the tour. */
-function stdLine(e: Entry): string | undefined {
-  return e.group === "Std" ? stdItems.find((s) => s[2] === e.key)?.[1] : undefined;
+function stdLine(docs: Docs, e: Entry): string | undefined {
+  return e.group === "Std" ? docs.data.stdItems.find((s) => s[2] === e.key)?.[1] : undefined;
 }
 
 /** One std type: the signature, the overview, an index of the members,
@@ -150,9 +137,10 @@ const LINT_INTRO =
 
 /** A reference category: its entries on this page when they are short,
  *  or a card for each entry page when they are long. */
-function Category({ page, slug }: { page: Page; slug: string }) {
-  const cat = categories.find((c) => c.slug === slug)!;
-  const intro = entry(`topic:${slug}`);
+function Category({ docs, page, slug }: { docs: Docs; page: Page; slug: string }) {
+  const { childrenOf } = docs;
+  const cat = docs.categories.find((c) => c.slug === slug)!;
+  const intro = docs.data.entry(`topic:${slug}`);
 
   return (
     <>
@@ -165,7 +153,7 @@ function Category({ page, slug }: { page: Page; slug: string }) {
       )}
       <FilterList label={`Filter ${cat.title.toLowerCase()}`}>
         {slug === "lints" ? (
-          lintGroups.map((g) => (
+          docs.data.lintGroups.map((g) => (
             <section key={g.name} data-filter-group className="mb-8">
               <h2 id={g.name} data-toc={g.name} className="display mb-1 text-[20px] font-bold">
                 {g.name} <span className="chip ml-2 text-[11px]">{g.lints.length}</span>
@@ -174,13 +162,14 @@ function Category({ page, slug }: { page: Page; slug: string }) {
                 <p>{md(g.summary)}</p>
               </div>
               <Cards
+                docs={docs}
                 filter
                 items={childrenOf(page).filter((p) => p.view.kind === "lint" && p.view.lint.group === g.name)}
               />
             </section>
           ))
         ) : cat.paged ? (
-          <Cards filter items={childrenOf(page)} />
+          <Cards docs={docs} filter items={childrenOf(page)} />
         ) : (
           cat.entries.map((e) => (
             <section key={e.key} className="entry" data-filter={`${e.key} ${plainText(e.markdown)}`.toLowerCase()}>
@@ -195,7 +184,9 @@ function Category({ page, slug }: { page: Page; slug: string }) {
 }
 
 /** The body of a page, by kind. */
-export function PageBody({ page }: { page: Page }) {
+export function PageBody({ docs, page }: { docs: Docs; page: Page }) {
+  const { childrenOf, docHref, subPagesOf } = docs;
+  const { entry } = docs.data;
   const v = page.view;
 
   switch (v.kind) {
@@ -203,7 +194,7 @@ export function PageBody({ page }: { page: Page }) {
       return null;
 
     case "group":
-      return <Cards items={childrenOf(page)} />;
+      return <Cards docs={docs} items={childrenOf(page)} />;
 
     case "prose":
       return prose[v.id] ?? null;
@@ -261,7 +252,7 @@ export function PageBody({ page }: { page: Page }) {
           ) : null}
           {subs.length > 0 ? (
             <div className="mt-8">
-              <Cards items={subs} />
+              <Cards docs={docs} items={subs} />
             </div>
           ) : null}
         </>
@@ -269,7 +260,7 @@ export function PageBody({ page }: { page: Page }) {
     }
 
     case "category":
-      return <Category page={page} slug={v.slug} />;
+      return <Category docs={docs} page={page} slug={v.slug} />;
 
     case "entry": {
       const e = v.entry;
@@ -300,7 +291,7 @@ export function PageBody({ page }: { page: Page }) {
       return (
         <>
           <div className="mb-5 flex flex-wrap gap-2">
-            <Link href={`/docs/reference/lints/#${l.group}`} className="chip no-underline">
+            <Link href={`${docs.home}reference/lints/#${l.group}`} className="chip no-underline">
               {l.group}
             </Link>
             <span className="chip">{l.default === "strict" ? "off until [lint] strict" : l.default}</span>
@@ -313,8 +304,8 @@ export function PageBody({ page }: { page: Page }) {
           <Markdown text={l.detail} />
           <div className="prose">
             <p>
-              Set its level in the <code>[lint]</code> table of <Link href="/docs/configuration/alloy-toml/">alloy.toml</Link>,
-              or for one file with <Link href="/docs/configuration/alloy-lint/">--@alloy-lint</Link>.
+              Set its level in the <code>[lint]</code> table of <Link href={`${docs.home}configuration/alloy-toml/`}>alloy.toml</Link>,
+              or for one file with <Link href={`${docs.home}configuration/alloy-lint/`}>--@alloy-lint</Link>.
             </p>
           </div>
         </>

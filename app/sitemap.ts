@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
 
 import { SITE, rfcs } from "@/lib/content";
-import { pageDate, pages } from "@/lib/docs";
+import { latest } from "@/lib/docs";
+
+const { pageDate, pages } = latest;
 
 // The export writes this as /sitemap.xml. The docs part comes from the
 // same outline as the routes, so a new page is listed with no change here.
