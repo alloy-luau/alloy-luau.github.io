@@ -14,7 +14,7 @@ export const ALLOY_KEYWORDS = [
   "import", "in", "interface", "is", "local", "macro", "match", "namespace",
   "new", "on", "open", "private", "public", "read", "remote", "requires",
   "satisfies", "shl", "shr", "struct", "trait", "try", "type", "where", "with",
-  "write",
+  "write", "yield",
 ];
 
 // Words the compiler does not list as keywords, and the grammar still

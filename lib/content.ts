@@ -31,9 +31,6 @@ export type Slide = {
 /** Where the site lives: the metadata base and the sitemap's host. */
 export const SITE = "https://alloy-luau.github.io";
 
-export const version: string = docsJson.version;
-export const entries: Entry[] = docsJson.entries as Entry[];
-
 /** The member headings, in the order a reference page prints them. */
 export const memberKinds: [Member["kind"], string][] = [
   ["static", "Statics"],
@@ -57,26 +54,6 @@ export function memberLabel(entry: Entry, m: Member): string {
 
   return m.signature.startsWith(`${entry.key}.`) ? `${entry.key}.${m.name}` : m.name;
 }
-const listed: LintDoc[] = docsJson.lints;
-
-/** A lint the table lists only as an entry, as the markup lints of
- *  `.alx` files are. Its first line names the group and the default. */
-const unlisted: LintDoc[] = entries
-  .filter((e) => e.group === "Lints" && !listed.some((l) => l.name === e.key))
-  .map((e) => {
-    const [head = "", summary = "", ...rest] = e.markdown.split("\n\n");
-
-    return {
-      name: e.key,
-      group: head.match(/^Group: (\w+)/)?.[1] ?? "correctness",
-      default: head.match(/Default: (\w+)/)?.[1] ?? "warn",
-      summary: summary.replace(/\.$/, ""),
-      detail: rest.join("\n\n"),
-    };
-  });
-
-export const lints: LintDoc[] = [...listed, ...unlisted];
-
 /** The lint groups in book order, with what each holds. */
 const GROUP_SUMMARIES: [string, string][] = [
   ["correctness", "Code that is wrong, or cannot run."],
@@ -90,51 +67,85 @@ const GROUP_SUMMARIES: [string, string][] = [
   ["alx", "Markup in `.alx` files that does not do what it reads as."],
 ];
 
-// A group the table adds later still gets a section, with no summary.
-const groupNames: [string, string][] = [
-  ...GROUP_SUMMARIES,
-  ...[...new Set(lints.map((l) => l.group))]
-    .filter((g) => !GROUP_SUMMARIES.some(([name]) => name === g))
-    .map((g): [string, string] => [g, ""]),
-];
+/** The doc table of one release, as `alloy doc --json` writes it. */
+export type DocsFile = { version: string; entries: unknown; lints: unknown };
+/** The tour chapters and the std cards of one release. */
+export type SlidesFile = { slides: unknown; stdItems: unknown };
 
-export const lintGroups: { name: string; summary: string; lints: LintDoc[] }[] = groupNames.map(
-  ([name, summary]) => ({
-    name,
-    summary,
-    lints: lints.filter((l) => l.group === name),
-  }),
-).filter((g) => g.lints.length > 0);
-export const slides: Slide[] = slidesJson.slides as Slide[];
-/** The std summary cards: the name, one line, and the key of the entry the card jumps to. */
-export const stdItems: [string, string, string][] = slidesJson.stdItems as [string, string, string][];
+/** Everything the docs of one release are made of. The site holds one
+ *  of these for each version it shows. */
+export type Data = ReturnType<typeof dataset>;
 
-/** One entry by key, or undefined. */
-export function entry(key: string): Entry | undefined {
-  return entries.find((e) => e.key === key);
+/** The content of one release: the entries, the lints by group, the
+ *  reference groups, and the tour chapters. */
+export function dataset(docsFile: DocsFile, slidesFile: SlidesFile) {
+  const version = docsFile.version;
+  const entries = docsFile.entries as Entry[];
+  const listed = docsFile.lints as LintDoc[];
+
+  /** A lint the table lists only as an entry, as the markup lints of
+   *  `.alx` files are. Its first line names the group and the default. */
+  const unlisted: LintDoc[] = entries
+    .filter((e) => e.group === "Lints" && !listed.some((l) => l.name === e.key))
+    .map((e) => {
+      const [head = "", summary = "", ...rest] = e.markdown.split("\n\n");
+
+      return {
+        name: e.key,
+        group: head.match(/^Group: (\w+)/)?.[1] ?? "correctness",
+        default: head.match(/Default: (\w+)/)?.[1] ?? "warn",
+        summary: summary.replace(/\.$/, ""),
+        detail: rest.join("\n\n"),
+      };
+    });
+
+  const lints: LintDoc[] = [...listed, ...unlisted];
+
+  // A group the table adds later still gets a section, with no summary.
+  const groupNames: [string, string][] = [
+    ...GROUP_SUMMARIES,
+    ...[...new Set(lints.map((l) => l.group))]
+      .filter((g) => !GROUP_SUMMARIES.some(([name]) => name === g))
+      .map((g): [string, string] => [g, ""]),
+  ];
+
+  const lintGroups: { name: string; summary: string; lints: LintDoc[] }[] = groupNames
+    .map(([name, summary]) => ({ name, summary, lints: lints.filter((l) => l.group === name) }))
+    .filter((g) => g.lints.length > 0);
+
+  const slides = slidesFile.slides as Slide[];
+  /** The std summary cards: the name, one line, and the key of the entry the card jumps to. */
+  const stdItems = slidesFile.stdItems as [string, string, string][];
+
+  /** One entry by key, or undefined. */
+  const entry = (key: string): Entry | undefined => entries.find((e) => e.key === key);
+
+  /** The article text for a `topic:` key. */
+  const topic = (name: string): string => entry(`topic:${name}`)?.markdown ?? "";
+
+  /** The reference groups in book order, with their entries. */
+  const referenceGroups: { title: string; slug: string; keys: Entry[] }[] = [
+    "Keywords",
+    "Operators",
+    "Intrinsics",
+    "Attributes",
+    "Derives",
+    "Errors",
+    "Std",
+  ].map((title) => ({
+    title: title === "Std" ? "Standard library" : title,
+    slug: title.toLowerCase(),
+    keys: entries.filter((e) => e.group === title).sort((a, b) => a.key.localeCompare(b.key)),
+  }));
+
+  return { version, entries, lints, lintGroups, slides, stdItems, entry, topic, referenceGroups };
 }
 
-/** The article text for a `topic:` key. */
-export function topic(name: string): string {
-  return entry(`topic:${name}`)?.markdown ?? "";
-}
+/** The release the site shows by default: the latest one that is no
+ *  candidate. The landing page and the playground read it too. */
+export const current: Data = dataset(docsJson, slidesJson);
 
-/** The reference groups in book order, with their entries. */
-export const referenceGroups: { title: string; slug: string; keys: Entry[] }[] = [
-  "Keywords",
-  "Operators",
-  "Intrinsics",
-  "Attributes",
-  "Derives",
-  "Errors",
-  "Std",
-].map((title) => ({
-  title: title === "Std" ? "Standard library" : title,
-  slug: title.toLowerCase(),
-  keys: entries
-    .filter((e) => e.group === title)
-    .sort((a, b) => a.key.localeCompare(b.key)),
-}));
+export const { version, entries, lints, lintGroups, slides, stdItems, entry, topic, referenceGroups } = current;
 
 /** The strictness contracts, for the landing page and the book. */
 export const contracts: { title: string; body: string; code: string; icon: string }[] = [

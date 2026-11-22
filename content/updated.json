@@ -216,8 +216,8 @@
     "date": "2026-10-01"
   },
   "entry:attribute": {
-    "hash": "751dfab514c7cc10",
-    "date": "2026-10-01"
+    "hash": "7862630369673ecd",
+    "date": "2026-11-16"
   },
   "entry:on": {
     "hash": "f4d1e8945619ba37",
@@ -656,16 +656,16 @@
     "date": "2026-09-26"
   },
   "entry:topic:markup": {
-    "hash": "38067b71d3f31740",
-    "date": "2026-10-01"
+    "hash": "eb7f40c5047b88a3",
+    "date": "2026-11-16"
   },
   "entry:alx.static_conditional_child": {
     "hash": "ec19a384b31aa7b4",
     "date": "2026-09-26"
   },
   "entry:topic:ingots": {
-    "hash": "83cb6126aa4b6382",
-    "date": "2026-09-24"
+    "hash": "036d5d1397307f13",
+    "date": "2026-11-16"
   },
   "entry:topic:mount": {
     "hash": "961c54aa4294fae4",
@@ -988,12 +988,12 @@
     "date": "2026-09-26"
   },
   "entry:AttributeContract": {
-    "hash": "37b8b4237474c286",
-    "date": "2026-10-01"
+    "hash": "d1b661155a93e15b",
+    "date": "2026-11-16"
   },
   "entry:AttributeError": {
-    "hash": "72c2fb0a60faffe3",
-    "date": "2026-10-01"
+    "hash": "ac1ecc4049061144",
+    "date": "2026-11-16"
   },
   "entry:BoundError": {
     "hash": "8cfd7eaf2d6d8ad0",
@@ -1036,8 +1036,8 @@
     "date": "2026-09-26"
   },
   "entry:IngotError": {
-    "hash": "b31a62426ed4b0d0",
-    "date": "2026-09-24"
+    "hash": "990f02dba8cf94e0",
+    "date": "2026-11-16"
   },
   "entry:InternalError": {
     "hash": "768f2cbe8897eed7",
@@ -1052,8 +1052,8 @@
     "date": "2026-10-24"
   },
   "entry:MarkupError": {
-    "hash": "377f442be2cba83b",
-    "date": "2026-10-01"
+    "hash": "a99d12ade09746ec",
+    "date": "2026-11-16"
   },
   "entry:ParallelError": {
     "hash": "9324b86773457772",
@@ -1408,20 +1408,20 @@
     "date": "2026-10-23"
   },
   "slide:enums": {
-    "hash": "fdd85048ba9828f1",
-    "date": "2026-10-26"
+    "hash": "3e30fcc5c64040e0",
+    "date": "2026-11-16"
   },
   "slide:bindings": {
     "hash": "c6d3a85616e9efdf",
     "date": "2026-10-23"
   },
   "slide:structs": {
-    "hash": "1f05d2f3bd661236",
-    "date": "2026-10-26"
+    "hash": "3a688ffff39cf9b3",
+    "date": "2026-11-16"
   },
   "slide:interfaces": {
-    "hash": "29458974d4423a5a",
-    "date": "2026-10-23"
+    "hash": "fefb8bb950416c46",
+    "date": "2026-11-16"
   },
   "slide:sugar": {
     "hash": "1cd16638bb3afa93",
@@ -1436,8 +1436,8 @@
     "date": "2026-10-23"
   },
   "slide:attributes": {
-    "hash": "3e516a072aea78fd",
-    "date": "2026-10-26"
+    "hash": "a831f3a16bf47121",
+    "date": "2026-11-16"
   },
   "slide:remotes": {
     "hash": "74627ba4f122ff71",

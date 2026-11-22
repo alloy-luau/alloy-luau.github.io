@@ -284,6 +284,33 @@ h3 code {
 }
 
 /* The book's sidebar. */
+/* The version menu above the search box of the docs sidebar. */
+.version-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.version-picker select {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .toc a {
   display: block;
   padding: 4px 10px;

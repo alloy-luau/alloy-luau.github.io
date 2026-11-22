@@ -8,6 +8,7 @@
 			"patterns": [
 				{ "include": "#comment" },
 				{ "include": "#fragment" },
+				{ "include": "#script" },
 				{ "include": "#style" },
 				{ "include": "#element" }
 			]
@@ -37,6 +38,24 @@
 				"2": { "name": "punctuation.definition.tag.end.alx" }
 			},
 			"patterns": [{ "include": "#children" }]
+		},
+		"script": {
+			"comment": "<script>: the Alloy of a component file, up to </script>. The compiler makes it the body of the component.",
+			"name": "meta.tag.alx",
+			"begin": "(<)(script)\\s*(>)",
+			"beginCaptures": {
+				"1": { "name": "punctuation.definition.tag.begin.alx" },
+				"2": { "name": "entity.name.tag.alx" },
+				"3": { "name": "punctuation.definition.tag.end.alx" }
+			},
+			"end": "(</)(script)\\s*(>)",
+			"endCaptures": {
+				"1": { "name": "punctuation.definition.tag.begin.alx" },
+				"2": { "name": "entity.name.tag.alx" },
+				"3": { "name": "punctuation.definition.tag.end.alx" }
+			},
+			"contentName": "meta.embedded.block.alloy",
+			"patterns": [{ "include": "#markup" }, { "include": "source.aly" }]
 		},
 		"style": {
 			"comment": "<style>: CSS up to </style>, as HTML reads it. The Silk ingot compiles it to a StyleSheet.",
